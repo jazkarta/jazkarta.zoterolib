@@ -62,6 +62,13 @@ and then running ``bin/buildout``
 Contribute
 ----------
 
+Make sure you install and activate `pre-commit` to ensure your code validates at each commit:
+
+    pip install -r requirements-dev.txt
+    pre-commit install
+
+You can find the issue tracker and source code for this package at:
+
 - Issue Tracker: https://github.com/Jazkarta/jazkarta.zoterolib/issues
 - Source Code: https://github.com/Jazkarta/jazkarta.zoterolib
 
