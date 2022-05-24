@@ -1,7 +1,7 @@
-* jazkarta.zoterolib version:
-* Plone Version:
-* Python version:
-* Operating System: Linux
+- jazkarta.zoterolib version:
+- Plone Version:
+- Python version:
+- Operating System: Linux
 
 ### Description
 
