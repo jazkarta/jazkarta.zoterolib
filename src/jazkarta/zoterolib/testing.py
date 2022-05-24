@@ -21,11 +21,12 @@ class JazkartaZoterolibLayer(PloneSandboxLayer):
         # The z3c.autoinclude feature is disabled in the Plone fixture base
         # layer.
         import plone.restapi
+
         self.loadZCML(package=plone.restapi)
         self.loadZCML(package=jazkarta.zoterolib)
 
     def setUpPloneSite(self, portal):
-        applyProfile(portal, 'jazkarta.zoterolib:default')
+        applyProfile(portal, "jazkarta.zoterolib:default")
 
 
 JAZKARTA_ZOTEROLIB_FIXTURE = JazkartaZoterolibLayer()
@@ -33,13 +34,13 @@ JAZKARTA_ZOTEROLIB_FIXTURE = JazkartaZoterolibLayer()
 
 JAZKARTA_ZOTEROLIB_INTEGRATION_TESTING = IntegrationTesting(
     bases=(JAZKARTA_ZOTEROLIB_FIXTURE,),
-    name='JazkartaZoterolibLayer:IntegrationTesting',
+    name="JazkartaZoterolibLayer:IntegrationTesting",
 )
 
 
 JAZKARTA_ZOTEROLIB_FUNCTIONAL_TESTING = FunctionalTesting(
     bases=(JAZKARTA_ZOTEROLIB_FIXTURE,),
-    name='JazkartaZoterolibLayer:FunctionalTesting',
+    name="JazkartaZoterolibLayer:FunctionalTesting",
 )
 
 
@@ -49,5 +50,5 @@ JAZKARTA_ZOTEROLIB_ACCEPTANCE_TESTING = FunctionalTesting(
         REMOTE_LIBRARY_BUNDLE_FIXTURE,
         z2.ZSERVER_FIXTURE,
     ),
-    name='JazkartaZoterolibLayer:AcceptanceTesting',
+    name="JazkartaZoterolibLayer:AcceptanceTesting",
 )
