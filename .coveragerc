@@ -1,0 +1,6 @@
+[report]
+include =
+    src/jazkarta/*
+omit =
+    */test*
+    */upgrades/*
