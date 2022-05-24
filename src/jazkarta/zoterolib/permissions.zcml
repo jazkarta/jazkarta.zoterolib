@@ -6,6 +6,12 @@
   <configure zcml:condition="installed AccessControl.security">
   <!-- -*- extra stuff goes here -*- -->
 
+    <permission
+        id="jazkarta.zoterolib.AddZoteroLibrary"
+        title="jazkarta.zoterolib: Add ZoteroLibrary"
+    />
+
+
 
   </configure>
 

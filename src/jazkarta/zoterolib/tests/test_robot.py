@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from jazkarta.zoterolib.testing import (
-    JAZKARTA_ZOTEROLIB_ACCEPTANCE_TESTING  # noqa: E501,
+    JAZKARTA_ZOTEROLIB_ACCEPTANCE_TESTING  # noqa: E501,,
 )
 from plone.app.testing import ROBOT_TEST_LEVEL
 from plone.testing import layered

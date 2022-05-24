@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Setup tests for this package."""
 from jazkarta.zoterolib.testing import (
-    JAZKARTA_ZOTEROLIB_INTEGRATION_TESTING  # noqa: E501,
+    JAZKARTA_ZOTEROLIB_INTEGRATION_TESTING  # noqa: E501,,
 )
 from plone import api
 from plone.app.testing import setRoles, TEST_USER_ID
