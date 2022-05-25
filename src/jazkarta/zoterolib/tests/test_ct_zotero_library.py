@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
-from jazkarta.zoterolib.content.zotero_library import IZoteroLibrary  # NOQA E501
-from jazkarta.zoterolib.testing import JAZKARTA_ZOTEROLIB_INTEGRATION_TESTING  # noqa
+from jazkarta.zoterolib.content.zotero_library import IZoteroLibrary
+from jazkarta.zoterolib.testing import JAZKARTA_ZOTEROLIB_INTEGRATION_TESTING
+from jazkarta.zoterolib.testing import JAZKARTA_ZOTEROLIB_FUNCTIONAL_TESTING
 from plone import api
 from plone.app.testing import setRoles, TEST_USER_ID
 from plone.dexterity.interfaces import IDexterityFTI
+from plone.testing.zope import Browser
 from zope.component import createObject, queryUtility
 
 import unittest
@@ -70,7 +72,7 @@ class ZoteroLibraryIntegrationTest(unittest.TestCase):
     def test_external_item(self):
         from jazkarta.zoterolib.content.zotero_library import ExternalZoteroItem
 
-        item = ExternalZoteroItem(TEST_ENTRY)
+        item = ExternalZoteroItem(self.portal, TEST_ENTRY)
         self.assertTrue(item.Authors(), "Could not find the Authors field")
         self.assertEqual(item.Authors(), ", ".join(TEST_ENTRY["authors"]))
         self.assertEqual(item.AuthorItems(), TEST_ENTRY["authors"])
@@ -78,7 +80,7 @@ class ZoteroLibraryIntegrationTest(unittest.TestCase):
 
 class ZoteroLibraryIndexTest(unittest.TestCase):
 
-    layer = JAZKARTA_ZOTEROLIB_INTEGRATION_TESTING
+    layer = JAZKARTA_ZOTEROLIB_FUNCTIONAL_TESTING
 
     def setUp(self):
         """Create a Zotero Library object."""
@@ -99,6 +101,15 @@ class ZoteroLibraryIndexTest(unittest.TestCase):
         results = catalog.search(query={"SearchableText": "Hathaway"})
         self.assertEqual(len(results), 1)
         self.assertEqual(results[0].Authors, ", ".join(TEST_ENTRY["authors"]))
+
+    def test_view_external_item(self):
+        from jazkarta.zoterolib.content.zotero_library import ExternalZoteroItem
+
+        self.obj.index_element(TEST_ENTRY)
+        catalog = api.portal.get_tool("portal_catalog")
+        brain = catalog.search(query={"SearchableText": "Hathaway"})[0]
+        browser = Browser(self.layer.get("app"))
+        browser.open(brain.getURL())
 
 
 TEST_ENTRY = {

@@ -29,7 +29,7 @@ class ZoteroLibrary(Item):
     """Content-type class for IZoteroLibrary"""
 
     def index_element(self, element):
-        obj = ExternalZoteroItem(element).__of__(self)
+        obj = ExternalZoteroItem(parent=self, zotero_item=element).__of__(self)
         notify(ObjectCreatedEvent(obj))
         catalog = api.portal.get_tool("portal_catalog")
         catalog.catalog_object(obj, uid=obj.path)
@@ -45,9 +45,25 @@ class ExternalZoteroItem(Acquisition.Implicit):
     contentType = Type = "ExternalItem"
     review_state = "published"
 
-    def __init__(self, zotero_item):
+    def __init__(self, parent, zotero_item):
+        """For some reason `self` might not be acquisition-wrapped in some cases.
+        I observed `self` correctly wrapped while in `getPhysicalPath`, and
+        not wrapped anymore when we get in the `path` method.
+        For this reason we require an explicit `parent` argument, instead of
+        relying on acquisition.
+        """
+        self.parent = parent
         self.zotero_item = zotero_item
-        self.path = "/TODO/set/a/path/for/this/item"
+
+    @property
+    def path(self):
+        return "/".join(
+            self.parent.getPhysicalPath()
+            + (
+                "zotero_items",
+                self.zotero_item["id"],
+            )
+        )
 
     def getId(self):
         return self.zotero_item["id"]
