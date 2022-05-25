@@ -14,7 +14,7 @@
 #
 # 2) Run robot tests:
 #
-# $ bin/robot /src/jazkarta/zoterolib/tests/robot/test_zotero_library.robot
+# $ bin/robot src/jazkarta/zoterolib/tests/robot/test_ct_zotero_library.robot
 #
 # See the http://docs.plone.org for further details (search for robot
 # framework).
