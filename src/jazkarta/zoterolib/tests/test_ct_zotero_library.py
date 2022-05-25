@@ -66,3 +66,46 @@ class ZoteroLibraryIntegrationTest(unittest.TestCase):
         setRoles(self.portal, TEST_USER_ID, ["Contributor"])
         fti = queryUtility(IDexterityFTI, name="Zotero Library")
         self.assertTrue(fti.global_allow, "{0} is not globally addable!".format(fti.id))
+
+    def test_external_item(self):
+        from jazkarta.zoterolib.content.zotero_library import ExternalZoteroItem
+
+        item = ExternalZoteroItem(TEST_ENTRY)
+        self.assertTrue(item.Authors(), "Could not find the Authors field")
+        self.assertEqual(item.Authors(), ", ".join(TEST_ENTRY["authors"]))
+        self.assertEqual(item.AuthorItems(), TEST_ENTRY["authors"])
+
+
+class ZoteroLibraryIndexTest(unittest.TestCase):
+
+    layer = JAZKARTA_ZOTEROLIB_INTEGRATION_TESTING
+
+    def setUp(self):
+        """Create a Zotero Library object."""
+        self.portal = self.layer["portal"]
+        setRoles(self.portal, TEST_USER_ID, ["Manager"])
+        self.parent = self.portal
+        self.obj = api.content.create(
+            container=self.portal,
+            type="Zotero Library",
+            id="zotero_library",
+        )
+
+    def test_index_external_item(self):
+        from jazkarta.zoterolib.content.zotero_library import ExternalZoteroItem
+
+        self.obj.index_element(TEST_ENTRY)
+        catalog = api.portal.get_tool("portal_catalog")
+        results = catalog.search(query={"SearchableText": "Hathaway"})
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0].Authors, ", ".join(TEST_ENTRY["authors"]))
+
+
+TEST_ENTRY = {
+    "id": "TESTZOTERO",
+    "authors": ["Hathaway, S. R.", "McKinley, J. C."],
+    "title": "A multiphasic personality schedule (Minnesota): I, Construction of the schedule.",
+    "source": "Journal of Psychology",
+    "publication_year": "1940",
+    "citationLabel": "Hathaway, S. R., & McKinley, J. C. (1940). A multiphasic personality schedule (Minnesota): I, Construction of the schedule.",
+}
