@@ -5,7 +5,11 @@ from jazkarta.zoterolib.testing import JAZKARTA_ZOTEROLIB_FUNCTIONAL_TESTING
 from plone import api
 from plone.app.testing import setRoles, TEST_USER_ID
 from plone.dexterity.interfaces import IDexterityFTI
-from plone.testing.zope import Browser
+
+try:
+    from plone.testing.zope import Browser
+except ImportError:
+    from plone.testing.z2 import Browser
 from zope.component import createObject, queryUtility
 from xml.sax.saxutils import escape
 
