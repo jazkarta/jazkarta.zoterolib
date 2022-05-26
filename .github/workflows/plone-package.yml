@@ -15,8 +15,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.7, 3.8, 3.9, 2.7]
-
+        include:
+          - python-version: 3.9
+            plone-version: 52
+          - python-version: 2.7
+            plone-version: 52
+          - python-version: 2.7
+            plone-version: 51
+          - python-version: 2.7
+            plone-version: 43
     steps:
       - uses: actions/checkout@v2
       - uses: actions/cache@v2
@@ -42,12 +49,11 @@ jobs:
           echo "download-cache = $HOME/buildout-cache/downloads" >> $HOME/.buildout/default.cfg
           echo "eggs-directory = $HOME/buildout-cache/eggs" >> $HOME/.buildout/default.cfg
       - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install tox tox-gh-actions
-      - name: Test with tox
-        run: |
-          tox -r
+        run: python -m pip install --upgrade pip && pip install zc.buildout wheel -c constraints_plone${{ matrix.plone-version }}.txt
+      - name: Run buildout
+        run: buildout -c test_plone${{ matrix.plone-version }}.cfg install test coverage
+      - name: Run tests
+        run: bin/coverage run bin/test --xml --all
 
   pre-commit:
     name: Check pre-commit
