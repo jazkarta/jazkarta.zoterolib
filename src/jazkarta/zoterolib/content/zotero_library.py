@@ -44,12 +44,20 @@ class ZoteroLibrary(Item):
         catalog.catalog_object(obj, uid=obj.path)
 
     def fetch_items(self, start=0, limit=100):
+        """Iterates over ALL remote items, starting at the given offset.
+        The limit will be used to determine how many items to retrieve at once.
+        """
         zotero_api = zotero.Zotero(self.zotero_id, self.zotero_library_type)
-        return zotero_api.top(start=start, limit=limit)
+        current_batch = zotero_api.top(start=start, limit=limit)
+        while current_batch:
+            for item in current_batch:
+                yield item
+            current_batch = zotero_api.follow()
 
-    def fetch_and_index_items(self, start=0, limit=100):
-        for item in self.fetch_items(start=start, limit=limit):
-            pass  # import pdb;pdb.set_trace()
+    def fetch_and_index_items(self):
+        # for item in self.fetch_items(start=start, limit=limit):
+        #     pass
+        pass
 
 
 class IExternalZoteroItem(Interface):

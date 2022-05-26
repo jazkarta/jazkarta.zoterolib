@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from itertools import islice
 from jazkarta.zoterolib.content.zotero_library import IZoteroLibrary
 from jazkarta.zoterolib.testing import JAZKARTA_ZOTEROLIB_INTEGRATION_TESTING
 from jazkarta.zoterolib.testing import JAZKARTA_ZOTEROLIB_FUNCTIONAL_TESTING
@@ -110,11 +111,12 @@ class ZoteroLibraryIndexTest(unittest.TestCase):
         self.assertEqual(results[0].portal_type, "ExternalZoteroItem")
 
     def test_fetch_external_items(self):
-        result = self.obj.fetch_items(start=1, limit=5)
+        result_iterator = self.obj.fetch_items(start=1, limit=5)
+        result = tuple(islice(result_iterator, 5))
         self.assertEqual(len(result), 5)
 
     def test_fetch_and_index_external_items(self):
-        result = self.obj.fetch_and_index_items(start=1, limit=5)
+        result = self.obj.fetch_and_index_items()
 
     def test_view_external_item(self):
         self.obj.index_element(TEST_ENTRY)
