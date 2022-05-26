@@ -47,6 +47,10 @@ class ZoteroLibrary(Item):
         zotero_api = zotero.Zotero(self.zotero_id, self.zotero_library_type)
         return zotero_api.top(start=start, limit=limit)
 
+    def fetch_and_index_items(self, start=0, limit=100):
+        for item in self.fetch_items(start=start, limit=limit):
+            pass  # import pdb;pdb.set_trace()
+
 
 class IExternalZoteroItem(Interface):
     """identity interface for external page fake brains"""
@@ -74,24 +78,33 @@ class ExternalZoteroItem(Acquisition.Implicit):
             self.parent.getPhysicalPath()
             + (
                 "zotero_items",
-                self.zotero_item["id"],
+                self.zotero_item["key"],
             )
         )
 
     def getId(self):
-        return self.zotero_item["id"]
+        return self.zotero_item["key"]
 
     def Authors(self):
-        return ", ".join(self.zotero_item["authors"])
+        return ", ".join(self.AuthorItems())
 
     def AuthorItems(self):
-        return self.zotero_item["authors"]
+        return [
+            el.get("firstName", "") + " " + el.get("lastName", "")
+            for el in self.zotero_item["data"]["creators"]
+            if el["creatorType"] == "author"
+        ]
 
     def Title(self):
-        return self.zotero_item["title"]
+        return self.zotero_item["data"]["title"]
 
     def Description(self):
-        return self.zotero_item["citationLabel"]
+        res = []
+        if self.zotero_item["data"].get("publicationTitle"):
+            res.append(self.zotero_item["data"]["publicationTitle"])
+        if self.zotero_item["data"].get("title"):
+            res.append(self.zotero_item["data"]["title"])
+        return " - ".join(res)
 
     def SearchableText(self):
         """Concatenate text information into a single searchable field"""

@@ -79,8 +79,8 @@ class ZoteroLibraryIntegrationTest(unittest.TestCase):
 
         item = ExternalZoteroItem(self.portal, TEST_ENTRY)
         self.assertTrue(item.Authors(), "Could not find the Authors field")
-        self.assertEqual(item.Authors(), ", ".join(TEST_ENTRY["authors"]))
-        self.assertEqual(item.AuthorItems(), TEST_ENTRY["authors"])
+        self.assertEqual(item.Authors(), "Martin Sellbom, R Michael")
+        self.assertEqual(item.AuthorItems(), ["Martin Sellbom", "R Michael"])
 
 
 class ZoteroLibraryIndexTest(unittest.TestCase):
@@ -104,19 +104,22 @@ class ZoteroLibraryIndexTest(unittest.TestCase):
     def test_index_external_item(self):
         self.obj.index_element(TEST_ENTRY)
         catalog = api.portal.get_tool("portal_catalog")
-        results = catalog.searchResults(getAuthors="Hathaway")
+        results = catalog.searchResults(getAuthors="Sellbom")
         self.assertEqual(len(results), 1)
-        self.assertEqual(results[0].Authors, ", ".join(TEST_ENTRY["authors"]))
+        self.assertEqual(results[0].Authors, "Martin Sellbom, R Michael")
         self.assertEqual(results[0].portal_type, "ExternalZoteroItem")
 
     def test_fetch_external_items(self):
         result = self.obj.fetch_items(start=1, limit=5)
         self.assertEqual(len(result), 5)
 
+    def test_fetch_and_index_external_items(self):
+        result = self.obj.fetch_and_index_items(start=1, limit=5)
+
     def test_view_external_item(self):
         self.obj.index_element(TEST_ENTRY)
         catalog = api.portal.get_tool("portal_catalog")
-        brain = catalog.searchResults(getAuthors="Hathaway")[0]
+        brain = catalog.searchResults(getAuthors="Sellbom")[0]
         # need a commit to make the content visible to test browser
         import transaction
 
@@ -125,22 +128,90 @@ class ZoteroLibraryIndexTest(unittest.TestCase):
         browser.handleErrors = False
         browser.open(brain.getURL())
         self.assertIn(
-            '<h1 class="documentTitle">{}</h1>'.format(escape(TEST_ENTRY["title"])),
+            '<h1 class="documentTitle">{}</h1>'.format(
+                escape(TEST_ENTRY["data"]["title"])
+            ),
             browser.contents,
         )
         self.assertIn(
-            '<p class="documentDescription">{}</p>'.format(
-                escape(TEST_ENTRY["citationLabel"])
-            ),
+            '<p class="documentDescription">Psychological Assessment - Detection of overreported psychopathology with the MMPI-2 RF form validity scales</p>',
             browser.contents,
         )
 
 
 TEST_ENTRY = {
-    "id": "TESTZOTERO",
-    "authors": ["Hathaway, S. R.", "McKinley, J. C."],
-    "title": "A multiphasic personality schedule (Minnesota): I, Construction of the schedule.",
-    "source": "Journal of Psychology",
-    "publication_year": "1940",
-    "citationLabel": "Hathaway, S. R., & McKinley, J. C. (1940). A multiphasic personality schedule (Minnesota): I, Construction of the schedule.",
+    "data": {
+        "DOI": "10.1037/a0020825",
+        "ISSN": "1939-134X(Electronic);1040-3590(Print)",
+        "abstractNote": "[Correction Notice: An erratum for this article was reported in Vol 23(1) of Psychological Assessment (see record 2011-01446-001). There was an error in the title. The title should "
+        "have read “Detection of Overreported Psychopathology With the MMPI-2-RF Validity Scales.”] [Correction Notice: An erratum for this article was reported in Psychological Assessment "
+        "(see record 2011-01446-001). There was an error in the title. The title should have read “Detection of Overreported Psychopathology With the MMPI-2-RF Validity Scales.”] We examined "
+        "the utility of the validity scales on the recently released Minnesota Multiphasic Personality Inventory–2 Restructured Form (MMPI-2 RF; Ben-Porath & Tellegen, 2008) to detect "
+        "overreported psychopathology. This set of validity scales includes a newly developed scale and revised versions of the original MMPI-2 validity scales. We used an analogue, "
+        "experimental simulation in which MMPI-2 RF responses (derived from archived MMPI-2 protocols) of undergraduate students instructed to overreport psychopathology (in either a coached "
+        "or noncoached condition) were compared with those of psychiatric inpatients who completed the MMPI-2 under standardized instructions. The MMPI-2 RF validity scale Infrequent "
+        "Psychopathology Responses best differentiated the simulation groups from the sample of patients, regardless of experimental condition. No other validity scale added consistent "
+        "incremental predictive utility to Infrequent Psychopathology Responses in distinguishing the simulation groups from the sample of patients. Classification accuracy statistics "
+        "confirmed the recommended cut scores in the MMPI-2 RF manual (Ben-Porath & Tellegen, 2008).",
+        "accessDate": "",
+        "archive": "",
+        "archiveLocation": "",
+        "callNumber": "",
+        "collections": ["X36527B6"],
+        "creators": [
+            {"creatorType": "author", "firstName": "Martin", "lastName": "Sellbom"},
+            {"creatorType": "author", "firstName": "R", "lastName": "Michael"},
+        ],
+        "date": "2010",
+        "dateAdded": "2022-05-02T20:50:24Z",
+        "dateModified": "2022-05-02T20:50:24Z",
+        "extra": "",
+        "issue": "4",
+        "itemType": "journalArticle",
+        "journalAbbreviation": "",
+        "key": "J8QG2849",
+        "language": "",
+        "libraryCatalog": "",
+        "pages": "757–767",
+        "publicationTitle": "Psychological Assessment",
+        "relations": {},
+        "rights": "",
+        "series": "",
+        "seriesText": "",
+        "seriesTitle": "",
+        "shortTitle": "",
+        "tags": [],
+        "title": "Detection of overreported psychopathology with the MMPI-2 RF form validity scales",
+        "url": "",
+        "version": 1818,
+        "volume": "22",
+    },
+    "key": "J8QG2849",
+    "library": {
+        "id": 9467580,
+        "links": {
+            "alternate": {
+                "href": "https://www.zotero.org/testdivision",
+                "type": "text/html",
+            }
+        },
+        "name": "UMP Test Division",
+        "type": "user",
+    },
+    "links": {
+        "alternate": {
+            "href": "https://www.zotero.org/testdivision/items/J8QG2849",
+            "type": "text/html",
+        },
+        "self": {
+            "href": "https://api.zotero.org/users/9467580/items/J8QG2849",
+            "type": "application/json",
+        },
+    },
+    "meta": {
+        "creatorSummary": "Sellbom and Michael",
+        "numChildren": 0,
+        "parsedDate": "2010",
+    },
+    "version": 1818,
 }
