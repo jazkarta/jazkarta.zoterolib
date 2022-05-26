@@ -55,8 +55,12 @@ jobs:
         if: matrix.plone-version == '43'
       - name: Run buildout
         run: buildout -c test_plone${{ matrix.plone-version }}.cfg install test coverage
-      - name: Run tests
+      - name: Run tests (including robotframework ones)
         run: xvfb-run bin/coverage run bin/test --xml --all
+        if: matrix.plone-version != '43'
+      - name: Run tests (excluding robotframework ones)
+        run: xvfb-run bin/coverage run bin/test --xml
+        if: matrix.plone-version == '43'
 
   pre-commit:
     name: Check pre-commit
