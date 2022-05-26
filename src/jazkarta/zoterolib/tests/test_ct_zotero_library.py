@@ -7,6 +7,7 @@ from plone.app.testing import setRoles, TEST_USER_ID
 from plone.dexterity.interfaces import IDexterityFTI
 from plone.testing.zope import Browser
 from zope.component import createObject, queryUtility
+from xml.sax.saxutils import escape
 
 import unittest
 
@@ -92,24 +93,34 @@ class ZoteroLibraryIndexTest(unittest.TestCase):
             type="Zotero Library",
             id="zotero_library",
         )
+        api.content.transition(obj=self.obj, transition='publish')
 
     def test_index_external_item(self):
-        from jazkarta.zoterolib.content.zotero_library import ExternalZoteroItem
-
         self.obj.index_element(TEST_ENTRY)
         catalog = api.portal.get_tool("portal_catalog")
         results = catalog.search(query={"SearchableText": "Hathaway"})
         self.assertEqual(len(results), 1)
         self.assertEqual(results[0].Authors, ", ".join(TEST_ENTRY["authors"]))
+        self.assertEqual(results[0].portal_type, 'ExternalZoteroItem')
 
     def test_view_external_item(self):
-        from jazkarta.zoterolib.content.zotero_library import ExternalZoteroItem
-
         self.obj.index_element(TEST_ENTRY)
         catalog = api.portal.get_tool("portal_catalog")
         brain = catalog.search(query={"SearchableText": "Hathaway"})[0]
-        browser = Browser(self.layer.get("app"))
+        # need a commit to make the content visible to test browser
+        import transaction
+        transaction.commit()
+        browser = Browser(self.layer["app"])
+        browser.handleErrors = False
         browser.open(brain.getURL())
+        self.assertIn(
+            '<h1 class="documentTitle">{}</h1>'.format(escape(TEST_ENTRY["title"])),
+            browser.contents
+        )
+        self.assertIn(
+            '<p class="documentDescription">{}</p>'.format(escape(TEST_ENTRY["citationLabel"])),
+            browser.contents
+        )
 
 
 TEST_ENTRY = {

@@ -17,10 +17,18 @@ from jazkarta.zoterolib import _
 class IZoteroLibrary(model.Schema):
     """Marker interface and Dexterity Python Schema for ZoteroLibrary"""
 
-    zotero_url = schema.TextLine(
-        title=_("Zotero URL"),
-        description=_("The URL of the Zotero library"),
+    zotero_library_id = schema.TextLine(
+        title=_("Zotero Library Id"),
+        description=_("The ID of the Zotero library"),
         required=True,
+    )
+
+    zotero_library_type = schema.Choice(
+        title=_("Zotero Library Type"),
+        description=_("The type of Zotero Library"),
+        required=True,
+        default=u'group',
+        values=(u'group', u'user'),
     )
 
 
@@ -77,13 +85,15 @@ class ExternalZoteroItem(Acquisition.Implicit):
     def Title(self):
         return self.zotero_item["title"]
 
-    Description = Title
+    def Description(self):
+        return self.zotero_item["citationLabel"]
 
     def SearchableText(self):
         """Concatenate text information into a single searchable field"""
         return " ".join([self.Title(), self.Authors()])
 
     def allowedRolesAndUsers(self):
+        # XXX: should we try to get this value from the "container"?
         return ["Anonymous", "Authenticated"]
 
     def getPath(self):

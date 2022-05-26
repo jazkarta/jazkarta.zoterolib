@@ -30,4 +30,6 @@ report.html
 .tox/
 reports/
 venv/
+pyvenv.cfg
+Pipfile
 # excludes
