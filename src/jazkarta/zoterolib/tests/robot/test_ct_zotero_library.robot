@@ -38,6 +38,7 @@ Scenario: As a site administrator I can add a Zotero Library
   Given a logged-in site administrator
     and an add Zotero Library form
    When I type 'My Zotero Library' into the title field
+    and I type '11223344' into the zotero_library_id field
     and I submit the form
    Then a Zotero Library with the title 'My Zotero Library' has been created
 
@@ -59,12 +60,15 @@ an add Zotero Library form
   Go To  ${PLONE_URL}/++add++Zotero Library
 
 a Zotero Library 'My Zotero Library'
-  Create content  type=Zotero Library  id=my-zotero_library  title=My Zotero Library
+  Create content  type=Zotero Library  id=my-zotero_library  title=My Zotero Library zotero_library_id=1234
 
 # --- WHEN -------------------------------------------------------------------
 
 I type '${title}' into the title field
   Input Text  name=form.widgets.IBasic.title  ${title}
+
+I type '${id}' into the zotero_library_id field
+  Input Text  name=form.widgets.zotero_library_id  ${id}
 
 I submit the form
   Click Button  Save
