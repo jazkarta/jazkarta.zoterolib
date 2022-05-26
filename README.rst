@@ -62,7 +62,7 @@ and then running ``bin/buildout``
 Contribute
 ----------
 
-Make sure you install and activate `pre-commit` to ensure your code validates at each commit:
+Make sure you install and activate `pre-commit` to ensure your code validates at each commit::
 
     pip install -r requirements-dev.txt
     pre-commit install

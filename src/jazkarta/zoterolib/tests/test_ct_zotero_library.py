@@ -1,10 +1,17 @@
 # -*- coding: utf-8 -*-
-from jazkarta.zoterolib.content.zotero_library import IZoteroLibrary  # NOQA E501
-from jazkarta.zoterolib.testing import JAZKARTA_ZOTEROLIB_INTEGRATION_TESTING  # noqa
+from jazkarta.zoterolib.content.zotero_library import IZoteroLibrary
+from jazkarta.zoterolib.testing import JAZKARTA_ZOTEROLIB_INTEGRATION_TESTING
+from jazkarta.zoterolib.testing import JAZKARTA_ZOTEROLIB_FUNCTIONAL_TESTING
 from plone import api
 from plone.app.testing import setRoles, TEST_USER_ID
 from plone.dexterity.interfaces import IDexterityFTI
+
+try:
+    from plone.testing.zope import Browser
+except ImportError:
+    from plone.testing.z2 import Browser
 from zope.component import createObject, queryUtility
+from xml.sax.saxutils import escape
 
 import unittest
 
@@ -66,3 +73,68 @@ class ZoteroLibraryIntegrationTest(unittest.TestCase):
         setRoles(self.portal, TEST_USER_ID, ["Contributor"])
         fti = queryUtility(IDexterityFTI, name="Zotero Library")
         self.assertTrue(fti.global_allow, "{0} is not globally addable!".format(fti.id))
+
+    def test_external_item(self):
+        from jazkarta.zoterolib.content.zotero_library import ExternalZoteroItem
+
+        item = ExternalZoteroItem(self.portal, TEST_ENTRY)
+        self.assertTrue(item.Authors(), "Could not find the Authors field")
+        self.assertEqual(item.Authors(), ", ".join(TEST_ENTRY["authors"]))
+        self.assertEqual(item.AuthorItems(), TEST_ENTRY["authors"])
+
+
+class ZoteroLibraryIndexTest(unittest.TestCase):
+
+    layer = JAZKARTA_ZOTEROLIB_FUNCTIONAL_TESTING
+
+    def setUp(self):
+        """Create a Zotero Library object."""
+        self.portal = self.layer["portal"]
+        setRoles(self.portal, TEST_USER_ID, ["Manager"])
+        self.parent = self.portal
+        self.obj = api.content.create(
+            container=self.portal,
+            type="Zotero Library",
+            id="zotero_library",
+        )
+        api.content.transition(obj=self.obj, transition="publish")
+
+    def test_index_external_item(self):
+        self.obj.index_element(TEST_ENTRY)
+        catalog = api.portal.get_tool("portal_catalog")
+        results = catalog.searchResults(getAuthors="Hathaway")
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0].Authors, ", ".join(TEST_ENTRY["authors"]))
+        self.assertEqual(results[0].portal_type, "ExternalZoteroItem")
+
+    def test_view_external_item(self):
+        self.obj.index_element(TEST_ENTRY)
+        catalog = api.portal.get_tool("portal_catalog")
+        brain = catalog.searchResults(getAuthors="Hathaway")[0]
+        # need a commit to make the content visible to test browser
+        import transaction
+
+        transaction.commit()
+        browser = Browser(self.layer["app"])
+        browser.handleErrors = False
+        browser.open(brain.getURL())
+        self.assertIn(
+            '<h1 class="documentTitle">{}</h1>'.format(escape(TEST_ENTRY["title"])),
+            browser.contents,
+        )
+        self.assertIn(
+            '<p class="documentDescription">{}</p>'.format(
+                escape(TEST_ENTRY["citationLabel"])
+            ),
+            browser.contents,
+        )
+
+
+TEST_ENTRY = {
+    "id": "TESTZOTERO",
+    "authors": ["Hathaway, S. R.", "McKinley, J. C."],
+    "title": "A multiphasic personality schedule (Minnesota): I, Construction of the schedule.",
+    "source": "Journal of Psychology",
+    "publication_year": "1940",
+    "citationLabel": "Hathaway, S. R., & McKinley, J. C. (1940). A multiphasic personality schedule (Minnesota): I, Construction of the schedule.",
+}

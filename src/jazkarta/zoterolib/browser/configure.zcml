@@ -18,4 +18,10 @@
       directory="static"
       />
 
+  <browser:page
+      for="..content.zotero_library.IZoteroLibrary"
+      name="zotero_items"
+      permission="zope2.View"
+      class=".views.ZoteroItemView"
+      />
 </configure>
