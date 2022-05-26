@@ -50,6 +50,12 @@ jobs:
           echo "eggs-directory = $HOME/buildout-cache/eggs" >> $HOME/.buildout/default.cfg
       - name: Install dependencies
         run: python -m pip install --upgrade pip && pip install zc.buildout wheel -c constraints_plone${{ matrix.plone-version }}.txt
+      - name: Install pip-pyopenssl to solve problem with Plone 4.3
+        # See https://github.com/pypa/pypi-support/issues/974#issuecomment-882640074
+        run: |
+          wget http://pylegacy.org/hub/get-pip-pyopenssl.py
+          python get-pip-pyopenssl.py
+        if: matrix.plone-version == '43'
       - name: Run buildout
         run: buildout -c test_plone${{ matrix.plone-version }}.cfg install test coverage
       - name: Run tests
