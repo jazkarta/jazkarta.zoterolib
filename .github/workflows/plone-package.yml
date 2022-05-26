@@ -5,9 +5,6 @@ name: Plone package
 
 on:
   push:
-    branches: [main]
-  pull_request:
-    branches: [main]
 
 jobs:
   build:
@@ -34,7 +31,7 @@ jobs:
             ~/extends
           key: ${{ runner.os }}-${{ matrix.python-version }}-buildout-${{ hashFiles('**/setup.py') }}-${{ hashFiles('**/requirements.txt') }}-${{ hashFiles('**/tox.ini') }}
           restore-keys: |
-            ${{ runner.os }}-buildout-
+            ${{ runner.os }}-buildout-${{ matrix.python-version }}
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:

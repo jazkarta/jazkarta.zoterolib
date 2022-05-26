@@ -102,7 +102,7 @@ class ZoteroLibraryIndexTest(unittest.TestCase):
     def test_index_external_item(self):
         self.obj.index_element(TEST_ENTRY)
         catalog = api.portal.get_tool("portal_catalog")
-        results = catalog.search(query={"SearchableText": "Hathaway"})
+        results = catalog.searchResults(getAuthors="Hathaway")
         self.assertEqual(len(results), 1)
         self.assertEqual(results[0].Authors, ", ".join(TEST_ENTRY["authors"]))
         self.assertEqual(results[0].portal_type, "ExternalZoteroItem")
@@ -110,7 +110,7 @@ class ZoteroLibraryIndexTest(unittest.TestCase):
     def test_view_external_item(self):
         self.obj.index_element(TEST_ENTRY)
         catalog = api.portal.get_tool("portal_catalog")
-        brain = catalog.search(query={"SearchableText": "Hathaway"})[0]
+        brain = catalog.searchResults(getAuthors="Hathaway")[0]
         # need a commit to make the content visible to test browser
         import transaction
 
