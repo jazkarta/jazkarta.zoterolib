@@ -96,6 +96,8 @@ class ZoteroLibraryIndexTest(unittest.TestCase):
             container=self.portal,
             type="Zotero Library",
             id="zotero_library",
+            zotero_id=9467580,
+            zotero_library_type="user",
         )
         api.content.transition(obj=self.obj, transition="publish")
 
@@ -106,6 +108,10 @@ class ZoteroLibraryIndexTest(unittest.TestCase):
         self.assertEqual(len(results), 1)
         self.assertEqual(results[0].Authors, ", ".join(TEST_ENTRY["authors"]))
         self.assertEqual(results[0].portal_type, "ExternalZoteroItem")
+
+    def test_fetch_external_items(self):
+        result = self.obj.fetch_items(start=1, limit=5)
+        self.assertEqual(len(result), 5)
 
     def test_view_external_item(self):
         self.obj.index_element(TEST_ENTRY)

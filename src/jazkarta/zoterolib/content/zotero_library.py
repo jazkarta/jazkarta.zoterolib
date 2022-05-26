@@ -4,6 +4,7 @@ from plone import api
 from plone.dexterity.content import Item
 from plone.supermodel import model
 from plone.uuid.interfaces import IUUID, IAttributeUUID
+from pyzotero import zotero
 from zope import schema
 from zope.event import notify
 from zope.interface import Interface
@@ -17,7 +18,7 @@ from jazkarta.zoterolib import _
 class IZoteroLibrary(model.Schema):
     """Marker interface and Dexterity Python Schema for ZoteroLibrary"""
 
-    zotero_library_id = schema.TextLine(
+    zotero_library_id = schema.Int(
         title=_("Zotero Library Id"),
         description=_("The ID of the Zotero library"),
         required=True,
@@ -41,6 +42,10 @@ class ZoteroLibrary(Item):
         notify(ObjectCreatedEvent(obj))
         catalog = api.portal.get_tool("portal_catalog")
         catalog.catalog_object(obj, uid=obj.path)
+
+    def fetch_items(self, start=0, limit=100):
+        zotero_api = zotero.Zotero(self.zotero_id, self.zotero_library_type)
+        return zotero_api.top(start=start, limit=limit)
 
 
 class IExternalZoteroItem(Interface):
