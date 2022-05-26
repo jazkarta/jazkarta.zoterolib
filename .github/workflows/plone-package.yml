@@ -40,7 +40,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install system libraries
-        run: sudo apt-get install libxslt1-dev
+        run: sudo apt-get install libxslt1-dev xvfb
       - name: setup buildout cache
         run: |
           mkdir -p ~/buildout-cache/{eggs,downloads}
@@ -59,14 +59,7 @@ jobs:
       - name: Run buildout
         run: buildout -c test_plone${{ matrix.plone-version }}.cfg install test coverage
       - name: Run tests
-        run: bin/coverage run bin/test --xml --all
-      - name: Publish test report
-        uses: dorny/test-reporter@v1
-        if: success() || failure() # run this step even if previous step failed
-        with:
-          name: Tests
-          path: parts/**/output.xml
-          reporter: jest-junit
+        run: xvfb-run bin/coverage run bin/test --xml --all
 
   pre-commit:
     name: Check pre-commit
