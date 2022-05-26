@@ -11,7 +11,6 @@ from zope.interface import Interface
 from zope.interface import implementer
 from zope.lifecycleevent import ObjectCreatedEvent
 
-
 from jazkarta.zoterolib import _
 
 
@@ -48,11 +47,15 @@ class ZoteroLibrary(Item):
         The limit will be used to determine how many items to retrieve at once.
         """
         zotero_api = zotero.Zotero(self.zotero_id, self.zotero_library_type)
+
         current_batch = zotero_api.top(start=start, limit=limit)
         while current_batch:
             for item in current_batch:
                 yield item
-            current_batch = zotero_api.follow()
+            if "next" in zotero_api.links:
+                current_batch = zotero_api.follow()
+            else:
+                current_batch = []
 
     def fetch_and_index_items(self):
         # for item in self.fetch_items(start=start, limit=limit):
