@@ -93,7 +93,7 @@ class ZoteroLibraryIndexTest(unittest.TestCase):
             type="Zotero Library",
             id="zotero_library",
         )
-        api.content.transition(obj=self.obj, transition='publish')
+        api.content.transition(obj=self.obj, transition="publish")
 
     def test_index_external_item(self):
         self.obj.index_element(TEST_ENTRY)
@@ -101,7 +101,7 @@ class ZoteroLibraryIndexTest(unittest.TestCase):
         results = catalog.search(query={"SearchableText": "Hathaway"})
         self.assertEqual(len(results), 1)
         self.assertEqual(results[0].Authors, ", ".join(TEST_ENTRY["authors"]))
-        self.assertEqual(results[0].portal_type, 'ExternalZoteroItem')
+        self.assertEqual(results[0].portal_type, "ExternalZoteroItem")
 
     def test_view_external_item(self):
         self.obj.index_element(TEST_ENTRY)
@@ -109,17 +109,20 @@ class ZoteroLibraryIndexTest(unittest.TestCase):
         brain = catalog.search(query={"SearchableText": "Hathaway"})[0]
         # need a commit to make the content visible to test browser
         import transaction
+
         transaction.commit()
         browser = Browser(self.layer["app"])
         browser.handleErrors = False
         browser.open(brain.getURL())
         self.assertIn(
             '<h1 class="documentTitle">{}</h1>'.format(escape(TEST_ENTRY["title"])),
-            browser.contents
+            browser.contents,
         )
         self.assertIn(
-            '<p class="documentDescription">{}</p>'.format(escape(TEST_ENTRY["citationLabel"])),
-            browser.contents
+            '<p class="documentDescription">{}</p>'.format(
+                escape(TEST_ENTRY["citationLabel"])
+            ),
+            browser.contents,
         )
 
 

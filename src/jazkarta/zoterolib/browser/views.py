@@ -9,19 +9,21 @@ from zope.publisher.interfaces import IPublishTraverse
 @implementer(IPublishTraverse)
 class ZoteroItemView(BrowserView):
     """Traversal view to render a single Zotero record"""
-    index = ViewPageTemplateFile('item_view.pt')
-    item_path = ''
+
+    index = ViewPageTemplateFile("item_view.pt")
+    item_path = ""
     brain = None
 
     def publishTraverse(self, request, name):
-        self.item_path += '/' + name
+        self.item_path += "/" + name
         return self
 
     def __call__(self, *args, **kw):
-        catalog = api.portal.get_tool('portal_catalog')
+        catalog = api.portal.get_tool("portal_catalog")
         catalog_item_path = (
-            '/'.join(self.context.getPhysicalPath())
-            + '/' + self.__name__
+            "/".join(self.context.getPhysicalPath())
+            + "/"
+            + self.__name__
             + self.item_path
         )
         item_rid = catalog.getrid(catalog_item_path)

@@ -27,8 +27,8 @@ class IZoteroLibrary(model.Schema):
         title=_("Zotero Library Type"),
         description=_("The type of Zotero Library"),
         required=True,
-        default=u'group',
-        values=(u'group', u'user'),
+        default="group",
+        values=("group", "user"),
     )
 
 
