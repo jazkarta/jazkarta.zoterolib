@@ -3,6 +3,7 @@ import Acquisition
 import dateutil
 import gzip
 import json
+import Missing
 import os
 import pytz
 import six
@@ -105,7 +106,7 @@ class IExternalZoteroItem(Interface):
 @implementer(IExternalZoteroItem, IAttributeUUID)
 class ExternalZoteroItem(Acquisition.Implicit):
     portal_type = meta_type = "ExternalZoteroItem"
-    contentType = Type = "ExternalItem"
+    contentType = Type = "Zotero Reference"
     review_state = "published"
 
     def __init__(self, parent, zotero_item):
@@ -217,3 +218,40 @@ class ExternalZoteroItem(Acquisition.Implicit):
 
     def UID(self):
         return IUUID(self)
+
+
+class BrainProxy(Acquisition.Implicit):
+
+    callables = frozenset(
+        (
+            "getId",
+            "Title",
+            "Description",
+            "UID",
+            "Authors",
+            "AuthorItems",
+        )
+    )
+
+    def __init__(self, brain, parent=None):
+        self.brain = brain
+        if parent:
+            self.__parent__ = parent
+
+    @property
+    def __name__(self):
+        return self.brain.getId
+
+    def __getattr__(self, name):
+        # Get it from the brain
+        value = getattr(Acquisition.aq_base(self.brain), name, Missing.Value)
+        if value is Missing.Value:
+            # If it's not on the brain, get it via acquisition
+            return super(BrainProxy, self).__getattr__(name)
+        # If it's a name that should be a callable, make it so
+        if name in self.callables:
+            return lambda: value
+        return value
+
+    def getPhysicalPath(self):
+        return self.brain.getPath().split("/")

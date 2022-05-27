@@ -4,6 +4,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zExceptions import NotFound
 from zope.interface import implementer
 from zope.publisher.interfaces import IPublishTraverse
+from ..content.zotero_library import BrainProxy
 
 
 @implementer(IPublishTraverse)
@@ -12,25 +13,52 @@ class ZoteroItemView(BrowserView):
 
     index = ViewPageTemplateFile("item_view.pt")
     item_path = ""
-    brain = None
+    item = None
+
+    def __init__(self, context, request=None):
+        self.context = context
+        self.request = request
+
+    def fetch_item_for_path(self, path=None):
+        catalog = api.portal.get_tool("portal_catalog")
+        if path is None:
+            path = self.item_path
+        catalog_item_path = (
+            "/".join(self.context.getPhysicalPath()) + "/" + self.__name__ + path
+        )
+        item_rid = catalog.getrid(catalog_item_path)
+        if item_rid is None:
+            return None
+        return BrainProxy(catalog._catalog[item_rid], self.context).__of__(self.context)
 
     def publishTraverse(self, request, name):
         self.item_path += "/" + name
         return self
 
+    def unrestrictedTraverse(self, path):
+        obj = self
+        if hasattr(path, "split"):
+            path = path.split("/")
+        for name in path:
+            obj = obj.__bobo_traverse__(self.request, name)
+        if obj is self:
+            raise AttributeError(name)
+        return obj
+
+    restrictedTraverse = unrestrictedTraverse
+
+    def __bobo_traverse__(self, request, name):
+        __traceback_info__ = (self.context, name)
+        self.item_path += "/" + name
+        # Get the catalog brain once we've found something
+        item = self.fetch_item_for_path()
+        if item is None:
+            return self
+        return item
+
     def __call__(self, *args, **kw):
-        catalog = api.portal.get_tool("portal_catalog")
-        catalog_item_path = (
-            "/".join(self.context.getPhysicalPath())
-            + "/"
-            + self.__name__
-            + self.item_path
-        )
-        item_rid = catalog.getrid(catalog_item_path)
-        # For now we raise 404 when the object doesn't exist, but it may make sense
-        # to treat a missing path as a zotero collection path and search for items
-        # within that path to construct a partial listing.
-        if item_rid is None:
+        self.item = self.fetch_item_for_path()
+        # Raise a 404 when the object doesn't exist
+        if self.item is None:
             raise NotFound
-        self.brain = catalog._catalog[item_rid]
         return self.index(*args, **kw)

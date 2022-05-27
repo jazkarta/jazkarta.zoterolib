@@ -134,6 +134,26 @@ class ZoteroLibraryIndexTest(unittest.TestCase):
             "Linking Early Geospatial Documents, One Place at a Time: Annotation of Geographic Documents with Recogito",
         )
 
+    def test_external_item_get_object(self):
+        self.obj.index_element(TEST_ENTRY)
+        catalog = api.portal.get_tool("portal_catalog")
+        results = catalog.searchResults(getAuthors="Barker")
+        item = results[0].getObject()
+        self.assertEqual(item.portal_type, "ExternalZoteroItem")
+        self.assertEqual(item.Type, "Zotero Reference")
+        self.assertEqual(item.getId(), TEST_ENTRY["key"])
+        self.assertEqual(item.Title(), TEST_ENTRY["data"]["title"])
+        self.assertEqual(item.Description(), TEST_ENTRY["bib"])
+
+    def test_traverse_to_external_item(self):
+        self.obj.index_element(TEST_ENTRY)
+        item = self.obj.unrestrictedTraverse("zotero_items/6DAWH9QK")
+        self.assertEqual(item.portal_type, "ExternalZoteroItem")
+        self.assertEqual(item.Type, "Zotero Reference")
+        self.assertEqual(item.getId(), TEST_ENTRY["key"])
+        self.assertEqual(item.Title(), TEST_ENTRY["data"]["title"])
+        self.assertEqual(item.Description(), TEST_ENTRY["bib"])
+
     def test_view_external_item(self):
         self.obj.index_element(TEST_ENTRY)
         brain = self.catalog.searchResults(getAuthors="Cañamares")[0]
