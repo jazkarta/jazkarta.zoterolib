@@ -9,8 +9,7 @@
   <body>
     <metal:main fill-slot="main"
                 tal:define="item view/brain">
-        <h1 class="documentTitle">${item/Title}</h1>
-        <p class="documentDescription">${item/Description}</p>
+        <div class="item-reference" tal:content="structure item/Description">Formatted Citation Style</div>
     </metal:main>
   </body>
 </html>

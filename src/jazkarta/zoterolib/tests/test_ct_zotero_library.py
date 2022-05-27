@@ -12,8 +12,6 @@ try:
 except ImportError:
     from plone.testing.z2 import Browser
 from zope.component import createObject, queryUtility
-from xml.sax.saxutils import escape
-
 import unittest
 
 
@@ -79,9 +77,15 @@ class ZoteroLibraryIntegrationTest(unittest.TestCase):
         from jazkarta.zoterolib.content.zotero_library import ExternalZoteroItem
 
         item = ExternalZoteroItem(self.portal, TEST_ENTRY)
-        self.assertTrue(item.Authors(), "Could not find the Authors field")
-        self.assertEqual(item.Authors(), "Martin Sellbom, R Michael")
-        self.assertEqual(item.AuthorItems(), ["Martin Sellbom", "R Michael"])
+        self.assertEqual(
+            item.Authors(), "Rainer Simon, Elton Barker, Leif Isaksen, Soto Cañamares"
+        )
+        self.assertEqual(
+            item.AuthorItems(),
+            ["Rainer Simon", "Elton Barker", "Leif Isaksen", "Soto Cañamares"],
+        )
+        self.assertEqual(item.Subject(), ["\u26d4 No DOI found"])
+        self.assertEqual(item.publication_year, 2015)
 
 
 class ZoteroLibraryIndexTest(unittest.TestCase):
@@ -91,6 +95,7 @@ class ZoteroLibraryIndexTest(unittest.TestCase):
     def setUp(self):
         """Create a Zotero Library object."""
         self.portal = self.layer["portal"]
+        self.catalog = self.portal.portal_catalog
         setRoles(self.portal, TEST_USER_ID, ["Manager"])
         self.parent = self.portal
         self.obj = api.content.create(
@@ -99,15 +104,18 @@ class ZoteroLibraryIndexTest(unittest.TestCase):
             id="zotero_library",
             zotero_id=242005,
             zotero_library_type="group",
+            citation_style="modern-language-association",
         )
         api.content.transition(obj=self.obj, transition="publish")
 
     def test_index_external_item(self):
         self.obj.index_element(TEST_ENTRY)
-        catalog = api.portal.get_tool("portal_catalog")
-        results = catalog.searchResults(getAuthors="Sellbom")
+        results = self.catalog.searchResults(getAuthors="Isaksen")
         self.assertEqual(len(results), 1)
-        self.assertEqual(results[0].Authors, "Martin Sellbom, R Michael")
+        self.assertEqual(
+            results[0].Authors,
+            "Rainer Simon, Elton Barker, Leif Isaksen, Soto Cañamares",
+        )
         self.assertEqual(results[0].portal_type, "ExternalZoteroItem")
 
     def test_fetch_external_items(self):
@@ -116,12 +124,19 @@ class ZoteroLibraryIndexTest(unittest.TestCase):
         self.assertTrue(len(result) > 150)
 
     def test_fetch_and_index_external_items(self):
-        result = self.obj.fetch_and_index_items()
+        self.obj.fetch_and_index_items()
+        results = self.catalog.searchResults(
+            getAuthors="Cañamares", sort_on="effective"
+        )
+        self.assertGreaterEqual(len(results), 2)
+        self.assertEqual(
+            results[0].Title,
+            "Linking Early Geospatial Documents, One Place at a Time: Annotation of Geographic Documents with Recogito",
+        )
 
     def test_view_external_item(self):
         self.obj.index_element(TEST_ENTRY)
-        catalog = api.portal.get_tool("portal_catalog")
-        brain = catalog.searchResults(getAuthors="Sellbom")[0]
+        brain = self.catalog.searchResults(getAuthors="Cañamares")[0]
         # need a commit to make the content visible to test browser
         import transaction
 
@@ -129,91 +144,108 @@ class ZoteroLibraryIndexTest(unittest.TestCase):
         browser = Browser(self.layer["app"])
         browser.handleErrors = False
         browser.open(brain.getURL())
-        self.assertIn(
-            '<h1 class="documentTitle">{}</h1>'.format(
-                escape(TEST_ENTRY["data"]["title"])
-            ),
-            browser.contents,
-        )
-        self.assertIn(
-            '<p class="documentDescription">Psychological Assessment - Detection of overreported psychopathology with the MMPI-2 RF form validity scales</p>',
-            browser.contents,
-        )
+        self.assertIn('<div class="csl-bib-body"', browser.contents)
 
 
 TEST_ENTRY = {
-    "data": {
-        "DOI": "10.1037/a0020825",
-        "ISSN": "1939-134X(Electronic);1040-3590(Print)",
-        "abstractNote": "[Correction Notice: An erratum for this article was reported in Vol 23(1) of Psychological Assessment (see record 2011-01446-001). There was an error in the title. The title should "
-        "have read “Detection of Overreported Psychopathology With the MMPI-2-RF Validity Scales.”] [Correction Notice: An erratum for this article was reported in Psychological Assessment "
-        "(see record 2011-01446-001). There was an error in the title. The title should have read “Detection of Overreported Psychopathology With the MMPI-2-RF Validity Scales.”] We examined "
-        "the utility of the validity scales on the recently released Minnesota Multiphasic Personality Inventory–2 Restructured Form (MMPI-2 RF; Ben-Porath & Tellegen, 2008) to detect "
-        "overreported psychopathology. This set of validity scales includes a newly developed scale and revised versions of the original MMPI-2 validity scales. We used an analogue, "
-        "experimental simulation in which MMPI-2 RF responses (derived from archived MMPI-2 protocols) of undergraduate students instructed to overreport psychopathology (in either a coached "
-        "or noncoached condition) were compared with those of psychiatric inpatients who completed the MMPI-2 under standardized instructions. The MMPI-2 RF validity scale Infrequent "
-        "Psychopathology Responses best differentiated the simulation groups from the sample of patients, regardless of experimental condition. No other validity scale added consistent "
-        "incremental predictive utility to Infrequent Psychopathology Responses in distinguishing the simulation groups from the sample of patients. Classification accuracy statistics "
-        "confirmed the recommended cut scores in the MMPI-2 RF manual (Ben-Porath & Tellegen, 2008).",
-        "accessDate": "",
-        "archive": "",
-        "archiveLocation": "",
-        "callNumber": "",
-        "collections": ["X36527B6"],
-        "creators": [
-            {"creatorType": "author", "firstName": "Martin", "lastName": "Sellbom"},
-            {"creatorType": "author", "firstName": "R", "lastName": "Michael"},
-        ],
-        "date": "2010",
-        "dateAdded": "2022-05-02T20:50:24Z",
-        "dateModified": "2022-05-02T20:50:24Z",
-        "extra": "",
-        "issue": "4",
-        "itemType": "journalArticle",
-        "journalAbbreviation": "",
-        "key": "J8QG2849",
-        "language": "",
-        "libraryCatalog": "",
-        "pages": "757–767",
-        "publicationTitle": "Psychological Assessment",
-        "relations": {},
-        "rights": "",
-        "series": "",
-        "seriesText": "",
-        "seriesTitle": "",
-        "shortTitle": "",
-        "tags": [],
-        "title": "Detection of overreported psychopathology with the MMPI-2 RF form validity scales",
-        "url": "",
-        "version": 1818,
-        "volume": "22",
-    },
-    "key": "J8QG2849",
+    "key": "6DAWH9QK",
+    "version": 531,
     "library": {
-        "id": 9467580,
+        "type": "group",
+        "id": 242005,
+        "name": "ISAW Papers",
         "links": {
             "alternate": {
-                "href": "https://www.zotero.org/testdivision",
+                "href": "https://www.zotero.org/groups/isaw_papers",
                 "type": "text/html",
             }
         },
-        "name": "UMP Test Division",
-        "type": "user",
     },
     "links": {
-        "alternate": {
-            "href": "https://www.zotero.org/testdivision/items/J8QG2849",
-            "type": "text/html",
-        },
         "self": {
-            "href": "https://api.zotero.org/users/9467580/items/J8QG2849",
+            "href": "https://api.zotero.org/groups/242005/items/6DAWH9QK",
             "type": "application/json",
+        },
+        "alternate": {
+            "href": "https://www.zotero.org/groups/isaw_papers/items/6DAWH9QK",
+            "type": "text/html",
         },
     },
     "meta": {
-        "creatorSummary": "Sellbom and Michael",
+        "createdByUser": {
+            "id": 50458,
+            "username": "sebastianheath",
+            "name": "Sebastian Heath",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/sebastianheath",
+                    "type": "text/html",
+                }
+            },
+        },
+        "lastModifiedByUser": {
+            "id": 465,
+            "username": "paregorios",
+            "name": "Tom Elliott",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/paregorios",
+                    "type": "text/html",
+                }
+            },
+        },
+        "creatorSummary": "Simon et al.",
+        "parsedDate": "2015",
         "numChildren": 0,
-        "parsedDate": "2010",
     },
-    "version": 1818,
+    "bib": '<div class="csl-bib-body" style="line-height: 2; padding-left: 1em; text-indent:-1em;">\n  <div class="csl-entry">Simon, Rainer, et al. &#x201C;Linking Early Geospatial Documents, One Place at a Time: Annotation of Geographic Documents with Recogito.&#x201D; <i>E-Perimetron</i>, vol. 10, no. 2, 2015, pp. 49&#x2013;59.</div>\n</div>',
+    "citation": "<span>(Simon et al.)</span>",
+    "data": {
+        "key": "6DAWH9QK",
+        "version": 531,
+        "itemType": "journalArticle",
+        "title": "Linking Early Geospatial Documents, One Place at a Time: Annotation of Geographic Documents with Recogito",
+        "creators": [
+            {"creatorType": "author", "firstName": "Rainer", "lastName": "Simon"},
+            {"creatorType": "author", "firstName": "Elton", "lastName": "Barker"},
+            {"creatorType": "author", "firstName": "Leif", "lastName": "Isaksen"},
+            {
+                "creatorType": "author",
+                "firstName": "Soto",
+                "lastName": "Ca\u00f1amares",
+            },
+        ],
+        "abstractNote": "",
+        "publicationTitle": "e-Perimetron",
+        "volume": "10",
+        "issue": "2",
+        "pages": "49-59",
+        "date": "2015",
+        "series": "",
+        "seriesTitle": "",
+        "seriesText": "",
+        "journalAbbreviation": "",
+        "language": "",
+        "DOI": "",
+        "ISSN": "1790-3769",
+        "shortTitle": "",
+        "url": "",
+        "accessDate": "",
+        "archive": "",
+        "archiveLocation": "",
+        "libraryCatalog": "",
+        "callNumber": "",
+        "rights": "",
+        "extra": "",
+        "tags": [{"tag": "\u26d4 No DOI found", "type": 1}],
+        "collections": ["DZDZS5QD"],
+        "relations": {
+            "dc:relation": [
+                "http://zotero.org/groups/242005/items/T79TMG8G",
+                "http://zotero.org/groups/242005/items/9USWD24D",
+            ]
+        },
+        "dateAdded": "2021-05-03T14:03:48Z",
+        "dateModified": "2021-12-11T11:50:07Z",
+    },
 }
