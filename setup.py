@@ -53,7 +53,8 @@ setup(
         "plone.api>=1.8.4",
         "plone.restapi < 8.0.0",
         "plone.app.dexterity",
-        "pyzotero",
+        'pyzotero<1.5; python_version<"3"',
+        'pyzotero; python_version>"3"',
     ],
     extras_require={
         "test": [
