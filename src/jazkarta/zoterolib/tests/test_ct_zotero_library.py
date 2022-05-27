@@ -107,6 +107,26 @@ class ZoteroLibraryIndexTest(unittest.TestCase):
         self.assertEqual(results[0].Authors, ", ".join(TEST_ENTRY["authors"]))
         self.assertEqual(results[0].portal_type, "ExternalZoteroItem")
 
+    def test_external_item_get_object(self):
+        self.obj.index_element(TEST_ENTRY)
+        catalog = api.portal.get_tool("portal_catalog")
+        results = catalog.searchResults(getAuthors="Hathaway")
+        item = results[0].getObject()
+        self.assertEqual(item.portal_type, "ExternalZoteroItem")
+        self.assertEqual(item.Type, "Zotero Reference")
+        self.assertEqual(item.getId(), TEST_ENTRY["id"])
+        self.assertEqual(item.Title(), TEST_ENTRY["title"])
+        self.assertEqual(item.Description(), TEST_ENTRY["citationLabel"])
+
+    def test_traverse_to_external_item(self):
+        self.obj.index_element(TEST_ENTRY)
+        item = self.obj.unrestrictedTraverse("zotero_items/TESTZOTERO")
+        self.assertEqual(item.portal_type, "ExternalZoteroItem")
+        self.assertEqual(item.Type, "Zotero Reference")
+        self.assertEqual(item.getId(), TEST_ENTRY["id"])
+        self.assertEqual(item.Title(), TEST_ENTRY["title"])
+        self.assertEqual(item.Description(), TEST_ENTRY["citationLabel"])
+
     def test_view_external_item(self):
         self.obj.index_element(TEST_ENTRY)
         catalog = api.portal.get_tool("portal_catalog")

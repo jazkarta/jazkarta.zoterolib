@@ -8,7 +8,7 @@
   <head></head>
   <body>
     <metal:main fill-slot="main"
-                tal:define="item view/brain">
+                tal:define="item view/item">
         <h1 class="documentTitle">${item/Title}</h1>
         <p class="documentDescription">${item/Description}</p>
     </metal:main>
