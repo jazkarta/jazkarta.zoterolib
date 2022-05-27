@@ -110,7 +110,7 @@ class IExternalZoteroItem(Interface):
 @implementer(IExternalZoteroItem, IAttributeUUID)
 class ExternalZoteroItem(Acquisition.Implicit):
     portal_type = meta_type = "ExternalZoteroItem"
-    contentType = Type = "Zotero Reference"
+    contentType = "Zotero Reference"
     review_state = "published"
 
     def __init__(self, parent, zotero_item):
@@ -130,6 +130,10 @@ class ExternalZoteroItem(Acquisition.Implicit):
         if six.PY3:
             return val
         return safe_encode(val)
+
+    @property
+    def Type(self):
+        return self._plone_encode(self.zotero_item["data"]["itemType"]) + " Reference"
 
     @property
     def path(self):

@@ -85,6 +85,9 @@ class ZoteroLibraryIntegrationTest(unittest.TestCase):
             ["Rainer Simon", "Elton Barker", "Leif Isaksen", "Soto Cañamares"],
         )
         self.assertEqual(item.Subject(), ["\u26d4 No DOI found"])
+        self.assertEqual(item.Type, "journalArticle Reference")
+        self.assertEqual(item.portal_type, "ExternalZoteroItem")
+        self.assertEqual(item.contentType, "Zotero Reference")
         self.assertEqual(item.publication_year, 2015)
 
 
@@ -136,7 +139,7 @@ class ZoteroLibraryIndexTest(unittest.TestCase):
 
     def validate_example_item(self, item):
         self.assertEqual(item.portal_type, "ExternalZoteroItem")
-        self.assertEqual(item.Type, "Zotero Reference")
+        self.assertEqual(item.Type, "journalArticle Reference")
         self.assertEqual(item.getId(), TEST_ENTRY["key"])
         self.assertEqual(item.Title(), TEST_ENTRY["data"]["title"])
         self.assertEqual(
