@@ -12,8 +12,12 @@ from DateTime import DateTime
 from plone import api
 from plone.dexterity.content import Item
 from plone.supermodel import model
+from plone.app.textfield.interfaces import ITransformer
+from plone.app.textfield.interfaces import TransformError
+from plone.app.textfield.value import RichTextValue
 from plone.uuid.interfaces import IUUID, IAttributeUUID, IMutableUUID
-from Products.CMFPlone.utils import safe_encode
+from Products.CMFPlone.log import log_exc
+from Products.CMFPlone.utils import safe_encode, safe_unicode
 from pyzotero import zotero
 from zope import schema
 from zope.event import notify
@@ -94,8 +98,8 @@ class ZoteroLibrary(Item):
             else:
                 current_batch = []
 
-    def fetch_and_index_items(self):
-        for item in self.fetch_items():
+    def fetch_and_index_items(self, start=0, limit=100):
+        for item in self.fetch_items(start, limit):
             self.index_element(item)
 
 
@@ -206,6 +210,9 @@ class ExternalZoteroItem(Acquisition.Implicit):
                 return
         return date.year
 
+    def Date(self):
+        return self.EffectiveDate() or self.CreationDate()
+
     def allowedRolesAndUsers(self):
         # XXX: should we try to get this value from the "container"?
         return ["Anonymous", "Authenticated"]
@@ -226,10 +233,17 @@ class BrainProxy(Acquisition.Implicit):
         (
             "getId",
             "Title",
-            "Description",
             "UID",
             "Authors",
             "AuthorItems",
+            "Subject",
+            "created",
+            "effective",
+            "expires",
+            "CreationDate",
+            "ModificationDate",
+            "EffectiveDate",
+            "Date",
         )
     )
 
@@ -237,10 +251,26 @@ class BrainProxy(Acquisition.Implicit):
         self.brain = brain
         if parent:
             self.__parent__ = parent
+        # We stored HTML for Description, but we want `Description()` to return
+        # plain text
+        self.text = RichTextValue(
+            safe_unicode(self.brain.Description), 'text/html', 'text/html'
+        )
 
     @property
     def __name__(self):
         return self.brain.getId
+
+    def Description(self):
+        transformer = ITransformer(self.__parent__)
+        try:
+            value = transformer(self.text, 'text/plain')
+        except TransformError:
+            log_exc('Could not transform bib value: {}'.format(self.brain.Description))
+            value = ''
+        if not six.PY3:
+            value = safe_encode(value)
+        return value.strip()
 
     def __getattr__(self, name):
         # Get it from the brain
