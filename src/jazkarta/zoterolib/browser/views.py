@@ -1,10 +1,15 @@
+import time
+import z3c.form
+from datetime import timedelta
 from plone import api
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from zExceptions import Forbidden
 from zExceptions import NotFound
 from zope.interface import implementer
 from zope.publisher.interfaces import IPublishTraverse
-from ..content.zotero_library import BrainProxy
+from jazkarta.zoterolib.content.zotero_library import BrainProxy
+from jazkarta.zoterolib import _
 
 
 @implementer(IPublishTraverse)
@@ -62,3 +67,27 @@ class ZoteroItemView(BrowserView):
         if self.item is None:
             raise NotFound
         return self.index(*args, **kw)
+
+
+class UpdateLibraryForm(z3c.form.form.Form):
+    """Simple form to update the zotero library"""
+
+    label = _(u'Update All Zotero Library References')
+    method = 'POST'
+    enableCSRFProtection = True
+    ignoreContext = False
+
+    fields = z3c.form.field.Fields()
+
+    @z3c.form.button.buttonAndHandler(_(u'Update Library'))
+    def handleUpdate(self, action):
+        if self.request.get('REQUEST_METHOD', 'GET').upper() != 'POST':
+            raise Forbidden('Request must be POST')
+        start_time = time.time()
+        self.context.clear_items()
+        count = self.context.fetch_and_index_items()
+        self.status = _(
+            u"Updated {} items from Zotero in {}".format(
+                count, str(timedelta(seconds=round(time.time() - start_time)))
+            )
+        )

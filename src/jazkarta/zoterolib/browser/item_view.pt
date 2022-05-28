@@ -9,7 +9,24 @@
   <body>
     <metal:main fill-slot="main"
                 tal:define="item view/item">
-        <div class="item-reference" tal:content="structure item/text/output">Formatted Citation Style</div>
+        <div class="item-reference" tal:content="structure item/text">Formatted Citation Style</div>
+
+        <aside id="keyword-listing" tal:condition="item/Subject|nothing">
+            <h3>Tags</h3>
+            <ul>
+                <li tal:repeat="tag item/Subject">
+                    <a href="${context/absolute_url}?contentFilter.Subject:record=${tag}">${tag}</a>
+                </li>
+            </ul>
+        </aside>
+        <ul id="bib-ref-nav-links">
+            <li>
+                <a id="return-to-listing-link" href="${context/absolute_url}">Return to Listing</a>
+            </li>
+            <li>
+                <a id="zotero-reference-link" target="_blank" href="${item/getRemoteUrl}">Zotero Link</a>
+            </li>
+        </ul>
     </metal:main>
   </body>
 </html>

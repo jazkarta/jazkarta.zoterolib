@@ -3,20 +3,21 @@ import Acquisition
 import dateutil
 import gzip
 import json
+import logging
 import Missing
 import os
 import pytz
 import six
 import uuid
+from AccessControl.SecurityInfo import ClassSecurityInfo
 from DateTime import DateTime
 from plone import api
 from plone.dexterity.content import Item
 from plone.supermodel import model
-from plone.app.textfield.interfaces import ITransformer
-from plone.app.textfield.interfaces import TransformError
-from plone.app.textfield.value import RichTextValue
+from plone.app.contentlisting.interfaces import IContentListing
+from plone.batching import Batch
 from plone.uuid.interfaces import IUUID, IAttributeUUID, IMutableUUID
-from Products.CMFPlone.log import log_exc
+from Products.CMFCore import permissions
 from Products.CMFPlone.utils import safe_encode, safe_unicode
 from pyzotero import zotero
 from zope import schema
@@ -28,7 +29,11 @@ from zope.schema.vocabulary import SimpleVocabulary
 from zope.schema.vocabulary import SimpleTerm
 
 from jazkarta.zoterolib import _
+from jazkarta.zoterolib.utils import camel_case_splitter
+from jazkarta.zoterolib.utils import html_to_plain_text
 
+
+logger = logging.getLogger(__name__)
 
 with gzip.open(
     os.path.join(os.path.dirname(__file__), "../browser/static/styles.json.gz")
@@ -72,6 +77,8 @@ class IZoteroLibrary(model.Schema):
 class ZoteroLibrary(Item):
     """Content-type class for IZoteroLibrary"""
 
+    security = ClassSecurityInfo()
+
     def index_element(self, element):
         obj = ExternalZoteroItem(parent=self, zotero_item=element).__of__(self)
         notify(ObjectCreatedEvent(obj))
@@ -82,7 +89,7 @@ class ZoteroLibrary(Item):
         """Iterates over ALL remote items, starting at the given offset.
         The limit will be used to determine how many items to retrieve at once.
         """
-        zotero_api = zotero.Zotero(self.zotero_id, self.zotero_library_type)
+        zotero_api = zotero.Zotero(self.zotero_library_id, self.zotero_library_type)
 
         current_batch = zotero_api.items(
             start=start,
@@ -90,17 +97,78 @@ class ZoteroLibrary(Item):
             include="data,bib,citation",
             style=self.citation_style,
         )
+        page = 1
         while current_batch:
+            logger.log(
+                logging.INFO,
+                'Fetched page {} for Zotero Library {}'.format(
+                    page, self.zotero_library_id
+                ),
+            )
             for item in current_batch:
                 yield item
             if "next" in zotero_api.links:
                 current_batch = zotero_api.follow()
+                page += 1
             else:
                 current_batch = []
 
     def fetch_and_index_items(self, start=0, limit=100):
+        count = 0
         for item in self.fetch_items(start, limit):
             self.index_element(item)
+            count += 1
+        return count
+
+    def clear_items(self):
+        contents = self.results(batch=False, brains=True)
+        logger.log(
+            logging.INFO,
+            'Removing all {} items indexed for Zotero Library {}'.format(
+                len(contents), self.zotero_library_id
+            ),
+        )
+        catalog = api.portal.get_tool('portal_catalog')
+        for brain in contents:
+            catalog.uncatalog_object(brain.getPath())
+
+    @security.protected(permissions.View)
+    def queryCatalog(self, batch=True, b_start=0, b_size=30, sort_on=None):
+        return self.results(batch, b_start, b_size, sort_on=sort_on)
+
+    @security.protected(permissions.View)
+    def results(
+        self,
+        batch=True,
+        b_start=0,
+        b_size=None,
+        sort_on=None,
+        limit=None,
+        brains=False,
+        custom_query=None,
+    ):
+        query = {
+            'portal_type': 'ExternalZoteroItem',
+            'path': {'query': '/'.join(self.getPhysicalPath()), 'depth': -1},
+            'sort_on': sort_on or 'sortable_title',
+        }
+        if limit:
+            query['sort_limit'] = limit
+        if custom_query:
+            # The @@folderListing view for collections filters by type, ignore it.
+            if 'portal_type' in custom_query:
+                del custom_query['portal_type']
+                # We should never batch from @@folderListing, because we'll get
+                # double batched
+                batch = False
+            query.update(custom_query)
+        catalog = api.portal.get_tool('portal_catalog')
+        results = catalog(**query)
+        if not brains:
+            results = IContentListing(results)
+        if batch:
+            results = Batch(results, b_size, start=b_start)
+        return results
 
 
 class IExternalZoteroItem(Interface):
@@ -133,7 +201,9 @@ class ExternalZoteroItem(Acquisition.Implicit):
 
     @property
     def Type(self):
-        return self._plone_encode(self.zotero_item["data"]["itemType"]) + " Reference"
+        ref_type = self.zotero_item["data"]["itemType"]
+        type_name = camel_case_splitter(ref_type)
+        return self._plone_encode(type_name) + " Reference"
 
     @property
     def path(self):
@@ -162,6 +232,9 @@ class ExternalZoteroItem(Acquisition.Implicit):
 
     def Title(self):
         return self._plone_encode(self.zotero_item["data"]["title"])
+
+    def sortable_title(self):
+        return self.Title().lower()
 
     def Description(self):
         return self._plone_encode(self.zotero_item["bib"])
@@ -227,6 +300,9 @@ class ExternalZoteroItem(Acquisition.Implicit):
     def getPhysicalPath(self):
         return tuple(self.path.split("/"))
 
+    def getRemoteUrl(self):
+        return self.zotero_item["links"]["alternate"]["href"]
+
     def UID(self):
         return IUUID(self)
 
@@ -248,6 +324,7 @@ class BrainProxy(Acquisition.Implicit):
             "ModificationDate",
             "EffectiveDate",
             "Date",
+            "getRemoteUrl",
         )
     )
 
@@ -257,26 +334,22 @@ class BrainProxy(Acquisition.Implicit):
             self.__parent__ = parent
         # We stored HTML for Description, but we want `Description()` to return
         # plain text
-        self.text = RichTextValue(
-            safe_unicode(self.brain.Description), 'text/html', 'text/html'
-        )
+        self.text = safe_unicode(self.brain.Description)
 
     @property
     def __name__(self):
         return self.brain.getId
 
     def Description(self):
-        transformer = ITransformer(self.__parent__)
-        try:
-            value = transformer(self.text, 'text/plain')
-        except TransformError:
-            log_exc('Could not transform bib value: {}'.format(self.brain.Description))
-            value = ''
+        value = html_to_plain_text(self.text)
         if not six.PY3:
             value = safe_encode(value)
         return value.strip()
 
     def __getattr__(self, name):
+        if name in ('getObject', 'getPath', 'getURL'):
+            # We are not a brain
+            raise AttributeError
         # Get it from the brain
         value = getattr(Acquisition.aq_base(self.brain), name, Missing.Value)
         if value is Missing.Value:

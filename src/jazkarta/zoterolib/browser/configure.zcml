@@ -1,6 +1,7 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
     xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="jazkarta.zoterolib">
 
@@ -24,4 +25,62 @@
       permission="zope2.View"
       class=".views.ZoteroItemView"
       />
+
+  <browser:page
+      for="..content.zotero_library.IZoteroLibrary"
+      name="update-items"
+      permission="jazkarta.zoterolib.AddZoteroLibrary"
+      class=".views.UpdateLibraryForm"
+      />
+
+  <browser:page
+      name="view"
+      template="listing_view.pt"
+      class="plone.app.contenttypes.browser.folder.FolderView"
+      permission="zope2.View"
+      for="jazkarta.zoterolib.content.zotero_library.IZoteroLibrary"
+      menu="plone_displayviews"
+      title="Citation Listing"
+      />
+
+  <browser:page
+      name="contentlisting"
+      class="plone.app.contentlisting.browser.ContentListingCollection"
+      permission="zope2.View"
+      for="jazkarta.zoterolib.content.zotero_library.IZoteroLibrary"
+      />
+
+  <browser:page
+      name="folderListing"
+      class="plone.app.contentlisting.browser.ContentListingCollection"
+      permission="zope2.View"
+      for="jazkarta.zoterolib.content.zotero_library.IZoteroLibrary"
+      />
+
+  <configure package="plone.app.contenttypes.browser" zcml:condition="installed plone.app.contenttypes">
+    <browser:pages
+        for="jazkarta.zoterolib.content.zotero_library.IZoteroLibrary"
+        class=".folder.FolderView"
+        permission="zope2.View">
+      <browser:page
+          name="listing_view"
+          template="templates/listing.pt"
+          menu="plone_displayviews"
+          title="Listing View"
+          />
+      <browser:page
+          name="summary_view"
+          template="templates/listing_summary.pt"
+          menu="plone_displayviews"
+          title="Summary View"
+          />
+      <browser:page
+          name="tabular_view"
+          template="templates/listing_tabular.pt"
+          menu="plone_displayviews"
+          title="Tabular View"
+          />
+    </browser:pages>
+  </configure>
+
 </configure>

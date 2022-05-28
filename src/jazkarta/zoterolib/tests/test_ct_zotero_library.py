@@ -85,9 +85,13 @@ class ZoteroLibraryIntegrationTest(unittest.TestCase):
             ["Rainer Simon", "Elton Barker", "Leif Isaksen", "Soto Cañamares"],
         )
         self.assertEqual(item.Subject(), ["\u26d4 No DOI found"])
-        self.assertEqual(item.Type, "journalArticle Reference")
+        self.assertEqual(item.Type, "Journal Article Reference")
         self.assertEqual(item.portal_type, "ExternalZoteroItem")
         self.assertEqual(item.contentType, "Zotero Reference")
+        self.assertEqual(
+            item.getRemoteUrl(),
+            "https://www.zotero.org/groups/isaw_papers/items/6DAWH9QK",
+        )
         self.assertEqual(item.publication_year, 2015)
 
 
@@ -105,7 +109,7 @@ class ZoteroLibraryIndexTest(unittest.TestCase):
             container=self.portal,
             type="Zotero Library",
             id="zotero_library",
-            zotero_id=242005,
+            zotero_library_id=242005,
             zotero_library_type="group",
             citation_style="modern-language-association",
         )
@@ -139,14 +143,15 @@ class ZoteroLibraryIndexTest(unittest.TestCase):
 
     def validate_example_item(self, item):
         self.assertEqual(item.portal_type, "ExternalZoteroItem")
-        self.assertEqual(item.Type, "journalArticle Reference")
+        self.assertEqual(item.Type, "Journal Article Reference")
         self.assertEqual(item.getId(), TEST_ENTRY["key"])
         self.assertEqual(item.Title(), TEST_ENTRY["data"]["title"])
+        self.assertEqual(item.getRemoteUrl(), TEST_ENTRY["links"]["alternate"]["href"])
         self.assertEqual(
             item.Description(),
-            "Simon, Rainer, et al. &#x201C;Linking Early Geospatial Documents, One Place at a Time: Annotation of Geographic Documents with Recogito.&#x201D; E-Perimetron, vol. 10, no. 2, 2015, pp. 49&#x2013;59.",
+            "Simon, Rainer, et al. “Linking Early Geospatial Documents, One Place at a Time: Annotation of Geographic Documents with Recogito.” E-Perimetron, vol. 10, no. 2, 2015, pp. 49–59.",
         )
-        self.assertEqual(item.text.output, TEST_ENTRY["bib"])
+        self.assertEqual(item.text, TEST_ENTRY["bib"])
 
     def test_external_item_get_object(self):
         self.obj.index_element(TEST_ENTRY)
