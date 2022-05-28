@@ -1,4 +1,5 @@
 import re
+import six
 
 try:
     from html import unescape
@@ -11,6 +12,13 @@ from Products.CMFPlone.log import log_exc
 from Products.CMFPlone.utils import safe_encode, safe_unicode
 
 TAG_RE = re.compile('</?.+?/?>')
+
+
+def plone_encode(val):
+    """In Plone on Python 2, some catalog indexes expect encoded values"""
+    if not six.PY3:
+        return safe_encode(val)
+    return val
 
 
 def html_to_plain_text(text):

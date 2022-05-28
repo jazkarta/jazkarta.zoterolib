@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 from itertools import islice
+from jazkarta.zoterolib.testing import JAZKARTA_ZOTEROLIB_FUNCTIONAL_TESTING
 from jazkarta.zoterolib.content.zotero_library import IZoteroLibrary
 from jazkarta.zoterolib.testing import JAZKARTA_ZOTEROLIB_INTEGRATION_TESTING
 from jazkarta.zoterolib.testing import JAZKARTA_ZOTEROLIB_FUNCTIONAL_TESTING
+from jazkarta.zoterolib.utils import plone_encode
 from plone import api
 from plone.app.testing import setRoles, TEST_USER_ID
 from plone.dexterity.interfaces import IDexterityFTI
@@ -78,13 +80,11 @@ class ZoteroLibraryIntegrationTest(unittest.TestCase):
 
         item = ExternalZoteroItem(self.portal, TEST_ENTRY)
         self.assertEqual(
-            item.Authors(), "Rainer Simon, Elton Barker, Leif Isaksen, Soto Cañamares"
+            item.Authors(),
+            plone_encode("Rainer Simon, Elton Barker, Leif Isaksen, Soto Cañamares"),
         )
-        self.assertEqual(
-            item.AuthorItems(),
-            ["Rainer Simon", "Elton Barker", "Leif Isaksen", "Soto Cañamares"],
-        )
-        self.assertEqual(item.Subject(), ["\u26d4 No DOI found"])
+        self.assertEqual(item.AuthorItems(), item.Authors().split(", "))
+        self.assertEqual(item.Subject(), [plone_encode(u"\u26d4 No DOI found")])
         self.assertEqual(item.Type, "Journal Article Reference")
         self.assertEqual(item.portal_type, "ExternalZoteroItem")
         self.assertEqual(item.contentType, "Zotero Reference")
@@ -121,7 +121,7 @@ class ZoteroLibraryIndexTest(unittest.TestCase):
         self.assertEqual(len(results), 1)
         self.assertEqual(
             results[0].Authors,
-            "Rainer Simon, Elton Barker, Leif Isaksen, Soto Cañamares",
+            plone_encode("Rainer Simon, Elton Barker, Leif Isaksen, Soto Cañamares"),
         )
         self.assertEqual(results[0].portal_type, "ExternalZoteroItem")
 
@@ -133,25 +133,31 @@ class ZoteroLibraryIndexTest(unittest.TestCase):
     def test_fetch_and_index_external_items(self):
         self.obj.fetch_and_index_items()
         results = self.catalog.searchResults(
-            getAuthors="Cañamares", sort_on="effective"
+            getAuthors=plone_encode("Cañamares"), sort_on="effective"
         )
         self.assertGreaterEqual(len(results), 2)
         self.assertEqual(
             results[0].Title,
-            "Linking Early Geospatial Documents, One Place at a Time: Annotation of Geographic Documents with Recogito",
+            plone_encode(
+                "Linking Early Geospatial Documents, One Place at a Time: Annotation of Geographic Documents with Recogito"
+            ),
         )
 
     def validate_example_item(self, item):
         self.assertEqual(item.portal_type, "ExternalZoteroItem")
         self.assertEqual(item.Type, "Journal Article Reference")
-        self.assertEqual(item.getId(), TEST_ENTRY["key"])
-        self.assertEqual(item.Title(), TEST_ENTRY["data"]["title"])
-        self.assertEqual(item.getRemoteUrl(), TEST_ENTRY["links"]["alternate"]["href"])
+        self.assertEqual(item.getId(), plone_encode(TEST_ENTRY["key"]))
+        self.assertEqual(item.Title(), plone_encode(TEST_ENTRY["data"]["title"]))
+        self.assertEqual(
+            item.getRemoteUrl(), plone_encode(TEST_ENTRY["links"]["alternate"]["href"])
+        )
         self.assertEqual(
             item.Description(),
-            "Simon, Rainer, et al. “Linking Early Geospatial Documents, One Place at a Time: Annotation of Geographic Documents with Recogito.” E-Perimetron, vol. 10, no. 2, 2015, pp. 49–59.",
+            plone_encode(
+                "Simon, Rainer, et al. “Linking Early Geospatial Documents, One Place at a Time: Annotation of Geographic Documents with Recogito.” E-Perimetron, vol. 10, no. 2, 2015, pp. 49–59."
+            ),
         )
-        self.assertEqual(item.text, TEST_ENTRY["bib"])
+        self.assertEqual(item.text, plone_encode(TEST_ENTRY["bib"]))
 
     def test_external_item_get_object(self):
         self.obj.index_element(TEST_ENTRY)
@@ -167,7 +173,7 @@ class ZoteroLibraryIndexTest(unittest.TestCase):
 
     def test_view_external_item(self):
         self.obj.index_element(TEST_ENTRY)
-        brain = self.catalog.searchResults(getAuthors="Cañamares")[0]
+        brain = self.catalog.searchResults(getAuthors=plone_encode("Cañamares"))[0]
         # need a commit to make the content visible to test browser
         import transaction
 

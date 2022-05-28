@@ -31,6 +31,7 @@ from zope.schema.vocabulary import SimpleTerm
 from jazkarta.zoterolib import _
 from jazkarta.zoterolib.utils import camel_case_splitter
 from jazkarta.zoterolib.utils import html_to_plain_text
+from jazkarta.zoterolib.utils import plone_encode
 
 
 logger = logging.getLogger(__name__)
@@ -190,20 +191,17 @@ class ExternalZoteroItem(Acquisition.Implicit):
         """
         self.parent = parent
         self.zotero_item = zotero_item
-        uid = str(uuid.uuid5(uuid.NAMESPACE_URL, zotero_item["links"]["self"]["href"]))
+        item_href = zotero_item["links"]["self"]["href"]
+        if not six.PY3:
+            item_href = safe_encode(item_href)
+        uid = str(uuid.uuid5(uuid.NAMESPACE_URL, item_href))
         IMutableUUID(self).set(uid)
-
-    def _plone_encode(self, val):
-        """In Plone on Python 2, some catalog indexes expect encoded values"""
-        if six.PY3:
-            return val
-        return safe_encode(val)
 
     @property
     def Type(self):
         ref_type = self.zotero_item["data"]["itemType"]
         type_name = camel_case_splitter(ref_type)
-        return self._plone_encode(type_name) + " Reference"
+        return plone_encode(type_name) + " Reference"
 
     @property
     def path(self):
@@ -216,33 +214,32 @@ class ExternalZoteroItem(Acquisition.Implicit):
         )
 
     def getId(self):
-        return self._plone_encode(self.zotero_item["key"])
+        return plone_encode(self.zotero_item["key"])
 
     def Authors(self):
-        return ", ".join(self._plone_encode(v) for v in self.AuthorItems())
+        return ", ".join(plone_encode(v) for v in self.AuthorItems())
 
     def AuthorItems(self):
         return [
-            self._plone_encode(el.get("firstName", ""))
+            plone_encode(el.get("firstName", ""))
             + " "
-            + self._plone_encode(el.get("lastName", ""))
+            + plone_encode(el.get("lastName", ""))
             for el in self.zotero_item["data"].get("creators", [])
             if el["creatorType"] == "author"
         ]
 
     def Title(self):
-        return self._plone_encode(self.zotero_item["data"]["title"])
+        return plone_encode(self.zotero_item["data"]["title"])
 
     def sortable_title(self):
         return self.Title().lower()
 
     def Description(self):
-        return self._plone_encode(self.zotero_item["bib"])
+        return plone_encode(self.zotero_item["bib"])
 
     def Subject(self):
         return [
-            self._plone_encode(t["tag"])
-            for t in self.zotero_item["data"].get("tags", [])
+            plone_encode(t["tag"]) for t in self.zotero_item["data"].get("tags", [])
         ]
 
     def SearchableText(self):
@@ -301,7 +298,7 @@ class ExternalZoteroItem(Acquisition.Implicit):
         return tuple(self.path.split("/"))
 
     def getRemoteUrl(self):
-        return self.zotero_item["links"]["alternate"]["href"]
+        return plone_encode(self.zotero_item["links"]["alternate"]["href"])
 
     def UID(self):
         return IUUID(self)
