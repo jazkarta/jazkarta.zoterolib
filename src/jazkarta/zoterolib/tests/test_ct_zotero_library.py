@@ -81,7 +81,7 @@ class ZoteroLibraryIntegrationTest(unittest.TestCase):
         item = ExternalZoteroItem(self.portal, TEST_ENTRY)
         self.assertEqual(
             item.Authors(),
-            plone_encode("Rainer Simon, Elton Barker, Leif Isaksen, Soto Cañamares"),
+            plone_encode(u"Rainer Simon, Elton Barker, Leif Isaksen, Soto Cañamares"),
         )
         self.assertEqual(item.AuthorItems(), item.Authors().split(", "))
         self.assertEqual(item.Subject(), [plone_encode(u"\u26d4 No DOI found")])
@@ -121,7 +121,7 @@ class ZoteroLibraryIndexTest(unittest.TestCase):
         self.assertEqual(len(results), 1)
         self.assertEqual(
             results[0].Authors,
-            plone_encode("Rainer Simon, Elton Barker, Leif Isaksen, Soto Cañamares"),
+            plone_encode(u"Rainer Simon, Elton Barker, Leif Isaksen, Soto Cañamares"),
         )
         self.assertEqual(results[0].portal_type, "ExternalZoteroItem")
 
@@ -133,13 +133,13 @@ class ZoteroLibraryIndexTest(unittest.TestCase):
     def test_fetch_and_index_external_items(self):
         self.obj.fetch_and_index_items()
         results = self.catalog.searchResults(
-            getAuthors=plone_encode("Cañamares"), sort_on="effective"
+            getAuthors=plone_encode(u"Cañamares"), sort_on="effective"
         )
         self.assertGreaterEqual(len(results), 2)
         self.assertEqual(
             results[0].Title,
             plone_encode(
-                "Linking Early Geospatial Documents, One Place at a Time: Annotation of Geographic Documents with Recogito"
+                u"Linking Early Geospatial Documents, One Place at a Time: Annotation of Geographic Documents with Recogito"
             ),
         )
 
@@ -154,7 +154,7 @@ class ZoteroLibraryIndexTest(unittest.TestCase):
         self.assertEqual(
             item.Description(),
             plone_encode(
-                "Simon, Rainer, et al. “Linking Early Geospatial Documents, One Place at a Time: Annotation of Geographic Documents with Recogito.” E-Perimetron, vol. 10, no. 2, 2015, pp. 49–59."
+                u"Simon, Rainer, et al. “Linking Early Geospatial Documents, One Place at a Time: Annotation of Geographic Documents with Recogito.” E-Perimetron, vol. 10, no. 2, 2015, pp. 49–59."
             ),
         )
         self.assertEqual(item.text, plone_encode(TEST_ENTRY["bib"]))
@@ -173,7 +173,7 @@ class ZoteroLibraryIndexTest(unittest.TestCase):
 
     def test_view_external_item(self):
         self.obj.index_element(TEST_ENTRY)
-        brain = self.catalog.searchResults(getAuthors=plone_encode("Cañamares"))[0]
+        brain = self.catalog.searchResults(getAuthors=plone_encode(u"Cañamares"))[0]
         # need a commit to make the content visible to test browser
         import transaction
 
@@ -181,108 +181,108 @@ class ZoteroLibraryIndexTest(unittest.TestCase):
         browser = Browser(self.layer["app"])
         browser.handleErrors = False
         browser.open(brain.getURL())
-        self.assertIn('<div class="csl-bib-body"', browser.contents)
+        self.assertIn(u'<div class="csl-bib-body"', browser.contents)
 
 
 TEST_ENTRY = {
-    "key": "6DAWH9QK",
+    "key": u"6DAWH9QK",
     "version": 531,
     "library": {
-        "type": "group",
+        "type": u"group",
         "id": 242005,
-        "name": "ISAW Papers",
+        "name": u"ISAW Papers",
         "links": {
             "alternate": {
-                "href": "https://www.zotero.org/groups/isaw_papers",
-                "type": "text/html",
+                "href": u"https://www.zotero.org/groups/isaw_papers",
+                "type": u"text/html",
             }
         },
     },
     "links": {
         "self": {
-            "href": "https://api.zotero.org/groups/242005/items/6DAWH9QK",
-            "type": "application/json",
+            "href": u"https://api.zotero.org/groups/242005/items/6DAWH9QK",
+            "type": u"application/json",
         },
         "alternate": {
-            "href": "https://www.zotero.org/groups/isaw_papers/items/6DAWH9QK",
-            "type": "text/html",
+            "href": u"https://www.zotero.org/groups/isaw_papers/items/6DAWH9QK",
+            "type": u"text/html",
         },
     },
     "meta": {
         "createdByUser": {
             "id": 50458,
-            "username": "sebastianheath",
-            "name": "Sebastian Heath",
+            "username": u"sebastianheath",
+            "name": u"Sebastian Heath",
             "links": {
                 "alternate": {
-                    "href": "https://www.zotero.org/sebastianheath",
-                    "type": "text/html",
+                    "href": u"https://www.zotero.org/sebastianheath",
+                    "type": u"text/html",
                 }
             },
         },
         "lastModifiedByUser": {
             "id": 465,
-            "username": "paregorios",
-            "name": "Tom Elliott",
+            "username": u"paregorios",
+            "name": u"Tom Elliott",
             "links": {
                 "alternate": {
-                    "href": "https://www.zotero.org/paregorios",
-                    "type": "text/html",
+                    "href": u"https://www.zotero.org/paregorios",
+                    "type": u"text/html",
                 }
             },
         },
-        "creatorSummary": "Simon et al.",
-        "parsedDate": "2015",
+        "creatorSummary": u"Simon et al.",
+        "parsedDate": u"2015",
         "numChildren": 0,
     },
-    "bib": '<div class="csl-bib-body" style="line-height: 2; padding-left: 1em; text-indent:-1em;">\n  <div class="csl-entry">Simon, Rainer, et al. &#x201C;Linking Early Geospatial Documents, One Place at a Time: Annotation of Geographic Documents with Recogito.&#x201D; <i>E-Perimetron</i>, vol. 10, no. 2, 2015, pp. 49&#x2013;59.</div>\n</div>',
-    "citation": "<span>(Simon et al.)</span>",
+    "bib": u'<div class="csl-bib-body" style="line-height: 2; padding-left: 1em; text-indent:-1em;">\n  <div class="csl-entry">Simon, Rainer, et al. &#x201C;Linking Early Geospatial Documents, One Place at a Time: Annotation of Geographic Documents with Recogito.&#x201D; <i>E-Perimetron</i>, vol. 10, no. 2, 2015, pp. 49&#x2013;59.</div>\n</div>',
+    "citation": u"<span>(Simon et al.)</span>",
     "data": {
-        "key": "6DAWH9QK",
+        "key": u"6DAWH9QK",
         "version": 531,
-        "itemType": "journalArticle",
-        "title": "Linking Early Geospatial Documents, One Place at a Time: Annotation of Geographic Documents with Recogito",
+        "itemType": u"journalArticle",
+        "title": u"Linking Early Geospatial Documents, One Place at a Time: Annotation of Geographic Documents with Recogito",
         "creators": [
-            {"creatorType": "author", "firstName": "Rainer", "lastName": "Simon"},
-            {"creatorType": "author", "firstName": "Elton", "lastName": "Barker"},
-            {"creatorType": "author", "firstName": "Leif", "lastName": "Isaksen"},
+            {"creatorType": u"author", "firstName": u"Rainer", "lastName": u"Simon"},
+            {"creatorType": "author", "firstName": u"Elton", "lastName": u"Barker"},
+            {"creatorType": "author", "firstName": u"Leif", "lastName": u"Isaksen"},
             {
-                "creatorType": "author",
-                "firstName": "Soto",
-                "lastName": "Ca\u00f1amares",
+                "creatorType": u"author",
+                "firstName": u"Soto",
+                "lastName": u"Ca\u00f1amares",
             },
         ],
-        "abstractNote": "",
-        "publicationTitle": "e-Perimetron",
-        "volume": "10",
-        "issue": "2",
-        "pages": "49-59",
-        "date": "2015",
-        "series": "",
-        "seriesTitle": "",
-        "seriesText": "",
-        "journalAbbreviation": "",
-        "language": "",
-        "DOI": "",
-        "ISSN": "1790-3769",
-        "shortTitle": "",
-        "url": "",
-        "accessDate": "",
-        "archive": "",
-        "archiveLocation": "",
-        "libraryCatalog": "",
-        "callNumber": "",
-        "rights": "",
-        "extra": "",
-        "tags": [{"tag": "\u26d4 No DOI found", "type": 1}],
-        "collections": ["DZDZS5QD"],
+        "abstractNote": u"",
+        "publicationTitle": u"e-Perimetron",
+        "volume": u"10",
+        "issue": u"2",
+        "pages": u"49-59",
+        "date": u"2015",
+        "series": u"",
+        "seriesTitle": u"",
+        "seriesText": u"",
+        "journalAbbreviation": u"",
+        "language": u"",
+        "DOI": u"",
+        "ISSN": u"1790-3769",
+        "shortTitle": u"",
+        "url": u"",
+        "accessDate": u"",
+        "archive": u"",
+        "archiveLocation": u"",
+        "libraryCatalog": u"",
+        "callNumber": u"",
+        "rights": u"",
+        "extra": u"",
+        "tags": [{"tag": u"\u26d4 No DOI found", "type": 1}],
+        "collections": [u"DZDZS5QD"],
         "relations": {
             "dc:relation": [
-                "http://zotero.org/groups/242005/items/T79TMG8G",
-                "http://zotero.org/groups/242005/items/9USWD24D",
+                u"http://zotero.org/groups/242005/items/T79TMG8G",
+                u"http://zotero.org/groups/242005/items/9USWD24D",
             ]
         },
-        "dateAdded": "2021-05-03T14:03:48Z",
-        "dateModified": "2021-12-11T11:50:07Z",
+        "dateAdded": u"2021-05-03T14:03:48Z",
+        "dateModified": u"2021-12-11T11:50:07Z",
     },
 }
