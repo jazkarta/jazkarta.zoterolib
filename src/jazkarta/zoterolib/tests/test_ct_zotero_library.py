@@ -181,7 +181,7 @@ class ZoteroLibraryIndexTest(unittest.TestCase):
         browser = Browser(self.layer["app"])
         browser.handleErrors = False
         browser.open(brain.getURL())
-        self.assertIn(u'<div class="csl-bib-body"', browser.contents)
+        self.assertIn('<div class="csl-bib-body"', browser.contents)
 
 
 TEST_ENTRY = {
