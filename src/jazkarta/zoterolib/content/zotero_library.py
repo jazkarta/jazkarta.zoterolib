@@ -209,7 +209,7 @@ class ExternalZoteroItem(Acquisition.Implicit):
             self.parent.getPhysicalPath()
             + (
                 "zotero_items",
-                self.zotero_item["key"],
+                plone_encode(self.zotero_item["key"]),
             )
         )
 
