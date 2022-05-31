@@ -11,17 +11,15 @@ class ZoteroLibraryUtilsTest(unittest.TestCase):
         if six.PY3:
             self.assertIs(utils.plone_encode(test_str), test_str)
         else:
-            self.assertEquals(utils.plone_encode(test_str), test_str.encode('utf8'))
+            self.assertEqual(utils.plone_encode(test_str), test_str.encode('utf8'))
 
     def test_camel_case_splitter(self):
-        self.assertEquals(
-            utils.camel_case_splitter('journalArticle'), 'Journal Article'
-        )
-        self.assertEquals(
+        self.assertEqual(utils.camel_case_splitter('journalArticle'), 'Journal Article')
+        self.assertEqual(
             utils.camel_case_splitter('AFunnyThingHappenedYesterday'),
             'A Funny Thing Happened Yesterday',
         )
-        self.assertEquals(utils.camel_case_splitter('Two20AndSix'), 'Two20 And Six')
+        self.assertEqual(utils.camel_case_splitter('Two20AndSix'), 'Two20 And Six')
 
 
 class ZoteroLibraryUtilsIntegrationTest(unittest.TestCase):
@@ -34,16 +32,16 @@ class ZoteroLibraryUtilsIntegrationTest(unittest.TestCase):
         self.parent = self.portal
 
     def test_html_to_plain_text(self):
-        self.assertEquals(
+        self.assertEqual(
             utils.html_to_plain_text('\r\n<div>Some Stuff</div>\n\n'), 'Some Stuff'
         )
-        self.assertEquals(
+        self.assertEqual(
             utils.html_to_plain_text(
                 '\r\n<random>Some <spam>Stuff</spam> <br /></random>\n\n'
             ),
             'Some  Stuff',
         )
-        self.assertEquals(
+        self.assertEqual(
             utils.html_to_plain_text(
                 '\r\n<broken>Some <spam>Stuff</span> <dr /></really_broken>\n\n'
             ),
