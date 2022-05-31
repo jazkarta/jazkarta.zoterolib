@@ -68,6 +68,7 @@ setup(
             "plone.app.contenttypes",
             "plone.app.robotframework[debug]",
         ],
+        "celery": ["celery"],
     },
     entry_points="""
     [z3c.autoinclude.plugin]
