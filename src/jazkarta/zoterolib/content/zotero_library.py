@@ -1,11 +1,8 @@
 # -*- coding: utf-8 -*-
 import Acquisition
 import dateutil
-import gzip
-import json
 import logging
 import Missing
-import os
 import pytz
 import six
 import uuid
@@ -15,38 +12,27 @@ from plone import api
 from plone.dexterity.content import Item
 from plone.supermodel import model
 from plone.app.contentlisting.interfaces import IContentListing
+from plone.autoform import directives as form
 from plone.batching import Batch
 from plone.uuid.interfaces import IUUID, IAttributeUUID, IMutableUUID
+from plone.app.z3cform.widget import AjaxSelectWidget
 from Products.CMFCore import permissions
 from Products.CMFPlone.utils import safe_encode, safe_unicode
 from pyzotero import zotero
 from zope import schema
+from zope.component import adapter
 from zope.event import notify
 from zope.interface import Interface
 from zope.interface import implementer
 from zope.lifecycleevent import ObjectCreatedEvent
-from zope.schema.vocabulary import SimpleVocabulary
-from zope.schema.vocabulary import SimpleTerm
+from zope.lifecycleevent.interfaces import IObjectRemovedEvent
 
 from jazkarta.zoterolib import _
 from jazkarta.zoterolib.utils import camel_case_splitter
 from jazkarta.zoterolib.utils import html_to_plain_text
 from jazkarta.zoterolib.utils import plone_encode
 
-
 logger = logging.getLogger(__name__)
-
-with gzip.open(
-    os.path.join(os.path.dirname(__file__), "../browser/static/styles.json.gz")
-) as styles_file:
-    styles_data = json.load(styles_file)
-
-styles_vocab = SimpleVocabulary(
-    [
-        SimpleTerm(title=i["title"], value=i["name"], token=str(i["name"]))
-        for i in styles_data
-    ]
-)
 
 
 class IZoteroLibrary(model.Schema):
@@ -70,7 +56,15 @@ class IZoteroLibrary(model.Schema):
         title=_(u"Citation Style Format"),
         required=True,
         default=u"modern-language-association",
-        vocabulary=styles_vocab,
+        vocabulary=u'jazkarta.zoterolib.citations-styles',
+    )
+    form.widget(
+        'citation_style',
+        AjaxSelectWidget,
+        pattern_options={
+            "minimumInputLength": 5,
+            "ajax": {"delay": 500},
+        },
     )
 
 
@@ -170,6 +164,17 @@ class ZoteroLibrary(Item):
         if batch:
             results = Batch(results, b_size, start=b_start)
         return results
+
+
+@adapter(IZoteroLibrary, IObjectRemovedEvent)
+def removeLibraryItemsOnDelete(library, event):
+    logger.log(
+        logging.INFO,
+        u'Removing all library contents before deleting library at: {}'.format(
+            library.absolute_url(1)
+        ),
+    )
+    library.clear_items()
 
 
 class IExternalZoteroItem(Interface):

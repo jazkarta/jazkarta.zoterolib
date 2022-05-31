@@ -33,6 +33,12 @@
       name="jazkarta.zoterolib-hiddenprofiles"
       />
 
-  <!-- -*- extra stuff goes here -*- -->
+  <utility
+      component=".vocabs.CitationStylesVocabularyFactory"
+      name="jazkarta.zoterolib.citations-styles"
+      />
+
+  <subscriber handler=".content.zotero_library.removeLibraryItemsOnDelete" />
+
 
 </configure>
