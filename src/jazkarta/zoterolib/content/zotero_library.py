@@ -17,6 +17,7 @@ from plone.batching import Batch
 from plone.uuid.interfaces import IUUID, IAttributeUUID, IMutableUUID
 from plone.app.z3cform.widget import AjaxSelectWidget
 from Products.CMFCore import permissions
+from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
 from Products.CMFPlone.utils import safe_encode, safe_unicode
 from pyzotero import zotero
 from zope import schema
@@ -123,7 +124,8 @@ class ZoteroLibrary(Item):
                 len(contents), self.zotero_library_id
             ),
         )
-        catalog = api.portal.get_tool('portal_catalog')
+        portal = get_portal(self)
+        catalog = portal.portal_catalog
         for brain in contents:
             catalog.uncatalog_object(brain.getPath())
 
@@ -157,13 +159,26 @@ class ZoteroLibrary(Item):
                 # double batched
                 batch = False
             query.update(custom_query)
-        catalog = api.portal.get_tool('portal_catalog')
+        portal = get_portal(self)
+        catalog = portal.portal_catalog
         results = catalog(**query)
         if not brains:
             results = IContentListing(results)
         if batch:
             results = Batch(results, b_size, start=b_start)
         return results
+
+
+def get_portal(obj):
+    """Walk up the acquisition chain to find the portal object
+    This is usually done with plone.api.portal.get(), but when
+    users delete a Plone site that will raise a CannotGetPortalError.
+    """
+    if obj is None:
+        return None
+    if IPloneSiteRoot.providedBy(obj):
+        return obj
+    return get_portal(obj.aq_parent)
 
 
 @adapter(IZoteroLibrary, IObjectRemovedEvent)
