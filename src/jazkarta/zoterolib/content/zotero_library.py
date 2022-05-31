@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import Acquisition
+from Products.CMFCore.utils import getToolByName
 import dateutil
 import logging
 import Missing
@@ -124,8 +125,7 @@ class ZoteroLibrary(Item):
                 len(contents), self.zotero_library_id
             ),
         )
-        portal = get_portal(self)
-        catalog = portal.portal_catalog
+        catalog = get_portal_catalog(self)
         for brain in contents:
             catalog.uncatalog_object(brain.getPath())
 
@@ -159,8 +159,7 @@ class ZoteroLibrary(Item):
                 # double batched
                 batch = False
             query.update(custom_query)
-        portal = get_portal(self)
-        catalog = portal.portal_catalog
+        catalog = get_portal_catalog(self)
         results = catalog(**query)
         if not brains:
             results = IContentListing(results)
@@ -169,16 +168,12 @@ class ZoteroLibrary(Item):
         return results
 
 
-def get_portal(obj):
-    """Walk up the acquisition chain to find the portal object
+def get_portal_catalog(context):
+    """Return the portal_catalog object for the given object.
     This is usually done with plone.api.portal.get(), but when
     users delete a Plone site that will raise a CannotGetPortalError.
     """
-    if obj is None:
-        return None
-    if IPloneSiteRoot.providedBy(obj):
-        return obj
-    return get_portal(obj.aq_parent)
+    return getToolByName(context, "portal_catalog")
 
 
 @adapter(IZoteroLibrary, IObjectRemovedEvent)
