@@ -55,6 +55,8 @@ setup(
         "plone.app.dexterity",
         'pyzotero<1.5; python_version<"3"',
         'pyzotero; python_version>"3"',
+        "python-dateutil",
+        "pytz",
     ],
     extras_require={
         "test": [

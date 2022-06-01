@@ -7,15 +7,8 @@
 
   <i18n:registerTranslations directory="locales" />
 
-  <!--
-    Be careful if you use general includeDependencies, it can have side effects!
-    Better import explicit packages or configurations ;)
-  -->
-  <!--<includeDependencies package="." />-->
-
-  <include package=".browser" />
-
   <include file="permissions.zcml" />
+  <include package=".browser" />
 
   <genericsetup:registerProfile
       name="default"
@@ -40,6 +33,12 @@
       name="jazkarta.zoterolib-hiddenprofiles"
       />
 
-  <!-- -*- extra stuff goes here -*- -->
+  <utility
+      component=".vocabs.CitationStylesVocabularyFactory"
+      name="jazkarta.zoterolib.citations-styles"
+      />
+
+  <subscriber handler=".content.zotero_library.removeLibraryItemsOnDelete" />
+
 
 </configure>
