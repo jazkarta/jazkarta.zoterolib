@@ -34,6 +34,11 @@ from jazkarta.zoterolib.utils import camel_case_splitter
 from jazkarta.zoterolib.utils import html_to_plain_text
 from jazkarta.zoterolib.utils import plone_encode
 
+try:
+    from jazkarta.zoterolib.celery import index_zotero_library
+except ImportError:
+    index_zotero_library = None
+
 logger = logging.getLogger(__name__)
 
 
@@ -111,11 +116,23 @@ class ZoteroLibrary(Item):
                 current_batch = []
 
     def fetch_and_index_items(self, start=0, limit=100):
+        """Fetch ALL zotero items in batches of `limit` items
+        and index them in the catalog.
+        """
+        if index_zotero_library is not None:
+            index_zotero_library.delay(self, start, limit)
+            return
         count = 0
         for item in self.fetch_items(start, limit):
             self.index_element(item)
             count += 1
         return count
+
+    def schedule_fetch_and_index(self):
+        """Schedule a re-indexing of all items in the library."""
+        if index_zotero_library is None:
+            raise Exception("Celery is not installed")
+        index_zotero_library(self)
 
     def clear_items(self):
         contents = self.results(batch=False, brains=True)
