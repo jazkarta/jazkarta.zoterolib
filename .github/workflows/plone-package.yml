@@ -48,7 +48,7 @@ jobs:
       - name: Run buildout
         run: buildout -c test_plone${{ matrix.plone-version }}.cfg install test coverage
       - name: Run tests
-        run: xvfb-run bin/coverage run bin/test --xml --all
+        run: xvfb-run --server-args="-screen 0 1024x768x24" bin/coverage run bin/test --xml --all
 
   pre-commit:
     name: Check pre-commit

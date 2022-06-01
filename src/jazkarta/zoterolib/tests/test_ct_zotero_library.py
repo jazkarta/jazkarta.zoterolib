@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
+from itertools import islice
+from jazkarta.zoterolib.testing import JAZKARTA_ZOTEROLIB_FUNCTIONAL_TESTING
 from jazkarta.zoterolib.content.zotero_library import IZoteroLibrary
 from jazkarta.zoterolib.testing import JAZKARTA_ZOTEROLIB_INTEGRATION_TESTING
 from jazkarta.zoterolib.testing import JAZKARTA_ZOTEROLIB_FUNCTIONAL_TESTING
+from jazkarta.zoterolib.utils import plone_encode
 from plone import api
 from plone.app.testing import setRoles, TEST_USER_ID
 from plone.dexterity.interfaces import IDexterityFTI
@@ -11,8 +14,6 @@ try:
 except ImportError:
     from plone.testing.z2 import Browser
 from zope.component import createObject, queryUtility
-from xml.sax.saxutils import escape
-
 import unittest
 
 
@@ -78,9 +79,20 @@ class ZoteroLibraryIntegrationTest(unittest.TestCase):
         from jazkarta.zoterolib.content.zotero_library import ExternalZoteroItem
 
         item = ExternalZoteroItem(self.portal, TEST_ENTRY)
-        self.assertTrue(item.Authors(), "Could not find the Authors field")
-        self.assertEqual(item.Authors(), ", ".join(TEST_ENTRY["authors"]))
-        self.assertEqual(item.AuthorItems(), TEST_ENTRY["authors"])
+        self.assertEqual(
+            item.Authors(),
+            plone_encode(u"Rainer Simon, Elton Barker, Leif Isaksen, Soto Cañamares"),
+        )
+        self.assertEqual(item.AuthorItems(), item.Authors().split(", "))
+        self.assertEqual(item.Subject(), [plone_encode(u"\u26d4 No DOI found")])
+        self.assertEqual(item.Type, "Journal Article Reference")
+        self.assertEqual(item.portal_type, "ExternalZoteroItem")
+        self.assertEqual(item.contentType, "Zotero Reference")
+        self.assertEqual(
+            item.getRemoteUrl(),
+            "https://www.zotero.org/groups/isaw_papers/items/6DAWH9QK",
+        )
+        self.assertEqual(item.publication_year, 2015)
 
 
 class ZoteroLibraryIndexTest(unittest.TestCase):
@@ -90,27 +102,78 @@ class ZoteroLibraryIndexTest(unittest.TestCase):
     def setUp(self):
         """Create a Zotero Library object."""
         self.portal = self.layer["portal"]
+        self.catalog = self.portal.portal_catalog
         setRoles(self.portal, TEST_USER_ID, ["Manager"])
         self.parent = self.portal
         self.obj = api.content.create(
             container=self.portal,
             type="Zotero Library",
             id="zotero_library",
+            zotero_library_id=242005,
+            zotero_library_type="group",
+            citation_style="modern-language-association",
         )
         api.content.transition(obj=self.obj, transition="publish")
 
     def test_index_external_item(self):
         self.obj.index_element(TEST_ENTRY)
-        catalog = api.portal.get_tool("portal_catalog")
-        results = catalog.searchResults(getAuthors="Hathaway")
+        results = self.catalog.searchResults(getAuthors="Isaksen")
         self.assertEqual(len(results), 1)
-        self.assertEqual(results[0].Authors, ", ".join(TEST_ENTRY["authors"]))
+        self.assertEqual(
+            results[0].Authors,
+            plone_encode(u"Rainer Simon, Elton Barker, Leif Isaksen, Soto Cañamares"),
+        )
         self.assertEqual(results[0].portal_type, "ExternalZoteroItem")
+
+    def test_fetch_external_items(self):
+        result_iterator = self.obj.fetch_items()
+        result = tuple(result_iterator)
+        self.assertTrue(len(result) > 150)
+
+    def test_fetch_and_index_external_items(self):
+        self.obj.fetch_and_index_items()
+        results = self.catalog.searchResults(
+            getAuthors=plone_encode(u"Cañamares"), sort_on="effective"
+        )
+        self.assertGreaterEqual(len(results), 2)
+        self.assertEqual(
+            results[0].Title,
+            plone_encode(
+                u"Linking Early Geospatial Documents, One Place at a Time: Annotation of Geographic Documents with Recogito"
+            ),
+        )
+
+    def validate_example_item(self, item):
+        self.assertEqual(item.portal_type, "ExternalZoteroItem")
+        self.assertEqual(item.Type, "Journal Article Reference")
+        self.assertEqual(item.getId(), plone_encode(TEST_ENTRY["key"]))
+        self.assertEqual(item.Title(), plone_encode(TEST_ENTRY["data"]["title"]))
+        self.assertEqual(
+            item.getRemoteUrl(), plone_encode(TEST_ENTRY["links"]["alternate"]["href"])
+        )
+        self.assertEqual(
+            item.Description(),
+            plone_encode(
+                u"Simon, Rainer, et al. “Linking Early Geospatial Documents, One Place at a Time: Annotation of Geographic Documents with Recogito.” E-Perimetron, vol. 10, no. 2, 2015, pp. 49–59."
+            ),
+        )
+        self.assertEqual(item.text, plone_encode(TEST_ENTRY["bib"]))
+
+    def test_external_item_get_object(self):
+        self.obj.index_element(TEST_ENTRY)
+        catalog = api.portal.get_tool("portal_catalog")
+        results = catalog.searchResults(getAuthors="Barker")
+        item = results[0].getObject()
+        self.validate_example_item(item)
+
+    def test_traverse_to_external_item(self):
+        self.obj.index_element(TEST_ENTRY)
+        item = self.obj.unrestrictedTraverse("zotero_items/6DAWH9QK")
+        self.validate_example_item(item)
 
     def test_view_external_item(self):
         self.obj.index_element(TEST_ENTRY)
-        catalog = api.portal.get_tool("portal_catalog")
-        brain = catalog.searchResults(getAuthors="Hathaway")[0]
+        brain = self.catalog.searchResults(getAuthors=plone_encode(u"Cañamares"))[0]
         # need a commit to make the content visible to test browser
         import transaction
 
@@ -118,23 +181,108 @@ class ZoteroLibraryIndexTest(unittest.TestCase):
         browser = Browser(self.layer["app"])
         browser.handleErrors = False
         browser.open(brain.getURL())
-        self.assertIn(
-            '<h1 class="documentTitle">{}</h1>'.format(escape(TEST_ENTRY["title"])),
-            browser.contents,
-        )
-        self.assertIn(
-            '<p class="documentDescription">{}</p>'.format(
-                escape(TEST_ENTRY["citationLabel"])
-            ),
-            browser.contents,
-        )
+        self.assertIn('<div class="csl-bib-body"', browser.contents)
 
 
 TEST_ENTRY = {
-    "id": "TESTZOTERO",
-    "authors": ["Hathaway, S. R.", "McKinley, J. C."],
-    "title": "A multiphasic personality schedule (Minnesota): I, Construction of the schedule.",
-    "source": "Journal of Psychology",
-    "publication_year": "1940",
-    "citationLabel": "Hathaway, S. R., & McKinley, J. C. (1940). A multiphasic personality schedule (Minnesota): I, Construction of the schedule.",
+    "key": u"6DAWH9QK",
+    "version": 531,
+    "library": {
+        "type": u"group",
+        "id": 242005,
+        "name": u"ISAW Papers",
+        "links": {
+            "alternate": {
+                "href": u"https://www.zotero.org/groups/isaw_papers",
+                "type": u"text/html",
+            }
+        },
+    },
+    "links": {
+        "self": {
+            "href": u"https://api.zotero.org/groups/242005/items/6DAWH9QK",
+            "type": u"application/json",
+        },
+        "alternate": {
+            "href": u"https://www.zotero.org/groups/isaw_papers/items/6DAWH9QK",
+            "type": u"text/html",
+        },
+    },
+    "meta": {
+        "createdByUser": {
+            "id": 50458,
+            "username": u"sebastianheath",
+            "name": u"Sebastian Heath",
+            "links": {
+                "alternate": {
+                    "href": u"https://www.zotero.org/sebastianheath",
+                    "type": u"text/html",
+                }
+            },
+        },
+        "lastModifiedByUser": {
+            "id": 465,
+            "username": u"paregorios",
+            "name": u"Tom Elliott",
+            "links": {
+                "alternate": {
+                    "href": u"https://www.zotero.org/paregorios",
+                    "type": u"text/html",
+                }
+            },
+        },
+        "creatorSummary": u"Simon et al.",
+        "parsedDate": u"2015",
+        "numChildren": 0,
+    },
+    "bib": u'<div class="csl-bib-body" style="line-height: 2; padding-left: 1em; text-indent:-1em;">\n  <div class="csl-entry">Simon, Rainer, et al. &#x201C;Linking Early Geospatial Documents, One Place at a Time: Annotation of Geographic Documents with Recogito.&#x201D; <i>E-Perimetron</i>, vol. 10, no. 2, 2015, pp. 49&#x2013;59.</div>\n</div>',
+    "citation": u"<span>(Simon et al.)</span>",
+    "data": {
+        "key": u"6DAWH9QK",
+        "version": 531,
+        "itemType": u"journalArticle",
+        "title": u"Linking Early Geospatial Documents, One Place at a Time: Annotation of Geographic Documents with Recogito",
+        "creators": [
+            {"creatorType": u"author", "firstName": u"Rainer", "lastName": u"Simon"},
+            {"creatorType": "author", "firstName": u"Elton", "lastName": u"Barker"},
+            {"creatorType": "author", "firstName": u"Leif", "lastName": u"Isaksen"},
+            {
+                "creatorType": u"author",
+                "firstName": u"Soto",
+                "lastName": u"Ca\u00f1amares",
+            },
+        ],
+        "abstractNote": u"",
+        "publicationTitle": u"e-Perimetron",
+        "volume": u"10",
+        "issue": u"2",
+        "pages": u"49-59",
+        "date": u"2015",
+        "series": u"",
+        "seriesTitle": u"",
+        "seriesText": u"",
+        "journalAbbreviation": u"",
+        "language": u"",
+        "DOI": u"",
+        "ISSN": u"1790-3769",
+        "shortTitle": u"",
+        "url": u"",
+        "accessDate": u"",
+        "archive": u"",
+        "archiveLocation": u"",
+        "libraryCatalog": u"",
+        "callNumber": u"",
+        "rights": u"",
+        "extra": u"",
+        "tags": [{"tag": u"\u26d4 No DOI found", "type": 1}],
+        "collections": [u"DZDZS5QD"],
+        "relations": {
+            "dc:relation": [
+                u"http://zotero.org/groups/242005/items/T79TMG8G",
+                u"http://zotero.org/groups/242005/items/9USWD24D",
+            ]
+        },
+        "dateAdded": u"2021-05-03T14:03:48Z",
+        "dateModified": u"2021-12-11T11:50:07Z",
+    },
 }
