@@ -11,6 +11,13 @@ from zope.publisher.interfaces import IPublishTraverse
 from jazkarta.zoterolib.content.zotero_library import BrainProxy
 from jazkarta.zoterolib import _
 
+try:
+    from jazkarta.zoterolib.tasks import index_zotero_items
+
+    has_celery = True
+except ImportError:
+    has_celery = False
+
 
 @implementer(IPublishTraverse)
 class ZoteroItemView(BrowserView):
@@ -85,9 +92,15 @@ class UpdateLibraryForm(z3c.form.form.Form):
             raise Forbidden('Request must be POST')
         start_time = time.time()
         self.context.clear_items()
-        count = self.context.fetch_and_index_items()
-        self.status = _(
-            u"Updated {} items from Zotero in {}".format(
-                count, str(timedelta(seconds=round(time.time() - start_time)))
+        if has_celery:
+            index_zotero_items.delay(self.context, 0, 100)
+            self.status = _(
+                u"Started indexing Zotero Library. The site admin will recieve an email when the indexing is completed."
             )
-        )
+        else:
+            count = self.context.fetch_and_index_items()
+            self.status = _(
+                u"Updated {} items from Zotero in {}".format(
+                    count, str(timedelta(seconds=round(time.time() - start_time)))
+                )
+            )
