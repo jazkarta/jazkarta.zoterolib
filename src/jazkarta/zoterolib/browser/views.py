@@ -83,21 +83,44 @@ class UpdateLibraryForm(z3c.form.form.Form):
     method = 'POST'
     enableCSRFProtection = True
     ignoreContext = False
+    batch_size = 50
 
     fields = z3c.form.field.Fields()
+
+    def _resumable(self):
+        return getattr(self.context, '_async_zotero_resume', None) is not None
+
+    def clear_resume(self):
+        if getattr(self.context, '_async_zotero_resume', None) is not None:
+            del self.context._async_zotero_resume
+            self.actions.update()
+
+    @z3c.form.button.buttonAndHandler(
+        _(u'Resume Library Indexing'), condition=_resumable
+    )
+    def handleResume(self, action):
+        if self.request.get('REQUEST_METHOD', 'GET').upper() != 'POST':
+            raise Forbidden('Request must be POST')
+        resume = self.context._async_zotero_resume
+        self.clear_resume()
+        index_zotero_items.delay(self.context, resume, self.batch_size)
+        self.status = _(
+            u"Resumed indexing Zotero Library. You will recieve an email when indexing is completed."
+        )
 
     @z3c.form.button.buttonAndHandler(_(u'Update Library'))
     def handleUpdate(self, action):
         if self.request.get('REQUEST_METHOD', 'GET').upper() != 'POST':
             raise Forbidden('Request must be POST')
-        start_time = time.time()
+        self.clear_resume()
         self.context.clear_items()
         if has_celery:
-            index_zotero_items.delay(self.context, 0, 50)
+            index_zotero_items.delay(self.context, 0, self.batch_size)
             self.status = _(
-                u"Started indexing Zotero Library. The site admin will recieve an email when the indexing is completed."
+                u"Started indexing Zotero Library. You will recieve an email when indexing is completed."
             )
         else:
+            start_time = time.time()
             count = self.context.fetch_and_index_items()
             self.status = _(
                 u"Updated {} items from Zotero in {}".format(

@@ -1,3 +1,4 @@
+import email
 import re
 import six
 
@@ -42,3 +43,13 @@ def camel_case_splitter(text):
         r'.+?(?:(?<=[a-z0-9])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z0-9])|$)', text
     )
     return ' '.join(m.group(0).capitalize() for m in matches)
+
+
+def get_user_email():
+    user = api.user.get_current()
+    if user is not None:
+        address = user.getProperty('email', None)
+        fullname = user.getProperty('fullname', None)
+        if fullname and address:
+            address = email.utils.formataddr((fullname, address))
+        return address or None
