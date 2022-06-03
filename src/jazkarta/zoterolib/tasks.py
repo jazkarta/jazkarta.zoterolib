@@ -73,7 +73,7 @@ def index_zotero_items(
             library_obj._async_zotero_resume = start
             send_mail.delay(
                 subject=u'Error Indexing Zotero Library',
-                message=u'Zotero returned HTTPError on page {} of library {}. This was most likely the result of a temporary issue with the Zotero API, you can resume indexing at {}'.format(
+                message=u'Zotero returned HTTPError on page {} on library {}. This was most likely the result of a temporary issue with the Zotero API, you can resume indexing at {}'.format(
                     page,
                     library_obj.zotero_library_id,
                     library_obj.absolute_url() + '/update-items',
