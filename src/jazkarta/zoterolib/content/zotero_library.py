@@ -8,6 +8,7 @@ import pytz
 import six
 import uuid
 from AccessControl.SecurityInfo import ClassSecurityInfo
+from collections import namedtuple
 from DateTime import DateTime
 from plone import api
 from plone.dexterity.content import Item
@@ -27,6 +28,8 @@ from zope.event import notify
 from zope.interface import Interface
 from zope.interface import implementer
 from zope.lifecycleevent import ObjectCreatedEvent
+from zope.lifecycleevent.interfaces import IObjectAddedEvent
+from zope.lifecycleevent.interfaces import IObjectMovedEvent
 from zope.lifecycleevent.interfaces import IObjectRemovedEvent
 
 from jazkarta.zoterolib import _
@@ -181,6 +184,41 @@ def removeLibraryItemsOnDelete(library, event):
         ),
     )
     library.clear_items()
+
+
+@adapter(IZoteroLibrary, IObjectMovedEvent)
+def reindexLibraryItemsOnMove(library, event):
+    # Some "move" events are actually deletions or adds
+    if IObjectRemovedEvent.providedBy(event) or IObjectAddedEvent.providedBy(event):
+        return
+    catalog = getToolByName(library, "portal_catalog")
+    _catalog = catalog._catalog
+    path_index = _catalog.getIndex('path')
+    old_path = '/'.join(event.oldParent.getPhysicalPath() + (event.oldName,))
+    brains = catalog.unrestrictedSearchResults(
+        portal_type='ExternalZoteroItem', path={'query': old_path, 'depth': -1}
+    )
+    logger.log(
+        logging.INFO,
+        u'Moving {} indexed library contents for library at: {}'.format(
+            len(brains), library.absolute_url(1)
+        ),
+    )
+    path_tuple = namedtuple('path_obj', ['path'])
+    for b in brains:
+        # Use catalog internals to manually move catalog data
+        # Catalog metadata should remain unchanged
+        old_path = b.getPath()
+        new_path = '/'.join(library.getPhysicalPath() + ("zotero_items", b.getId))
+        rid = _catalog.uids[old_path]
+        del _catalog.uids[old_path]
+        _catalog.uids[new_path] = rid
+        del _catalog.paths[rid]
+        _catalog.paths[rid] = new_path
+        # Update path index
+        path_obj = path_tuple(new_path)
+        path_index.unindex_object(rid)
+        path_index.index_object(rid, path_obj)
 
 
 class IExternalZoteroItem(Interface):
@@ -368,7 +406,7 @@ class BrainProxy(Acquisition.Implicit):
     def __getattr__(self, name):
         if name in ('getObject', 'getPath', 'getURL'):
             # We are not a brain
-            raise AttributeError
+            raise AttributeError(name)
         # Get it from the brain
         value = getattr(Acquisition.aq_base(self.brain), name, Missing.Value)
         if value is Missing.Value:
@@ -379,5 +417,31 @@ class BrainProxy(Acquisition.Implicit):
             return lambda: value
         return value
 
+    @property
+    def path(self):
+        return "/".join(
+            self.__parent__.getPhysicalPath() + ("zotero_items", self.getId())
+        )
+
     def getPhysicalPath(self):
-        return self.brain.getPath().split("/")
+        return self.path.split("/")
+
+    def created(self):
+        date = self.CreationDate()
+        if date is not None:
+            return DateTime(date)
+
+    def modified(self):
+        date = self.ModificationDate()
+        if date is not None:
+            return DateTime(date)
+
+    def effective(self):
+        date = self.EffectiveDate()
+        if date is not None:
+            return DateTime(date)
+
+    def AuthorItems(self):
+        authors = self.Authors()
+        if authors:
+            return authors.split(", ")

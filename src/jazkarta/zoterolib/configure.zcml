@@ -44,6 +44,7 @@
       />
 
   <subscriber handler=".content.zotero_library.removeLibraryItemsOnDelete" />
+  <subscriber handler=".content.zotero_library.reindexLibraryItemsOnMove" />
 
 
 </configure>
