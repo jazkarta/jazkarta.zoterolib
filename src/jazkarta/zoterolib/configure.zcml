@@ -3,12 +3,17 @@
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     xmlns:i18n="http://namespaces.zope.org/i18n"
     xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
     i18n_domain="jazkarta.zoterolib">
 
   <i18n:registerTranslations directory="locales" />
 
   <include file="permissions.zcml" />
   <include package=".browser" />
+
+  <configure zcml:condition="installed eea.facetednavigation">
+    <include file="faceted.zcml" />
+  </configure>
 
   <genericsetup:registerProfile
       name="default"
