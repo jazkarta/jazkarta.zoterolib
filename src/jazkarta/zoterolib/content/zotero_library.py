@@ -214,7 +214,7 @@ class ExternalZoteroItem(Acquisition.Implicit):
 
     @property
     def Type(self):
-        ref_type = self.zotero_item["data"]["itemType"]
+        ref_type = self.zotero_item["data"].get("itemType") or "Bibliographic"
         type_name = camel_case_splitter(ref_type)
         return plone_encode(type_name) + " Reference"
 
@@ -244,13 +244,18 @@ class ExternalZoteroItem(Acquisition.Implicit):
         ]
 
     def Title(self):
-        return plone_encode(self.zotero_item["data"]["title"])
+        return plone_encode(
+            self.zotero_item["data"].get("title")
+            or self.zotero_item["data"].get("shortTitle")
+            or self.zotero_item.get("citation")
+            or ""
+        )
 
     def sortable_title(self):
         return self.Title().lower()
 
     def Description(self):
-        return plone_encode(self.zotero_item["bib"])
+        return plone_encode(self.zotero_item.get("bib") or "")
 
     def Subject(self):
         return [

@@ -93,7 +93,7 @@ class UpdateLibraryForm(z3c.form.form.Form):
         start_time = time.time()
         self.context.clear_items()
         if has_celery:
-            index_zotero_items.delay(self.context, 0, 100)
+            index_zotero_items.delay(self.context, 0, 50)
             self.status = _(
                 u"Started indexing Zotero Library. The site admin will recieve an email when the indexing is completed."
             )

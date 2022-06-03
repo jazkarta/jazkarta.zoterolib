@@ -47,14 +47,29 @@ def index_zotero_items(
         style=library_obj.citation_style,
     )
     logger.info(
-        "Fetching page {} from Zotero Library {} %s".format(page, library_obj.id)
+        "Fetching page {} from Zotero Library {}.".format(
+            page, library_obj.zotero_library_id
+        )
     )
     for item in current_batch:
         library_obj.index_element(item)
 
     if index_next and "next" in zotero_api.links:
-        index_zotero_items.delay(
-            library_obj, next, batch_size, index_next=index_next, orig_start=orig_start
+        # The API response may have asked us to back-off. Respect it.
+        wait_time = 0
+        if zotero_api.backoff:
+            # Wait 10 more seconds than requested, with a minimum of 10 seconds
+            wait_time = max(round(zotero_api.backoff_duration - time.time()), 0) + 10
+            logger.warn(
+                "Got backoff response from from Zotero Library {}. Waiting {} seconds for next fetch.".format(
+                    library_obj.zotero_library_id, wait_time
+                )
+            )
+
+        index_zotero_items.apply_async(
+            (library_obj, next, batch_size),
+            {'index_next': index_next, 'orig_start': orig_start},
+            countdown=max(wait_time, 0),
         )
     else:
         send_mail.delay(
