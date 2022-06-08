@@ -2,6 +2,8 @@
   xmlns="http://namespaces.zope.org/zope"
   xmlns:zcml="http://namespaces.zope.org/zcml">
 
+  <subscriber handler=".faceted.modify_eea_query" />
+
   <class class=".content.zotero_library.ZoteroLibrary">
     <implements interface="eea.facetednavigation.interfaces.IPossibleFacetedNavigable" />
   </class>

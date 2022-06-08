@@ -136,6 +136,12 @@ class ZoteroLibrary(Item):
         for brain in contents:
             catalog.uncatalog_object(brain.getPath())
 
+    def query(self):
+        return {
+            'portal_type': 'ExternalZoteroItem',
+            'path': {'query': '/'.join(self.getPhysicalPath()), 'depth': -1},
+        }
+
     @security.protected(permissions.View)
     def queryCatalog(self, batch=True, b_start=0, b_size=30, sort_on=None):
         return self.results(batch, b_start, b_size, sort_on=sort_on)
@@ -151,11 +157,8 @@ class ZoteroLibrary(Item):
         brains=False,
         custom_query=None,
     ):
-        query = {
-            'portal_type': 'ExternalZoteroItem',
-            'path': {'query': '/'.join(self.getPhysicalPath()), 'depth': -1},
-            'sort_on': sort_on or 'sortable_title',
-        }
+        query = self.query()
+        query['sort_on'] = sort_on or 'sortable_title'
         if limit:
             query['sort_limit'] = limit
         if custom_query:
