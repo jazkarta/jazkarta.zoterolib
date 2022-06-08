@@ -275,6 +275,8 @@ class ExternalZoteroItem(Acquisition.Implicit):
     def Authors(self):
         return ", ".join(plone_encode(v) for v in self.AuthorItems())
 
+    getAuthors = Authors
+
     def AuthorItems(self):
         return [
             plone_encode(el.get("firstName", ""))
