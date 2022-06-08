@@ -13,6 +13,7 @@ from Products.CMFPlone.interfaces.controlpanel import IMailSchema
 from Products.CMFPlone.utils import safe_encode
 from pyzotero import zotero
 from pyzotero.zotero_errors import HTTPError
+from requests.exceptions import RequestException
 from zope.component import getUtility
 
 from .utils import get_user_email
@@ -61,7 +62,7 @@ def index_zotero_items(
             include="data,bib,citation",
             style=library_obj.citation_style,
         )
-    except HTTPError:
+    except (HTTPError, RequestException):
         logger.warn(
             "HTTPError while requesting page {} of Zotero library {}.".format(
                 page, library_obj.zotero_library_id
