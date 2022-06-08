@@ -3,7 +3,6 @@ import z3c.form
 from datetime import timedelta
 from plone import api
 from Products.Five.browser import BrowserView
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zExceptions import Forbidden
 from zExceptions import NotFound
 from zope.interface import implementer
@@ -23,7 +22,6 @@ except ImportError:
 class ZoteroItemView(BrowserView):
     """Traversal view to render a single Zotero record"""
 
-    index = ViewPageTemplateFile("item_view.pt")
     item_path = ""
     item = None
 
