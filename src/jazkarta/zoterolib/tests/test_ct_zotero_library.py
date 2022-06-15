@@ -14,7 +14,13 @@ try:
 except ImportError:
     from plone.testing.z2 import Browser
 from zope.component import createObject, queryUtility
+import requests_mock
+import os
+from .mock_data import fill_mocker
 import unittest
+
+
+REAL_HTTP = bool(os.environ.get("REAL_HTTP"))
 
 
 class ZoteroLibraryIntegrationTest(unittest.TestCase):
@@ -116,7 +122,9 @@ class ZoteroLibraryIndexTest(unittest.TestCase):
         api.content.transition(obj=self.obj, transition="publish")
 
     def test_index_external_item(self):
-        self.obj.index_element(TEST_ENTRY)
+        with requests_mock.Mocker() as m:
+            fill_mocker(m)
+            self.obj.index_element(TEST_ENTRY)
         results = self.catalog.searchResults(getAuthors="Isaksen")
         self.assertEqual(len(results), 1)
         self.assertEqual(
@@ -126,12 +134,16 @@ class ZoteroLibraryIndexTest(unittest.TestCase):
         self.assertEqual(results[0].portal_type, "ExternalZoteroItem")
 
     def test_fetch_external_items(self):
-        result_iterator = self.obj.fetch_items()
-        result = tuple(result_iterator)
-        self.assertTrue(len(result) > 150)
+        with requests_mock.Mocker() as m:
+            fill_mocker(m)
+            result_iterator = self.obj.fetch_items()
+            result = tuple(result_iterator)
+            self.assertTrue(len(result) > 150)
 
     def test_fetch_and_index_external_items(self):
-        self.obj.fetch_and_index_items()
+        with requests_mock.Mocker() as m:
+            fill_mocker(m)
+            self.obj.fetch_and_index_items()
         results = self.catalog.searchResults(
             getAuthors=plone_encode(u"Cañamares"), sort_on="effective"
         )
@@ -144,7 +156,9 @@ class ZoteroLibraryIndexTest(unittest.TestCase):
         )
 
     def test_update_items(self):
-        self.obj.fetch_and_index_items()
+        with requests_mock.Mocker(real_http=REAL_HTTP) as m:
+            fill_mocker(m)
+            self.obj.fetch_and_index_items()
         self.assertEqual(
             len(self.catalog.searchResults(portal_type="ExternalZoteroItem")), 180
         )
@@ -157,7 +171,9 @@ class ZoteroLibraryIndexTest(unittest.TestCase):
         self.assertEqual(
             len(self.catalog.searchResults(portal_type="ExternalZoteroItem")), 170
         )
-        self.obj.update_items()
+        with requests_mock.Mocker(real_http=REAL_HTTP) as m:
+            fill_mocker(m)
+            self.obj.update_items()
         results = self.catalog.searchResults(portal_type="ExternalZoteroItem")
         self.assertEqual(len(results), 180)
 
