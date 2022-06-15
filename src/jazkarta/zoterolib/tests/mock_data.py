@@ -9,6 +9,7 @@ The http requests will be saved in the data folder to be replayed later.
 from hashlib import sha256
 import json
 import os
+import sys
 import requests
 import requests.api
 
@@ -26,24 +27,24 @@ if REAL_HTTP:
     requests.api.get = requests.get = alternative_get
 RESPONSES_MAP = {}
 
+
+def read_file(path):
+    if sys.version_info.major < 3:
+        with open(path, "r") as f:
+            return f.read().decode("utf-8")
+    else:
+        with open(path, "r", encoding="utf-8") as f:
+            return f.read()
+
+
 for filename in os.listdir(DATA_DIR):
     if not filename.endswith(".txt"):
         continue
     hash = filename[:-4]
-    url = (
-        open(os.path.join(os.path.dirname(__file__), "data", "%s.url" % hash))
-        .read()
-        .decode("utf-8")
-    )
-    body = (
-        open(os.path.join(os.path.dirname(__file__), "data", "%s.txt" % hash))
-        .read()
-        .decode("utf-8")
-    )
-    headers_txt = (
-        open(os.path.join(os.path.dirname(__file__), "data", "%s.headers.json" % hash))
-        .read()
-        .decode("utf-8")
+    url = read_file(os.path.join(os.path.dirname(__file__), "data", "%s.url" % hash))
+    body = read_file(os.path.join(os.path.dirname(__file__), "data", "%s.txt" % hash))
+    headers_txt = read_file(
+        os.path.join(os.path.dirname(__file__), "data", "%s.headers.json" % hash)
     )
     headers = json.loads(headers_txt)
     RESPONSES_MAP[hash] = {
