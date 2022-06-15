@@ -143,6 +143,24 @@ class ZoteroLibraryIndexTest(unittest.TestCase):
             ),
         )
 
+    def test_update_items(self):
+        self.obj.fetch_and_index_items()
+        self.assertEqual(
+            len(self.catalog.searchResults(portal_type="ExternalZoteroItem")), 180
+        )
+        # Simulate new items on Zotero by removing the ones with most recent modification time
+        to_delete = self.catalog.searchResults(
+            sort_on='modified', portal_type="ExternalZoteroItem"
+        )[-10:]
+        for brain in to_delete:
+            self.catalog.uncatalog_object(brain.getPath())
+        self.assertEqual(
+            len(self.catalog.searchResults(portal_type="ExternalZoteroItem")), 170
+        )
+        self.obj.update_items()
+        results = self.catalog.searchResults(portal_type="ExternalZoteroItem")
+        self.assertEqual(len(results), 180)
+
     def validate_example_item(self, item):
         self.assertEqual(item.portal_type, "ExternalZoteroItem")
         self.assertEqual(item.Type, "Journal Article Reference")
