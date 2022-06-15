@@ -69,8 +69,11 @@ setup(
             "plone.app.contenttypes",
             "plone.app.robotframework[debug]",
         ],
+        "celery": ["collective.celery"],
     },
     entry_points="""
+    [celery_tasks]
+    mypackage = jazkarta.zoterolib.tasks
     [z3c.autoinclude.plugin]
     target = plone
     [console_scripts]

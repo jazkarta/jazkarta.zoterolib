@@ -24,6 +24,7 @@
       name="zotero_items"
       permission="zope2.View"
       class=".views.ZoteroItemView"
+      template="item_view.pt"
       />
 
   <browser:page

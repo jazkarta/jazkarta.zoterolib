@@ -8,6 +8,7 @@ import pytz
 import six
 import uuid
 from AccessControl.SecurityInfo import ClassSecurityInfo
+from collections import namedtuple
 from DateTime import DateTime
 from plone import api
 from plone.dexterity.content import Item
@@ -18,7 +19,7 @@ from plone.batching import Batch
 from plone.uuid.interfaces import IUUID, IAttributeUUID, IMutableUUID
 from plone.app.z3cform.widget import AjaxSelectWidget
 from Products.CMFCore import permissions
-from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_encode, safe_unicode
 from pyzotero import zotero
 from zope import schema
@@ -27,12 +28,15 @@ from zope.event import notify
 from zope.interface import Interface
 from zope.interface import implementer
 from zope.lifecycleevent import ObjectCreatedEvent
+from zope.lifecycleevent.interfaces import IObjectAddedEvent
+from zope.lifecycleevent.interfaces import IObjectMovedEvent
 from zope.lifecycleevent.interfaces import IObjectRemovedEvent
 
 from jazkarta.zoterolib import _
 from jazkarta.zoterolib.utils import camel_case_splitter
 from jazkarta.zoterolib.utils import html_to_plain_text
 from jazkarta.zoterolib.utils import plone_encode
+
 
 logger = logging.getLogger(__name__)
 
@@ -79,7 +83,7 @@ class ZoteroLibrary(Item):
     def index_element(self, element):
         obj = ExternalZoteroItem(parent=self, zotero_item=element).__of__(self)
         notify(ObjectCreatedEvent(obj))
-        catalog = api.portal.get_tool("portal_catalog")
+        catalog = getToolByName(self, "portal_catalog")
         catalog.catalog_object(obj, uid=obj.path)
 
     def fetch_items(self, start=0, limit=100):
@@ -111,6 +115,9 @@ class ZoteroLibrary(Item):
                 current_batch = []
 
     def fetch_and_index_items(self, start=0, limit=100):
+        """Fetch ALL zotero items in batches of `limit` items
+        and index them in the catalog.
+        """
         count = 0
         for item in self.fetch_items(start, limit):
             self.index_element(item)
@@ -125,9 +132,15 @@ class ZoteroLibrary(Item):
                 len(contents), self.zotero_library_id
             ),
         )
-        catalog = get_portal_catalog(self)
+        catalog = getToolByName(self, "portal_catalog")
         for brain in contents:
             catalog.uncatalog_object(brain.getPath())
+
+    def query(self):
+        return {
+            'portal_type': 'ExternalZoteroItem',
+            'path': {'query': '/'.join(self.getPhysicalPath()), 'depth': -1},
+        }
 
     @security.protected(permissions.View)
     def queryCatalog(self, batch=True, b_start=0, b_size=30, sort_on=None):
@@ -144,11 +157,8 @@ class ZoteroLibrary(Item):
         brains=False,
         custom_query=None,
     ):
-        query = {
-            'portal_type': 'ExternalZoteroItem',
-            'path': {'query': '/'.join(self.getPhysicalPath()), 'depth': -1},
-            'sort_on': sort_on or 'sortable_title',
-        }
+        query = self.query()
+        query['sort_on'] = sort_on or 'sortable_title'
         if limit:
             query['sort_limit'] = limit
         if custom_query:
@@ -159,21 +169,13 @@ class ZoteroLibrary(Item):
                 # double batched
                 batch = False
             query.update(custom_query)
-        catalog = get_portal_catalog(self)
+        catalog = getToolByName(self, "portal_catalog")
         results = catalog(**query)
         if not brains:
             results = IContentListing(results)
         if batch:
             results = Batch(results, b_size, start=b_start)
         return results
-
-
-def get_portal_catalog(context):
-    """Return the portal_catalog object for the given object.
-    This is usually done with plone.api.portal.get(), but when
-    users delete a Plone site that will raise a CannotGetPortalError.
-    """
-    return getToolByName(context, "portal_catalog")
 
 
 @adapter(IZoteroLibrary, IObjectRemovedEvent)
@@ -185,6 +187,41 @@ def removeLibraryItemsOnDelete(library, event):
         ),
     )
     library.clear_items()
+
+
+@adapter(IZoteroLibrary, IObjectMovedEvent)
+def reindexLibraryItemsOnMove(library, event):
+    # Some "move" events are actually deletions or adds
+    if IObjectRemovedEvent.providedBy(event) or IObjectAddedEvent.providedBy(event):
+        return
+    catalog = getToolByName(library, "portal_catalog")
+    _catalog = catalog._catalog
+    path_index = _catalog.getIndex('path')
+    old_path = '/'.join(event.oldParent.getPhysicalPath() + (event.oldName,))
+    brains = catalog.unrestrictedSearchResults(
+        portal_type='ExternalZoteroItem', path={'query': old_path, 'depth': -1}
+    )
+    logger.log(
+        logging.INFO,
+        u'Moving {} indexed library contents for library at: {}'.format(
+            len(brains), library.absolute_url(1)
+        ),
+    )
+    path_tuple = namedtuple('path_obj', ['path'])
+    for b in brains:
+        # Use catalog internals to manually move catalog data
+        # Catalog metadata should remain unchanged
+        old_path = b.getPath()
+        new_path = '/'.join(library.getPhysicalPath() + ("zotero_items", b.getId))
+        rid = _catalog.uids[old_path]
+        del _catalog.uids[old_path]
+        _catalog.uids[new_path] = rid
+        del _catalog.paths[rid]
+        _catalog.paths[rid] = new_path
+        # Update path index
+        path_obj = path_tuple(new_path)
+        path_index.unindex_object(rid)
+        path_index.index_object(rid, path_obj)
 
 
 class IExternalZoteroItem(Interface):
@@ -212,9 +249,13 @@ class ExternalZoteroItem(Acquisition.Implicit):
         uid = str(uuid.uuid5(uuid.NAMESPACE_URL, item_href))
         IMutableUUID(self).set(uid)
 
+    def __getattr__(self, name):
+        # No implicit acquisition during indexing
+        return None
+
     @property
     def Type(self):
-        ref_type = self.zotero_item["data"]["itemType"]
+        ref_type = self.zotero_item["data"].get("itemType") or "Bibliographic"
         type_name = camel_case_splitter(ref_type)
         return plone_encode(type_name) + " Reference"
 
@@ -234,6 +275,8 @@ class ExternalZoteroItem(Acquisition.Implicit):
     def Authors(self):
         return ", ".join(plone_encode(v) for v in self.AuthorItems())
 
+    getAuthors = Authors
+
     def AuthorItems(self):
         return [
             plone_encode(el.get("firstName", ""))
@@ -244,18 +287,25 @@ class ExternalZoteroItem(Acquisition.Implicit):
         ]
 
     def Title(self):
-        return plone_encode(self.zotero_item["data"]["title"])
+        return plone_encode(
+            self.zotero_item["data"].get("title")
+            or self.zotero_item["data"].get("shortTitle")
+            or self.zotero_item.get("citation")
+            or ""
+        )
 
     def sortable_title(self):
         return self.Title().lower()
 
     def Description(self):
-        return plone_encode(self.zotero_item["bib"])
+        return plone_encode(self.zotero_item.get("bib") or "")
 
     def Subject(self):
         return [
             plone_encode(t["tag"]) for t in self.zotero_item["data"].get("tags", [])
         ]
+
+    getKeywords = bib_tags = Subject
 
     def SearchableText(self):
         """Concatenate text information into a single searchable field"""
@@ -361,7 +411,7 @@ class BrainProxy(Acquisition.Implicit):
     def __getattr__(self, name):
         if name in ('getObject', 'getPath', 'getURL'):
             # We are not a brain
-            raise AttributeError
+            raise AttributeError(name)
         # Get it from the brain
         value = getattr(Acquisition.aq_base(self.brain), name, Missing.Value)
         if value is Missing.Value:
@@ -372,5 +422,31 @@ class BrainProxy(Acquisition.Implicit):
             return lambda: value
         return value
 
+    @property
+    def path(self):
+        return "/".join(
+            self.__parent__.getPhysicalPath() + ("zotero_items", self.getId())
+        )
+
     def getPhysicalPath(self):
-        return self.brain.getPath().split("/")
+        return self.path.split("/")
+
+    def created(self):
+        date = self.CreationDate()
+        if date is not None:
+            return DateTime(date)
+
+    def modified(self):
+        date = self.ModificationDate()
+        if date is not None:
+            return DateTime(date)
+
+    def effective(self):
+        date = self.EffectiveDate()
+        if date is not None:
+            return DateTime(date)
+
+    def AuthorItems(self):
+        authors = self.Authors()
+        if authors:
+            return authors.split(", ")
