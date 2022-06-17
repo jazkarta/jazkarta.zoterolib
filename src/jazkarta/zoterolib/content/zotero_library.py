@@ -115,13 +115,20 @@ class ZoteroLibrary(Item):
             else:
                 current_batch = []
 
+    def get_most_recent_obj_date(self):
+        """Return a string representing the most recent modification date of an object in this library."""
+        catalog = getToolByName(self, "portal_catalog")
+        most_recent_objs = catalog.searchResults(
+            sort_on='modified', portal_type="ExternalZoteroItem"
+        )
+        if most_recent_objs:
+            most_recent_obj = most_recent_objs[-1]
+            return most_recent_obj.modified.strftime("%Y-%m-%dT%H:%M:%SZ")
+        return ""
+
     def update_items(self, start=0, limit=100):
         """Update all items in the catalog fetching only items that have been modified since the last update."""
-        catalog = getToolByName(self, "portal_catalog")
-        most_recent_obj = catalog.searchResults(
-            sort_on='modified', portal_type="ExternalZoteroItem"
-        )[-1]
-        most_recent_date = most_recent_obj.modified.strftime("%Y-%m-%dT%H:%M:%SZ")
+        most_recent_date = self.get_most_recent_obj_date()
         count = 0
         for item in self.fetch_items(start, limit):
             if item["data"]["dateModified"] < most_recent_date:

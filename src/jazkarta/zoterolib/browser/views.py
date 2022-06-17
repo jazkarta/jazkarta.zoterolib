@@ -106,8 +106,8 @@ class UpdateLibraryForm(z3c.form.form.Form):
             u"Resumed indexing Zotero Library. You will recieve an email when indexing is completed."
         )
 
-    @z3c.form.button.buttonAndHandler(_(u'Update Library'))
-    def handleUpdate(self, action):
+    @z3c.form.button.buttonAndHandler(_(u'Clear and Update Library'))
+    def handleClearAndUpdate(self, action):
         if self.request.get('REQUEST_METHOD', 'GET').upper() != 'POST':
             raise Forbidden('Request must be POST')
         self.clear_resume()
@@ -125,3 +125,34 @@ class UpdateLibraryForm(z3c.form.form.Form):
                     count, str(timedelta(seconds=round(time.time() - start_time)))
                 )
             )
+
+    @z3c.form.button.buttonAndHandler(_(u'Update Library'))
+    def handleUpdate(self, action):
+        if self.request.get('REQUEST_METHOD', 'GET').upper() != 'POST':
+            raise Forbidden('Request must be POST')
+        if has_celery:
+            stop_at_date = self.context.get_most_recent_obj_date()
+            index_zotero_items.delay(
+                self.context,
+                start=0,
+                batch_size=self.batch_size,
+                stop_at_date=stop_at_date,
+            )
+            self.status = _(
+                u"Started updating Zotero Library. Updates since %s will be fetched. You will recieve an email when indexing is completed."
+                % stop_at_date
+            )
+        else:
+            start_time = time.time()
+            count = self.context.update_items()
+            self.status = _(
+                u"Updated {} items from Zotero in {}".format(
+                    count, str(timedelta(seconds=round(time.time() - start_time)))
+                )
+            )
+
+
+# Uncomment this to use eager mode (tasks are run inside the http server thread)
+# Useful for debugging
+# from collective.celery.utils import getCelery
+# getCelery().conf.task_always_eager = True

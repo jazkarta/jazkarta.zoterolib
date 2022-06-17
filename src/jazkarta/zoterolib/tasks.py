@@ -29,7 +29,13 @@ utils._defaults["accept_content"] = ["application/json"]
 
 @task(bind=True, autoretry_for=(HTTPError,), retry_backoff=30, max_retries=4)
 def index_zotero_items(
-    self, library_obj, start, batch_size, index_next=True, orig_start_time=None
+    self,
+    library_obj,
+    start,
+    batch_size,
+    index_next=True,
+    orig_start_time=None,
+    stop_at_date="",
 ):
     """
     Index all elements in a Zotero library in batches of the given size.
@@ -61,6 +67,7 @@ def index_zotero_items(
             limit=batch_size,
             include="data,bib,citation",
             style=library_obj.citation_style,
+            sort="dateModified",
         )
     except (HTTPError, RequestException):
         logger.warn(
@@ -85,6 +92,10 @@ def index_zotero_items(
         raise
     for item in current_batch:
         library_obj.index_element(item)
+        if item["data"]["dateModified"] < stop_at_date:
+            # In this case we finish updating the catalog with objects already fetched,
+            # but prevent the next run from happening
+            index_next = False
 
     if index_next and "next" in zotero_api.links:
         # The API response may have asked us to back-off. Respect it.
@@ -105,13 +116,19 @@ def index_zotero_items(
             countdown=max(wait_time, 0),
         )
     else:
-        send_mail.delay(
-            subject=u'Zotero Library Indexing Completed',
-            message=u'Finished indexing {} items in {} on the Zotero Library at {}.'.format(
+        message = (
+            u'Finished indexing {} items in {} on the Zotero Library at {}.'.format(
                 start + len(current_batch),
                 library_obj.absolute_url(),
                 str(timedelta(seconds=round(time.time() - orig_start_time))),
-            ),
+            )
+        )
+
+        if stop_at_date:
+            message += "\nItems modified after %s were updated".format(stop_at_date)
+        send_mail.delay(
+            subject=u'Zotero Library Indexing Completed',
+            message=message,
             mto=get_user_email(),
         )
 
