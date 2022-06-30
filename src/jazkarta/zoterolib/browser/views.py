@@ -138,10 +138,15 @@ class UpdateLibraryForm(z3c.form.form.Form):
                 batch_size=self.batch_size,
                 stop_at_date=stop_at_date,
             )
-            self.status = _(
-                u"Started updating Zotero Library. Updates since %s will be fetched. You will recieve an email when indexing is completed."
-                % stop_at_date
-            )
+            if not stop_at_date:
+                self.status = _(
+                    u"Started updating Zotero Library. Updates since %s will be fetched. You will recieve an email when indexing is completed."
+                    % stop_at_date
+                )
+            else:
+                self.status = _(
+                    u"Started updating Zotero Library. All items be fetched. You will recieve an email when indexing is completed."
+                )
         else:
             start_time = time.time()
             count = self.context.update_items()

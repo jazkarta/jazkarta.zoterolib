@@ -119,7 +119,9 @@ class ZoteroLibrary(Item):
         """Return a string representing the most recent modification date of an object in this library."""
         catalog = getToolByName(self, "portal_catalog")
         most_recent_objs = catalog.searchResults(
-            sort_on='modified', portal_type="ExternalZoteroItem"
+            sort_on='modified',
+            portal_type="ExternalZoteroItem",
+            path='/'.join(self.getPhysicalPath()),
         )
         if most_recent_objs:
             most_recent_obj = most_recent_objs[-1]
