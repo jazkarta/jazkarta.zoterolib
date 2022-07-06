@@ -90,12 +90,14 @@ def index_zotero_items(
             )
             transaction.commit()
         raise
+    count = 0
     for item in current_batch:
-        library_obj.index_element(item)
         if item["data"]["dateModified"] < stop_at_date:
-            # In this case we finish updating the catalog with objects already fetched,
-            # but prevent the next run from happening
+            # Stop indexing here, and prevent the next query from happening
             index_next = False
+            break
+        library_obj.index_element(item)
+        count += 1
 
     if index_next and "next" in zotero_api.links:
         # The API response may have asked us to back-off. Respect it.
@@ -117,15 +119,17 @@ def index_zotero_items(
         )
     else:
         message = (
-            u'Finished indexing {} items in {} on the Zotero Library at {}.'.format(
-                start + len(current_batch),
+            u'Finished indexing {} items in {} from the Zotero Library at {}.'.format(
+                start + count,
                 library_obj.absolute_url(),
                 str(timedelta(seconds=round(time.time() - orig_start_time))),
             )
         )
 
         if stop_at_date:
-            message += "\nItems modified after %s were updated".format(stop_at_date)
+            message += "\nOnly items modified after {} were updated".format(
+                stop_at_date
+            )
         send_mail.delay(
             subject=u'Zotero Library Indexing Completed',
             message=message,
