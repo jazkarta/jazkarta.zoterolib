@@ -1,0 +1,61 @@
+[
+    {
+        "key": "3RZL9GMH",
+        "version": 609,
+        "library": {
+            "type": "group",
+            "id": 242005,
+            "name": "ISAW Papers",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/groups/isaw_papers",
+                    "type": "text/html"
+                }
+            }
+        },
+        "links": {
+            "self": {
+                "href": "https://api.zotero.org/groups/242005/items/3RZL9GMH",
+                "type": "application/json"
+            },
+            "alternate": {
+                "href": "https://www.zotero.org/groups/isaw_papers/items/3RZL9GMH",
+                "type": "text/html"
+            },
+            "up": {
+                "href": "https://api.zotero.org/groups/242005/items/WWVNXIQ6",
+                "type": "application/json"
+            }
+        },
+        "meta": {
+            "createdByUser": {
+                "id": 50458,
+                "username": "sebastianheath",
+                "name": "Sebastian Heath",
+                "links": {
+                    "alternate": {
+                        "href": "https://www.zotero.org/sebastianheath",
+                        "type": "text/html"
+                    }
+                }
+            }
+        },
+        "data": {
+            "key": "3RZL9GMH",
+            "version": 609,
+            "parentItem": "WWVNXIQ6",
+            "itemType": "attachment",
+            "linkMode": "linked_url",
+            "title": "Google Books Link",
+            "accessDate": "2022-06-15T19:44:53Z",
+            "url": "https://www.google.com/books?id=R2VUEAAAQBAJ",
+            "note": "",
+            "contentType": "text/html",
+            "charset": "",
+            "tags": [],
+            "relations": {},
+            "dateAdded": "2022-06-15T19:44:53Z",
+            "dateModified": "2022-06-15T19:44:53Z"
+        }
+    }
+]

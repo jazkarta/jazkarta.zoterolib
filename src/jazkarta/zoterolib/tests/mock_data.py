@@ -9,6 +9,7 @@ The http requests will be saved in the data folder to be replayed later.
 from hashlib import sha256
 import json
 import os
+import six
 import sys
 import requests
 import requests.api
@@ -64,7 +65,10 @@ def fill_mocker(mock):
 def save_data(result, url):
     """Function to save a response to a json and header file"""
     hash = get_hash(url)
-    open(os.path.join(DATA_DIR, hash + '.txt'), 'w').write(result.text.encode("utf-8"))
+    text = result.text
+    if not six.PY3:
+        text = text.encode("utf-8")
+    open(os.path.join(DATA_DIR, hash + '.txt'), 'w').write(text)
     headers = dict(result.headers)
     if "Content-Encoding" in headers:
         del headers["Content-Encoding"]

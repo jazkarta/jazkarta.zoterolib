@@ -35,7 +35,7 @@ def index_zotero_items(
     batch_size,
     index_next=True,
     orig_start_time=None,
-    stop_at_date="",
+    since=0,
 ):
     """
     Index all elements in a Zotero library in batches of the given size.
@@ -68,7 +68,8 @@ def index_zotero_items(
             include="data,bib,citation",
             style=library_obj.citation_style,
             sort="dateModified",
-            direction="desc",
+            direction="asc",
+            since=since,
         )
     except (HTTPError, RequestException):
         logger.warn(
@@ -79,7 +80,7 @@ def index_zotero_items(
         if self.request.retries >= self.max_retries:
             transaction.abort()
             # Set the resume point, send email, and commit
-            library_obj._async_zotero_resume = start
+            library_obj._async_zotero_resume = True
             send_mail.delay(
                 subject=u'Error Indexing Zotero Library',
                 message=u'Zotero returned HTTPError on page {} on library {}. This was most likely the result of a temporary issue with the Zotero API, you can resume indexing at {}'.format(
@@ -93,12 +94,12 @@ def index_zotero_items(
         raise
     count = 0
     for item in current_batch:
-        if item["data"]["dateModified"] <= stop_at_date:
-            # Stop indexing here, and prevent the next query from happening
-            index_next = False
-            break
         library_obj.index_element(item)
         count += 1
+    if count:
+        # Store the version id of the most recent indexed object as the current
+        # library version id.
+        library_obj.update_modified_version(current_batch[-1]["version"])
 
     if index_next and "next" in zotero_api.links:
         # The API response may have asked us to back-off. Respect it.
@@ -115,27 +116,49 @@ def index_zotero_items(
 
         index_zotero_items.apply_async(
             (library_obj, next, batch_size),
-            {'index_next': index_next, 'orig_start_time': orig_start_time},
+            {
+                'index_next': index_next,
+                'orig_start_time': orig_start_time,
+                'since': since,
+            },
             countdown=max(wait_time, 0),
         )
     else:
+        library_obj.update_modified_version()
         message = (
             u'Finished indexing {} items in {} from the Zotero Library at {}.'.format(
                 start + count,
-                library_obj.absolute_url(),
                 str(timedelta(seconds=round(time.time() - orig_start_time))),
+                library_obj.absolute_url(),
             )
         )
 
-        if stop_at_date:
-            message += "\nOnly items modified after {} were updated".format(
-                stop_at_date
+        if since:
+            message += "\nOnly items modified after version {} were updated".format(
+                since
             )
         send_mail.delay(
             subject=u'Zotero Library Indexing Completed',
             message=message,
             mto=get_user_email(),
         )
+    return {"updated": count}
+
+
+@task(bind=True, autoretry_for=(HTTPError,), retry_backoff=30, max_retries=4)
+def remove_recently_deleted(self, library_obj, since=None):
+    count = library_obj.remove_recently_deleted(since=since)
+    message = u'Removed {} items deleted since version {} from the Zotero Library at {}.'.format(
+        count,
+        since,
+        library_obj.absolute_url(),
+    )
+    send_mail.delay(
+        subject=u'Removed Zotero Library Items',
+        message=message,
+        mto=get_user_email(),
+    )
+    return {"removed": count}
 
 
 @task.as_admin()

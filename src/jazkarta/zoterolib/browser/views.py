@@ -12,6 +12,7 @@ from jazkarta.zoterolib import _
 
 try:
     from jazkarta.zoterolib.tasks import index_zotero_items
+    from jazkarta.zoterolib.tasks import remove_recently_deleted
 
     has_celery = True
 except ImportError:
@@ -97,11 +98,8 @@ class UpdateLibraryForm(z3c.form.form.Form):
         _(u'Resume Library Indexing'), condition=_resumable
     )
     def handleResume(self, action):
-        if self.request.get('REQUEST_METHOD', 'GET').upper() != 'POST':
-            raise Forbidden('Request must be POST')
-        resume = self.context._async_zotero_resume
+        self.handleUpdate.func(self, action)
         self.clear_resume()
-        index_zotero_items.delay(self.context, resume, self.batch_size)
         self.status = _(
             u"Resumed indexing Zotero Library. You will recieve an email when indexing is completed."
         )
@@ -131,17 +129,20 @@ class UpdateLibraryForm(z3c.form.form.Form):
         if self.request.get('REQUEST_METHOD', 'GET').upper() != 'POST':
             raise Forbidden('Request must be POST')
         if has_celery:
-            stop_at_date = self.context.get_most_recent_obj_date()
+            last_version = self.context.last_modified_version
+            remove_recently_deleted.delay(self.context, since=last_version)
             index_zotero_items.delay(
                 self.context,
                 start=0,
                 batch_size=self.batch_size,
-                stop_at_date=stop_at_date,
+                since=last_version,
             )
-            if stop_at_date:
+            if last_version:
+                if self._resumable:
+                    self.clear_resume()
                 self.status = _(
-                    u"Started updating Zotero Library. Updates since %s will be fetched. You will recieve an email when indexing is completed."
-                    % stop_at_date
+                    u"Started updating Zotero Library. Updates since version %s will be fetched. You will recieve an email when indexing is completed."
+                    % last_version
                 )
             else:
                 self.status = _(
@@ -149,10 +150,12 @@ class UpdateLibraryForm(z3c.form.form.Form):
                 )
         else:
             start_time = time.time()
-            count = self.context.update_items()
+            counts = self.context.update_items()
             self.status = _(
-                u"Updated {} items from Zotero in {}".format(
-                    count, str(timedelta(seconds=round(time.time() - start_time)))
+                u"Indexed {} and removed {} items from Zotero in {}".format(
+                    counts['updated'],
+                    counts['removed'],
+                    str(timedelta(seconds=round(time.time() - start_time))),
                 )
             )
 

@@ -84,6 +84,7 @@ class ZoteroLibrary(Item):
     """Content-type class for IZoteroLibrary"""
 
     security = ClassSecurityInfo()
+    _last_modified = 0
 
     def index_element(self, element):
         obj = ExternalZoteroItem(parent=self, zotero_item=element).__of__(self)
@@ -91,7 +92,7 @@ class ZoteroLibrary(Item):
         catalog = getToolByName(self, "portal_catalog")
         catalog.catalog_object(obj, uid=obj.path)
 
-    def fetch_items(self, start=0, limit=100):
+    def fetch_items(self, start=0, limit=100, since=0):
         """Iterates over ALL remote items, starting at the given offset.
         The limit will be used to determine how many items to retrieve at once.
         """
@@ -103,7 +104,8 @@ class ZoteroLibrary(Item):
             include="data,bib,citation",
             style=self.citation_style,
             sort="dateModified",
-            direction="desc",
+            direction="asc",
+            since=since,
         )
         page = 1
         while current_batch:
@@ -121,40 +123,54 @@ class ZoteroLibrary(Item):
             else:
                 current_batch = []
 
-    def get_most_recent_obj_date(self):
-        """Return a string representing the most recent modification date of an object in this library."""
-        catalog = getToolByName(self, "portal_catalog")
-        most_recent_objs = catalog.searchResults(
-            portal_type="ExternalZoteroItem",
-            path='/'.join(self.getPhysicalPath()),
-            sort_on='modified',
-            sort_order='descending',
-            sort_limit=1,
-        )
-        for obj in most_recent_objs:
-            if obj.modified:
-                return obj.modified.HTML4()
-        return ""
+    @property
+    def last_modified_version(self):
+        return self._last_modified
+
+    def update_modified_version(self, version=None):
+        if version is None:
+            zotero_api = zotero.Zotero(self.zotero_library_id, self.zotero_library_type)
+            version = zotero_api.last_modified_version()
+        self._last_modified = version
+        return self._last_modified
 
     def update_items(self, start=0, limit=100):
-        """Update all items in the catalog fetching only items that have been modified since the last update."""
-        most_recent_date = self.get_most_recent_obj_date()
-        count = 0
-        for item in self.fetch_items(start, limit):
-            if item["data"]["dateModified"] <= most_recent_date:
-                break
-            self.index_element(item)
-            count += 1
-        return count
+        last_modified = self.last_modified_version
+        removed = self.remove_recently_deleted()
+        updated = self.fetch_and_index_items(start, limit, last_modified)
+        return {'removed': removed, 'updated': updated}
 
-    def fetch_and_index_items(self, start=0, limit=100):
-        """Fetch ALL zotero items in batches of `limit` items
-        and index them in the catalog.
+    def fetch_and_index_items(self, start=0, limit=100, since=0):
+        """Fetch ALL zotero items in batches of `limit` items, since the
+        specified version, and index them in the catalog.
         """
         count = 0
-        for item in self.fetch_items(start, limit):
+        for item in self.fetch_items(start, limit, since):
             self.index_element(item)
             count += 1
+
+        self.update_modified_version()
+        return count
+
+    def remove_recently_deleted(self, since=None):
+        if since is None:
+            since = self.last_modified_version
+        zotero_api = zotero.Zotero(self.zotero_library_id, self.zotero_library_type)
+        deleted = zotero_api.deleted(itemType='', since=since)
+        catalog = getToolByName(self, "portal_catalog")
+        count = 0
+        for key in deleted['items']:
+            try:
+                catalog.uncatalog_object(
+                    '/'.join(self.getPhysicalPath())
+                    + '/zotero_items/'
+                    + plone_encode(key)
+                )
+                count += 1
+            except KeyError:
+                logger.log(
+                    logging.INFO, 'Error removing deleted Zotero Item {}'.format(key)
+                )
         return count
 
     def clear_items(self):
