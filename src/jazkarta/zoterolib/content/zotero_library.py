@@ -59,6 +59,12 @@ class IZoteroLibrary(model.Schema):
 
     citation_style = schema.Choice(
         title=_(u"Citation Style Format"),
+        description=_(
+            u'If you change this value on a populated Zotero '
+            u'Library you will need to use "Clear and Update Library" '
+            u'from the "Update Zotero Library" action on the '
+            u'Actions menu to bring in the new style.'
+        ),
         required=True,
         default=u"modern-language-association",
         vocabulary=u'jazkarta.zoterolib.citations-styles',
