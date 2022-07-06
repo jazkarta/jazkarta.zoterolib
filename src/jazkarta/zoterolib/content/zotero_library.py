@@ -97,6 +97,7 @@ class ZoteroLibrary(Item):
             limit=limit,
             include="data,bib,citation",
             style=self.citation_style,
+            sort="dateModified",
         )
         page = 1
         while current_batch:
@@ -113,6 +114,32 @@ class ZoteroLibrary(Item):
                 page += 1
             else:
                 current_batch = []
+
+    def get_most_recent_obj_date(self):
+        """Return a string representing the most recent modification date of an object in this library."""
+        catalog = getToolByName(self, "portal_catalog")
+        most_recent_objs = catalog.searchResults(
+            portal_type="ExternalZoteroItem",
+            path='/'.join(self.getPhysicalPath()),
+            sort_on='modified',
+            sort_order='descending',
+            sort_limit=1,
+        )
+        if most_recent_objs:
+            most_recent_obj = most_recent_objs[0]
+            return most_recent_obj.modified.HTML4()
+        return ""
+
+    def update_items(self, start=0, limit=100):
+        """Update all items in the catalog fetching only items that have been modified since the last update."""
+        most_recent_date = self.get_most_recent_obj_date()
+        count = 0
+        for item in self.fetch_items(start, limit):
+            if item["data"]["dateModified"] < most_recent_date:
+                break
+            self.index_element(item)
+            count += 1
+        return count
 
     def fetch_and_index_items(self, start=0, limit=100):
         """Fetch ALL zotero items in batches of `limit` items
