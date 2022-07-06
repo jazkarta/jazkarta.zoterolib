@@ -297,6 +297,9 @@ class ExternalZoteroItem(Acquisition.Implicit):
     def citationLabel(self):
         return plone_encode(self.zotero_item.get("citation") or "")
 
+    def Source(self):
+        return plone_encode(self.zotero_item.get("publicationTitle") or "")
+
     def sortable_title(self):
         return self.Title().lower()
 
