@@ -10,7 +10,6 @@ import uuid
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from collections import namedtuple
 from DateTime import DateTime
-from plone import api
 from plone.dexterity.content import Item
 from plone.supermodel import model
 from plone.app.contentlisting.interfaces import IContentListing
@@ -348,7 +347,7 @@ class ExternalZoteroItem(Acquisition.Implicit):
         )
 
     def CreationDate(self):
-        return self.zotero_item["data"].get("dateAdded")
+        return self.zotero_item["data"].get("dateAdded") or DateTime().HTML4()
 
     def created(self):
         date = self.CreationDate()
@@ -356,7 +355,7 @@ class ExternalZoteroItem(Acquisition.Implicit):
             return DateTime(date)
 
     def ModificationDate(self):
-        return self.zotero_item["data"].get("dateModified")
+        return self.zotero_item["data"].get("dateModified") or self.CreationDate()
 
     def modified(self):
         date = self.ModificationDate()
