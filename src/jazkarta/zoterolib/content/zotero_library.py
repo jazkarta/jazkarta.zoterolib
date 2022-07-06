@@ -98,6 +98,7 @@ class ZoteroLibrary(Item):
             include="data,bib,citation",
             style=self.citation_style,
             sort="dateModified",
+            direction="desc",
         )
         page = 1
         while current_batch:
@@ -135,7 +136,7 @@ class ZoteroLibrary(Item):
         most_recent_date = self.get_most_recent_obj_date()
         count = 0
         for item in self.fetch_items(start, limit):
-            if item["data"]["dateModified"] < most_recent_date:
+            if item["data"]["dateModified"] <= most_recent_date:
                 break
             self.index_element(item)
             count += 1
@@ -355,7 +356,7 @@ class ExternalZoteroItem(Acquisition.Implicit):
             return DateTime(date)
 
     def ModificationDate(self):
-        return self.zotero_item["data"].get("dateAdded")
+        return self.zotero_item["data"].get("dateModified")
 
     def modified(self):
         date = self.ModificationDate()

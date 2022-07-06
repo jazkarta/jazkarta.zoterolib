@@ -68,6 +68,7 @@ def index_zotero_items(
             include="data,bib,citation",
             style=library_obj.citation_style,
             sort="dateModified",
+            direction="desc",
         )
     except (HTTPError, RequestException):
         logger.warn(
@@ -92,7 +93,7 @@ def index_zotero_items(
         raise
     count = 0
     for item in current_batch:
-        if item["data"]["dateModified"] < stop_at_date:
+        if item["data"]["dateModified"] <= stop_at_date:
             # Stop indexing here, and prevent the next query from happening
             index_next = False
             break
