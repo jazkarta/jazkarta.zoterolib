@@ -125,9 +125,9 @@ class ZoteroLibrary(Item):
             sort_order='descending',
             sort_limit=1,
         )
-        if most_recent_objs:
-            most_recent_obj = most_recent_objs[0]
-            return most_recent_obj.modified.HTML4()
+        for obj in most_recent_objs:
+            if obj.modified:
+                return obj.modified.HTML4()
         return ""
 
     def update_items(self, start=0, limit=100):
