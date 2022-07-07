@@ -13,7 +13,7 @@ class ZoteroItemTitleViewlet(TitleViewlet):
             title = html_to_plain_text(title)
         else:
             title = item.title
-        return title
+        return title + self.sep + self.context.title
 
 
 class ZoteroItemDublinCoreViewlet(DublinCoreViewlet):
