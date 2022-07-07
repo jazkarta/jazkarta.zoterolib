@@ -478,6 +478,10 @@ class BrainProxy(Acquisition.Implicit):
         return value
 
     @property
+    def title(self):
+        return safe_unicode(self.Title())
+
+    @property
     def path(self):
         return "/".join(
             self.__parent__.getPhysicalPath() + ("zotero_items", self.getId())
@@ -500,6 +504,12 @@ class BrainProxy(Acquisition.Implicit):
         date = self.EffectiveDate()
         if date is not None:
             return DateTime(date)
+
+    def expires(self):
+        return None
+
+    def ExpirationDate(self):
+        return None
 
     def AuthorItems(self):
         authors = self.Authors()

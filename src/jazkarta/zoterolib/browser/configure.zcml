@@ -84,4 +84,20 @@
     </browser:pages>
   </configure>
 
+  <browser:viewlet
+    name="plone.htmlhead.title"
+    manager="plone.app.layout.viewlets.interfaces.IHtmlHead"
+    class=".viewlets.ZoteroItemTitleViewlet"
+    view=".views.ZoteroItemView"
+    permission="zope2.View"
+    />
+
+  <browser:viewlet
+    name="plone.htmlhead.dublincore"
+    manager="plone.app.layout.viewlets.interfaces.IHtmlHead"
+    class=".viewlets.ZoteroItemDublinCoreViewlet"
+    view=".views.ZoteroItemView"
+    permission="zope2.View"
+    />
+
 </configure>
