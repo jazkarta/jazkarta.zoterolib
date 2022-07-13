@@ -156,10 +156,11 @@ class ZoteroLibrary(Item):
         if since is None:
             since = self.last_modified_version
         zotero_api = zotero.Zotero(self.zotero_library_id, self.zotero_library_type)
-        deleted = zotero_api.deleted(itemType='', since=since)
+        trash = [i['key'] for i in zotero_api.deleted.trash()]
+        deleted = zotero_api.deleted(since=since)['items']
         catalog = getToolByName(self, "portal_catalog")
         count = 0
-        for key in deleted['items']:
+        for key in trash + deleted:
             try:
                 catalog.uncatalog_object(
                     '/'.join(self.getPhysicalPath())
