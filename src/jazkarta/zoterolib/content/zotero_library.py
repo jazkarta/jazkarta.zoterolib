@@ -156,7 +156,7 @@ class ZoteroLibrary(Item):
         if since is None:
             since = self.last_modified_version
         zotero_api = zotero.Zotero(self.zotero_library_id, self.zotero_library_type)
-        trash = [i['key'] for i in zotero_api.deleted.trash()]
+        trash = [i['key'] for i in zotero_api.trash()]
         deleted = zotero_api.deleted(since=since)['items']
         catalog = getToolByName(self, "portal_catalog")
         count = 0
