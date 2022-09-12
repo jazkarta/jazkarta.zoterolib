@@ -10,6 +10,7 @@ import uuid
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from collections import namedtuple
 from DateTime import DateTime
+from OFS.Traversable import Traversable
 from plone.dexterity.content import Item
 from plone.supermodel import model
 from plone.app.contentlisting.interfaces import IContentListing
@@ -21,6 +22,7 @@ from Products.CMFCore import permissions
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_encode, safe_unicode
 from pyzotero import zotero
+from zExceptions import NotFound
 from zope import schema
 from zope.component import adapter
 from zope.event import notify
@@ -425,7 +427,7 @@ class ExternalZoteroItem(Acquisition.Implicit):
         return IUUID(self)
 
 
-class BrainProxy(Acquisition.Implicit):
+class BrainProxy(Traversable, Acquisition.Implicit):
 
     callables = frozenset(
         (
@@ -489,7 +491,7 @@ class BrainProxy(Acquisition.Implicit):
         )
 
     def getPhysicalPath(self):
-        return self.path.split("/")
+        return tuple(self.path.split("/"))
 
     def created(self):
         date = self.CreationDate()

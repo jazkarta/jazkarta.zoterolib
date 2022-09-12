@@ -2,11 +2,15 @@ import time
 import z3c.form
 from datetime import timedelta
 from plone import api
+from Products.CMFCore.utils import _checkPermission
 from Products.Five.browser import BrowserView
 from zExceptions import Forbidden
 from zExceptions import NotFound
+from zope.component import queryMultiAdapter
 from zope.interface import implementer
+from zope.location.interfaces import LocationError
 from zope.publisher.interfaces import IPublishTraverse
+from zope.traversing.namespace import view as ViewTraverser
 from jazkarta.zoterolib.content.zotero_library import BrainProxy
 from jazkarta.zoterolib import _
 
@@ -17,6 +21,11 @@ try:
     has_celery = True
 except ImportError:
     has_celery = False
+
+try:
+    from Products.RedirectionTool.permissions import ModifyAliases
+except ImportError:
+    ModifyAliases = 'Impossible Permission that nobody has'
 
 
 @implementer(IPublishTraverse)
@@ -67,12 +76,25 @@ class ZoteroItemView(BrowserView):
             return self
         return item
 
+    def can_set_aliases(self):
+        return _checkPermission(ModifyAliases, self.context)
+
     def __call__(self, *args, **kw):
         self.item = self.fetch_item_for_path()
         # Raise a 404 when the object doesn't exist
         if self.item is None:
             raise NotFound
         return self.index(*args, **kw)
+
+
+class ZoteroItemViewTraverser(ViewTraverser):
+    def traverse(self, name, ignored):
+        context = self.context.fetch_item_for_path()
+        view = queryMultiAdapter((context, self.request), name=name)
+        if view is None:
+            raise LocationError(context, name)
+
+        return view.__of__(context)
 
 
 class UpdateLibraryForm(z3c.form.form.Form):
