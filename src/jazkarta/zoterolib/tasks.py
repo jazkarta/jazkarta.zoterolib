@@ -86,7 +86,7 @@ def index_zotero_items(
                 message=u'Zotero returned HTTPError on page {} on library {}. This was most likely the result of a temporary issue with the Zotero API, you can resume indexing at {}'.format(
                     page,
                     library_obj.zotero_library_id,
-                    library_obj.absolute_url() + '/update-items',
+                    content_path(library_obj) + '/update-items',
                 ),
                 mto=get_user_email(),
             )
@@ -129,7 +129,7 @@ def index_zotero_items(
             u'Finished indexing {} items in {} from the Zotero Library at {}.'.format(
                 start + count,
                 str(timedelta(seconds=round(time.time() - orig_start_time))),
-                library_obj.absolute_url(),
+                content_path(library_obj),
             )
         )
 
@@ -151,7 +151,7 @@ def remove_recently_deleted(self, library_obj, since=None):
     message = u'Removed {} items deleted since version {} from the Zotero Library at {}.'.format(
         count,
         since,
-        library_obj.absolute_url(),
+        content_path(library_obj),
     )
     send_mail.delay(
         subject=u'Removed Zotero Library Items',
@@ -186,3 +186,11 @@ def send_mail(subject, message, mfrom=None, mto=None):
 
     mailhost = portal.MailHost
     mailhost.send(msg, subject=subject, mfrom=mfrom, mto=mto, charset='utf-8')
+
+
+def content_path(obj):
+    portal_path = obj.unrestrictedTraverse(
+        '@@plone_portal_state'
+    ).navigation_root_path()
+    obj_path = '/'.join(obj.getPhysicalPath())
+    return obj_path[len(portal_path) :]
