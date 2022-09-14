@@ -40,6 +40,7 @@ from jazkarta.zoterolib.utils import plone_encode
 
 
 logger = logging.getLogger(__name__)
+INDEXED_ZOTERO_CREATOR_TYPES = set()
 
 
 class IZoteroLibrary(model.Schema):
@@ -335,7 +336,8 @@ class ExternalZoteroItem(Acquisition.Implicit):
             + " "
             + plone_encode(el.get("lastName", ""))
             for el in self.zotero_item["data"].get("creators", [])
-            if el["creatorType"] == "author"
+            if not INDEXED_ZOTERO_CREATOR_TYPES
+            or el["creatorType"] in INDEXED_ZOTERO_CREATOR_TYPES
         ]
 
     def Title(self):
