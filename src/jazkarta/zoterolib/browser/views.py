@@ -126,27 +126,13 @@ class UpdateLibraryForm(z3c.form.form.Form):
             u"Resumed indexing Zotero Library. You will recieve an email when indexing is completed."
         )
 
-    @z3c.form.button.buttonAndHandler(_(u'Clear and Update Library'))
-    def handleClearAndUpdate(self, action):
-        if self.request.get('REQUEST_METHOD', 'GET').upper() != 'POST':
-            raise Forbidden('Request must be POST')
-        self.clear_resume()
-        self.context.clear_items()
-        if has_celery:
-            index_zotero_items.delay(self.context, 0, self.batch_size)
-            self.status = _(
-                u"Started indexing Zotero Library. You will recieve an email when indexing is completed."
-            )
-        else:
-            start_time = time.time()
-            count = self.context.fetch_and_index_items()
-            self.status = _(
-                u"Updated {} items from Zotero in {}".format(
-                    count, str(timedelta(seconds=round(time.time() - start_time)))
-                )
-            )
+    def updateActions(self):
+        super(UpdateLibraryForm, self).updateActions()
+        self.actions['clear-and-update-library'].klass += u' destructive'
 
-    @z3c.form.button.buttonAndHandler(_(u'Update Library'))
+    @z3c.form.button.buttonAndHandler(
+        title=_(u'Update Library'), __name__='update-library'
+    )
     def handleUpdate(self, action):
         if self.request.get('REQUEST_METHOD', 'GET').upper() != 'POST':
             raise Forbidden('Request must be POST')
@@ -178,6 +164,28 @@ class UpdateLibraryForm(z3c.form.form.Form):
                     counts['updated'],
                     counts['removed'],
                     str(timedelta(seconds=round(time.time() - start_time))),
+                )
+            )
+
+    @z3c.form.button.buttonAndHandler(
+        title=_(u'Clear and Update Library'), __name__='clear-and-update-library'
+    )
+    def handleClearAndUpdate(self, action):
+        if self.request.get('REQUEST_METHOD', 'GET').upper() != 'POST':
+            raise Forbidden('Request must be POST')
+        self.clear_resume()
+        self.context.clear_items()
+        if has_celery:
+            index_zotero_items.delay(self.context, 0, self.batch_size)
+            self.status = _(
+                u"Started indexing Zotero Library. You will recieve an email when indexing is completed."
+            )
+        else:
+            start_time = time.time()
+            count = self.context.fetch_and_index_items()
+            self.status = _(
+                u"Updated {} items from Zotero in {}".format(
+                    count, str(timedelta(seconds=round(time.time() - start_time)))
                 )
             )
 
