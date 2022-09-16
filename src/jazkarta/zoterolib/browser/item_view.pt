@@ -5,10 +5,22 @@
       lang="en"
       metal:use-macro="context/main_template/macros/master"
       i18n:domain="jazkarta.zoterolibrary">
-  <head></head>
+  <head>
+    <metal:style fill-slot="style_slot">
+        <style>
+            #edit-zone {
+                display: none;
+            }
+            .plone-toolbar-left-expanded {
+                padding-left: 0 !important;
+            }
+        </style>
+    </metal:style>
+  </head>
   <body>
     <metal:main fill-slot="main"
-                tal:define="item view/item">
+                tal:define="item view/item;
+                            dummy python:request.setdefault('disable">
         <div class="item-reference" tal:content="structure item/text">Formatted Citation Style</div>
 
         <aside id="keyword-listing" tal:condition="item/Subject|nothing">

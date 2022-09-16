@@ -3,6 +3,7 @@
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:zcml="http://namespaces.zope.org/zcml"
     xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:cache="http://namespaces.zope.org/cache"
     i18n_domain="jazkarta.zoterolib">
 
   <!-- Set overrides folder for Just-a-Bunch-Of-Templates product -->
@@ -106,5 +107,8 @@
     view=".views.ZoteroItemView"
     permission="zope2.View"
     />
+
+  <cache:ruleset ruleset="plone.content.itemView"   for=".views.ZoteroItemView" />
+  <cache:ruleset ruleset="plone.content.folderView" for="..content.zotero_library.IZoteroLibrary" />
 
 </configure>

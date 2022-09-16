@@ -520,3 +520,11 @@ class BrainProxy(Traversable, Acquisition.Implicit):
         authors = self.Authors()
         if authors:
             return authors.split(", ")
+
+    @property
+    def main_template(self):
+        return (
+            Acquisition.aq_parent(self)
+            .unrestrictedTraverse('main_template')
+            .__of__(self)
+        )
