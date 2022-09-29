@@ -38,11 +38,11 @@ Features
 - Provides a Dexterity content type called Zotero Library that can be added to
   the site and configured with a Zotero Library ID, Zotero Library Type (user or
   group) and Citation Style Format.
-- Zotero library items are indexed in the ``portal_catalog`` and can appear is
+- Zotero library items are indexed in the ``portal_catalog`` and can appear in
   listings and searches. The add-on includes custom indexes and metadata for
-  bibiographic items. This includes varuous "author" indexes which incorporates
-  all Zotero ``creatortType`` values (e.g. author, editor, translator,
-  contributor, etc.).
+  bibiographic items. This includes various "author" indexes which incorporate
+  all Zotero ``creatorType`` values (e.g. author, editor, translator,
+  contributor, etc.)
 - The Zotero Library provides an action called Update Zotero Library Items with
   two buttons:
 
@@ -54,14 +54,9 @@ Features
   - Clear and Update Library - Clear all bibliographic references from the
     ``portal_catalog`` and re-fetch and index them. This button is red because
     for large libraries it is RAM intensive and can take a lot of time during
-    which time the library will be incomplete as it builds itself back up from
+    which the library will be incomplete as it builds itself back up from
     scratch. This should only be necessary after having e.g. changed the
     citation style for the library.
-
-NOTE: If the citation style is changed on the Zotero Library edit form, it is
-necessary to run Clear and Update Library to refresh all the records and see the
-new style, since the formatted records are pulled in directly from the Zotero
-API.
 
 - Updates can optionally be performed asynchronously in batches using Celery.
   This is recommended when working with libraries containing more than a few hundred
@@ -73,7 +68,13 @@ API.
   references, which renders them in the chosen Citation Style. A link to view
   the item in Zotero is included in the item view.
 - If ``Products.RedirectionTool`` is installed, redirects/aliases can be easily added
-  for individual bibliographic reference views.
+  for individual bibliographic reference views (for example when migrating from the 
+  CMFBibliographyAT add-on).
+
+REMEMBER: If the citation style is changed on the Zotero Library edit form, it is
+necessary to run Clear and Update Library to refresh all the records and see the
+new style, since the formatted records are pulled in directly from the Zotero
+API.
 
 
 Integration with Celery (optional)
@@ -111,10 +112,10 @@ Library using the actions menu.
 Each bibliographic reference is indexed in the ``portal_catalog`` and can be
 discovered in faceted searches. Bibliographic references have a ``portal_type``
 of "ExternalZoteroItem" and a variety of ``Type`` values (e.g. "Article
-Reference", "Proceedings Reference', ...) which can be used for faceted search
+Reference", "Proceedings Reference", ...) which can be used for faceted search
 filtering. Searches can be performed using the standard indexes (e.g. Title,
 SearchableText, Subject, ...), and the add-on includes a few custom indexes
-which can be used in faceted searchs and collections:
+which can be used in faceted searches and collections:
 
 - Author Search (Bibliography) - Full text search for authors/contributors
 - Author (Bibliography) - Keyword search for exact author/contributor match
@@ -127,7 +128,7 @@ which can be used in faceted searchs and collections:
 Customization
 -------------
 
-You can add custom Plone indexers to index or store metadata for bibliographic
+You can add custom Plone indexers to index or store additional metadata for bibliographic
 items. The objects indexed by the catalog have a ``zotero_item`` attribute which
 contains the full Zotero API object for the bibliographic reference, and which
 can be used by custom indexers.
@@ -186,7 +187,7 @@ The project is licensed under the GPLv2.
 Credits
 -------
 
-Built by `Jazkarta <https://jazkarta.com>`_.
+Built by `Jazkarta <https://jazkarta.com>`_. Principal authors:
 
 - Alec Mitchell
 - Silvio Tomatis
