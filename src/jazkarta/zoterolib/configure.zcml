@@ -43,8 +43,12 @@
       name="jazkarta.zoterolib.citations-styles"
       />
 
+  <utility
+      component=".vocabs.TypesTitlesVocabularyFactory"
+      name="jazkarta.zoterolib.type-titles"
+      />
+
   <subscriber handler=".content.zotero_library.removeLibraryItemsOnDelete" />
   <subscriber handler=".content.zotero_library.reindexLibraryItemsOnMove" />
-
 
 </configure>

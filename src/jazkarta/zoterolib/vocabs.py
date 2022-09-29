@@ -1,6 +1,9 @@
 import gzip
 import json
 import os
+from plone import api
+from plone.app.vocabularies.types import BAD_TYPES
+from Products.CMFPlone.utils import safe_unicode
 from zope.interface import implementer
 from zope.schema.interfaces import IVocabularyFactory
 from zope.schema.vocabulary import SimpleVocabulary
@@ -57,3 +60,20 @@ class SearchableCitationStylesVocabulary(object):
 
 
 CitationStylesVocabularyFactory = SearchableCitationStylesVocabulary()
+
+
+@implementer(IVocabularyFactory)
+class TypesTitlesVocabulary(object):
+    bad_types = set(BAD_TYPES)
+
+    def __call__(self, context):
+        catalog = api.portal.get_tool('portal_catalog')
+        titles = [
+            t for t in catalog.uniqueValuesFor('Type') if t and t not in self.bad_types
+        ]
+        terms = [SimpleTerm(t, title=safe_unicode(t), token=t) for t in titles]
+        terms.sort(key=lambda t: t.value)
+        return SimpleVocabulary(terms)
+
+
+TypesTitlesVocabularyFactory = TypesTitlesVocabulary()

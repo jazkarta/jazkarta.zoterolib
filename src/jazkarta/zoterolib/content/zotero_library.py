@@ -365,7 +365,7 @@ class ExternalZoteroItem(Acquisition.Implicit):
             plone_encode(t["tag"]) for t in self.zotero_item["data"].get("tags", [])
         ]
 
-    getKeywords = bib_tags = Subject
+    bib_tags = Subject
 
     def SearchableText(self):
         """Concatenate text information into a single searchable field"""
