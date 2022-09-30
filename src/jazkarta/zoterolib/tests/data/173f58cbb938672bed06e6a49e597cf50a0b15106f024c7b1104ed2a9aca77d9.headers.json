@@ -1,0 +1,15 @@
+{
+  "Zotero-Schema-Version": "15",
+  "Content-Length": "53045",
+  "Keep-Alive": "timeout=5, max=100",
+  "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+  "Vary": "Accept-Encoding",
+  "Last-Modified-Version": "608",
+  "Server": "Apache/2.4.53 ()",
+  "Connection": "Keep-Alive",
+  "Link": "<https://api.zotero.org/groups/242005/items?include=bib%2Ccitation%2Cdata&limit=100&start=100&style=modern-language-association>; rel=\"next\", <https://api.zotero.org/groups/242005/items?include=bib%2Ccitation%2Cdata&limit=100&start=100&style=modern-language-association>; rel=\"last\", <https://www.zotero.org/groups/242005/items>; rel=\"alternate\"",
+  "Date": "Wed, 15 Jun 2022 19:41:30 GMT",
+  "Total-Results": "180",
+  "Zotero-API-Version": "3",
+  "Content-Type": "application/json"
+}

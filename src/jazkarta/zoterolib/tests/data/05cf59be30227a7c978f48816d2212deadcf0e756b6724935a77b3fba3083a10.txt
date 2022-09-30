@@ -1,0 +1,2311 @@
+[
+    {
+        "key": "4JRS8DIR",
+        "version": 630,
+        "library": {
+            "type": "group",
+            "id": 242005,
+            "name": "ISAW Papers",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/groups/isaw_papers",
+                    "type": "text/html"
+                }
+            }
+        },
+        "links": {
+            "self": {
+                "href": "https://api.zotero.org/groups/242005/items/4JRS8DIR",
+                "type": "application/json"
+            },
+            "alternate": {
+                "href": "https://www.zotero.org/groups/isaw_papers/items/4JRS8DIR",
+                "type": "text/html"
+            }
+        },
+        "meta": {
+            "createdByUser": {
+                "id": 50458,
+                "username": "sebastianheath",
+                "name": "Sebastian Heath",
+                "links": {
+                    "alternate": {
+                        "href": "https://www.zotero.org/sebastianheath",
+                        "type": "text/html"
+                    }
+                }
+            },
+            "creatorSummary": "Cardaci et al.",
+            "numChildren": 0
+        },
+        "data": {
+            "key": "4JRS8DIR",
+            "version": 630,
+            "itemType": "conferencePaper",
+            "title": "The Conservation of the Small Cloister of Sant’agostino in Bergamo: The Survey of the Tombs and the Epigraphs - Proquest",
+            "creators": [
+                {
+                    "creatorType": "author",
+                    "firstName": "A.L.",
+                    "lastName": "Cardaci"
+                },
+                {
+                    "creatorType": "author",
+                    "firstName": "A.",
+                    "lastName": "Versaci"
+                },
+                {
+                    "creatorType": "author",
+                    "firstName": "P.",
+                    "lastName": "Azzola"
+                }
+            ],
+            "abstractNote": "",
+            "date": "",
+            "proceedingsTitle": "",
+            "conferenceName": "",
+            "place": "",
+            "publisher": "",
+            "volume": "",
+            "pages": "",
+            "series": "",
+            "language": "en",
+            "DOI": "",
+            "ISBN": "",
+            "shortTitle": "The Conservation of the Small Cloister of Sant’agostino in Bergamo",
+            "url": "https://www.proquest.com/openview/c730b87a1db59007bbc53eac7b6f2472/1?pq-origsite=gscholar&cbl=2037674",
+            "accessDate": "2022-08-17T16:45:37Z",
+            "archive": "",
+            "archiveLocation": "",
+            "libraryCatalog": "",
+            "callNumber": "",
+            "rights": "",
+            "extra": "",
+            "deleted": 1,
+            "tags": [],
+            "collections": [
+                "DZDZS5QD"
+            ],
+            "relations": {},
+            "dateAdded": "2022-08-17T16:45:37Z",
+            "dateModified": "2022-08-17T16:46:49Z"
+        }
+    },
+    {
+        "key": "M3DUTJ3F",
+        "version": 575,
+        "library": {
+            "type": "group",
+            "id": 242005,
+            "name": "ISAW Papers",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/groups/isaw_papers",
+                    "type": "text/html"
+                }
+            }
+        },
+        "links": {
+            "self": {
+                "href": "https://api.zotero.org/groups/242005/items/M3DUTJ3F",
+                "type": "application/json"
+            },
+            "alternate": {
+                "href": "https://www.zotero.org/groups/isaw_papers/items/M3DUTJ3F",
+                "type": "text/html"
+            }
+        },
+        "meta": {
+            "createdByUser": {
+                "id": 50458,
+                "username": "sebastianheath",
+                "name": "Sebastian Heath",
+                "links": {
+                    "alternate": {
+                        "href": "https://www.zotero.org/sebastianheath",
+                        "type": "text/html"
+                    }
+                }
+            },
+            "numChildren": 0
+        },
+        "data": {
+            "key": "M3DUTJ3F",
+            "version": 575,
+            "itemType": "webpage",
+            "title": "Volume 21 - Issue 2",
+            "creators": [],
+            "abstractNote": "",
+            "websiteTitle": "",
+            "websiteType": "",
+            "date": "",
+            "shortTitle": "",
+            "url": "http://maajournal.com/Issues2021b.php",
+            "accessDate": "2022-03-24T22:33:57Z",
+            "language": "",
+            "rights": "",
+            "extra": "",
+            "deleted": 1,
+            "tags": [],
+            "collections": [
+                "DZDZS5QD"
+            ],
+            "relations": {},
+            "dateAdded": "2022-03-24T22:33:57Z",
+            "dateModified": "2022-03-24T22:33:57Z"
+        }
+    },
+    {
+        "key": "UVVME6M9",
+        "version": 564,
+        "library": {
+            "type": "group",
+            "id": 242005,
+            "name": "ISAW Papers",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/groups/isaw_papers",
+                    "type": "text/html"
+                }
+            }
+        },
+        "links": {
+            "self": {
+                "href": "https://api.zotero.org/groups/242005/items/UVVME6M9",
+                "type": "application/json"
+            },
+            "alternate": {
+                "href": "https://www.zotero.org/groups/isaw_papers/items/UVVME6M9",
+                "type": "text/html"
+            }
+        },
+        "meta": {
+            "createdByUser": {
+                "id": 50458,
+                "username": "sebastianheath",
+                "name": "Sebastian Heath",
+                "links": {
+                    "alternate": {
+                        "href": "https://www.zotero.org/sebastianheath",
+                        "type": "text/html"
+                    }
+                }
+            },
+            "creatorSummary": "Love",
+            "parsedDate": "2021-12-06",
+            "numChildren": 1
+        },
+        "data": {
+            "key": "UVVME6M9",
+            "version": 564,
+            "itemType": "book",
+            "title": "Script Switching in Roman Egypt: Case Studies in Script Conventions, Domains, Shift, and Obsolescence from Hieroglyphic, Hieratic, Demotic, and Old Coptic Manuscripts",
+            "creators": [
+                {
+                    "creatorType": "author",
+                    "firstName": "Edward O. D.",
+                    "lastName": "Love"
+                }
+            ],
+            "abstractNote": "Script Switching in Roman Egypt studies the hieroglyphic, hieratic, demotic, and Old Coptic manuscripts which evidence the conventions governing script use, the domains of writing those scripts inhabited, and the shift of scripts between those domains, to elucidate the obsolescence of those scripts from their domains during the Roman Period. Utilising macro-level frameworks from sociolinguistics, the textual culture from four sites is contextualised within the priestly communities of speech, script, and practice that produced them. Utilising micro-level frameworks from linguistics, both the scripts of the Egyptian writing system written, and the way the orthographic methods fundamental to those scripts changed, are typologised. This study also treats the way in which morphographic and alphabetic orthographies are deciphered and understood by the reading brain, and how changes in spelling over time both resulted from and responded to dimensions of orthographic depth. Through a cross-cultural consideration of script obsolescence in Mesoamerica and Mesopotamia and by analogy to language death in speech communities, a model of domain-bydomain shift and obsolescence of the scripts of the Egyptian writing system is proposed.",
+            "series": "",
+            "seriesNumber": "",
+            "volume": "",
+            "numberOfVolumes": "",
+            "edition": "",
+            "place": "",
+            "publisher": "Walter de Gruyter GmbH & Co KG",
+            "date": "2021-12-06",
+            "numPages": "416",
+            "language": "en",
+            "ISBN": "978-3-11-076843-5",
+            "shortTitle": "Script Switching in Roman Egypt",
+            "url": "",
+            "accessDate": "",
+            "archive": "",
+            "archiveLocation": "",
+            "libraryCatalog": "Google Books",
+            "callNumber": "",
+            "rights": "",
+            "extra": "Google-Books-ID: R2VUEAAAQBAJ",
+            "deleted": 1,
+            "tags": [],
+            "collections": [
+                "DZDZS5QD"
+            ],
+            "relations": {},
+            "dateAdded": "2022-03-02T13:51:22Z",
+            "dateModified": "2022-03-02T13:51:22Z"
+        }
+    },
+    {
+        "key": "JLAL7XRL",
+        "version": 561,
+        "library": {
+            "type": "group",
+            "id": 242005,
+            "name": "ISAW Papers",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/groups/isaw_papers",
+                    "type": "text/html"
+                }
+            }
+        },
+        "links": {
+            "self": {
+                "href": "https://api.zotero.org/groups/242005/items/JLAL7XRL",
+                "type": "application/json"
+            },
+            "alternate": {
+                "href": "https://www.zotero.org/groups/isaw_papers/items/JLAL7XRL",
+                "type": "text/html"
+            }
+        },
+        "meta": {
+            "createdByUser": {
+                "id": 50458,
+                "username": "sebastianheath",
+                "name": "Sebastian Heath",
+                "links": {
+                    "alternate": {
+                        "href": "https://www.zotero.org/sebastianheath",
+                        "type": "text/html"
+                    }
+                }
+            },
+            "lastModifiedByUser": {
+                "id": 465,
+                "username": "paregorios",
+                "name": "Tom Elliott",
+                "links": {
+                    "alternate": {
+                        "href": "https://www.zotero.org/paregorios",
+                        "type": "text/html"
+                    }
+                }
+            },
+            "creatorSummary": "Nurmikko-Fuller and Pickering",
+            "parsedDate": "2021",
+            "numChildren": 0
+        },
+        "data": {
+            "key": "JLAL7XRL",
+            "version": 561,
+            "itemType": "conferencePaper",
+            "title": "Reductio ad absurdum?: From Analogue Hypertext to Digital Humanities",
+            "creators": [
+                {
+                    "creatorType": "author",
+                    "firstName": "Terhi",
+                    "lastName": "Nurmikko-Fuller"
+                },
+                {
+                    "creatorType": "author",
+                    "firstName": "Paul",
+                    "lastName": "Pickering"
+                }
+            ],
+            "abstractNote": "In this paper we report on a complex and complete archive of historical primary sources that map the political landscape of the anglophone world in the mid-to late 1800s. The ruthless pragmatism applied to the construction of the initial Humanities dataset resulted in an analogue equivalent of a hypertext system, which has already resulted in published academic books and articles. Here, we describe the processes of a current project, which consists of the translation of this analogue information aggregation system into a graph database using Linked Data and semantic Web technologies.",
+            "date": "2021",
+            "proceedingsTitle": "Proceedings of the 32nd ACM Conference on Hypertext and Social Media",
+            "conferenceName": "",
+            "place": "New York",
+            "publisher": "Association for Computing Machinery",
+            "volume": "",
+            "pages": "245–250",
+            "series": "HT '21",
+            "language": "",
+            "DOI": "10/gncj96",
+            "ISBN": "978-1-4503-8551-0",
+            "shortTitle": "Reductio ad absurdum?",
+            "url": "https://doi.org/10.1145/3465336.3475107",
+            "accessDate": "2022-01-06",
+            "archive": "",
+            "archiveLocation": "",
+            "libraryCatalog": "ACM Digital Library",
+            "callNumber": "",
+            "rights": "",
+            "extra": "",
+            "deleted": 1,
+            "tags": [],
+            "collections": [
+                "DZDZS5QD"
+            ],
+            "relations": {
+                "dc:relation": "http://zotero.org/groups/242005/items/HMZ4FRKN"
+            },
+            "dateAdded": "2022-01-06T14:57:01Z",
+            "dateModified": "2022-01-06T21:35:35Z"
+        }
+    },
+    {
+        "key": "ILZ5WC3Z",
+        "version": 556,
+        "library": {
+            "type": "group",
+            "id": 242005,
+            "name": "ISAW Papers",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/groups/isaw_papers",
+                    "type": "text/html"
+                }
+            }
+        },
+        "links": {
+            "self": {
+                "href": "https://api.zotero.org/groups/242005/items/ILZ5WC3Z",
+                "type": "application/json"
+            },
+            "alternate": {
+                "href": "https://www.zotero.org/groups/isaw_papers/items/ILZ5WC3Z",
+                "type": "text/html"
+            }
+        },
+        "meta": {
+            "createdByUser": {
+                "id": 50458,
+                "username": "sebastianheath",
+                "name": "Sebastian Heath",
+                "links": {
+                    "alternate": {
+                        "href": "https://www.zotero.org/sebastianheath",
+                        "type": "text/html"
+                    }
+                }
+            },
+            "numChildren": 0
+        },
+        "data": {
+            "key": "ILZ5WC3Z",
+            "version": 556,
+            "itemType": "bookSection",
+            "title": "",
+            "creators": [],
+            "abstractNote": "",
+            "bookTitle": "",
+            "series": "",
+            "seriesNumber": "",
+            "volume": "",
+            "numberOfVolumes": "",
+            "edition": "",
+            "place": "",
+            "publisher": "",
+            "date": "",
+            "pages": "",
+            "language": "",
+            "ISBN": "",
+            "shortTitle": "",
+            "url": "",
+            "accessDate": "",
+            "archive": "",
+            "archiveLocation": "",
+            "libraryCatalog": "",
+            "callNumber": "",
+            "rights": "",
+            "extra": "",
+            "deleted": 1,
+            "tags": [],
+            "collections": [
+                "DZDZS5QD"
+            ],
+            "relations": {},
+            "dateAdded": "2021-12-31T05:25:51Z",
+            "dateModified": "2021-12-31T05:25:51Z"
+        }
+    },
+    {
+        "key": "Y5AYVBKM",
+        "version": 551,
+        "library": {
+            "type": "group",
+            "id": 242005,
+            "name": "ISAW Papers",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/groups/isaw_papers",
+                    "type": "text/html"
+                }
+            }
+        },
+        "links": {
+            "self": {
+                "href": "https://api.zotero.org/groups/242005/items/Y5AYVBKM",
+                "type": "application/json"
+            },
+            "alternate": {
+                "href": "https://www.zotero.org/groups/isaw_papers/items/Y5AYVBKM",
+                "type": "text/html"
+            },
+            "up": {
+                "href": "https://api.zotero.org/groups/242005/items/269W5TLK",
+                "type": "application/json"
+            }
+        },
+        "meta": {
+            "createdByUser": {
+                "id": 50458,
+                "username": "sebastianheath",
+                "name": "Sebastian Heath",
+                "links": {
+                    "alternate": {
+                        "href": "https://www.zotero.org/sebastianheath",
+                        "type": "text/html"
+                    }
+                }
+            }
+        },
+        "data": {
+            "key": "Y5AYVBKM",
+            "version": 551,
+            "parentItem": "269W5TLK",
+            "itemType": "attachment",
+            "linkMode": "linked_url",
+            "title": "Google Books Link",
+            "accessDate": "2021-12-31T05:25:41Z",
+            "url": "https://books.google.com/books?id=_wtWEAAAQBAJ",
+            "note": "",
+            "contentType": "text/html",
+            "charset": "",
+            "deleted": 1,
+            "tags": [],
+            "relations": {},
+            "dateAdded": "2021-12-31T05:25:41Z",
+            "dateModified": "2021-12-31T05:25:41Z"
+        }
+    },
+    {
+        "key": "GI39L66N",
+        "version": 521,
+        "library": {
+            "type": "group",
+            "id": 242005,
+            "name": "ISAW Papers",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/groups/isaw_papers",
+                    "type": "text/html"
+                }
+            }
+        },
+        "links": {
+            "self": {
+                "href": "https://api.zotero.org/groups/242005/items/GI39L66N",
+                "type": "application/json"
+            },
+            "alternate": {
+                "href": "https://www.zotero.org/groups/isaw_papers/items/GI39L66N",
+                "type": "text/html"
+            },
+            "up": {
+                "href": "https://api.zotero.org/groups/242005/items/TY2V8W6F",
+                "type": "application/json"
+            }
+        },
+        "meta": {
+            "createdByUser": {
+                "id": 50458,
+                "username": "sebastianheath",
+                "name": "Sebastian Heath",
+                "links": {
+                    "alternate": {
+                        "href": "https://www.zotero.org/sebastianheath",
+                        "type": "text/html"
+                    }
+                }
+            }
+        },
+        "data": {
+            "key": "GI39L66N",
+            "version": 521,
+            "parentItem": "TY2V8W6F",
+            "itemType": "attachment",
+            "linkMode": "linked_url",
+            "title": "Google Books Link",
+            "accessDate": "2021-12-13T14:38:10Z",
+            "url": "https://books.google.com/books?id=R2VUEAAAQBAJ",
+            "note": "",
+            "contentType": "text/html",
+            "charset": "",
+            "deleted": 1,
+            "tags": [],
+            "relations": {},
+            "dateAdded": "2021-12-13T14:38:10Z",
+            "dateModified": "2021-12-13T14:38:10Z"
+        }
+    },
+    {
+        "key": "MYEPKRBG",
+        "version": 531,
+        "library": {
+            "type": "group",
+            "id": 242005,
+            "name": "ISAW Papers",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/groups/isaw_papers",
+                    "type": "text/html"
+                }
+            }
+        },
+        "links": {
+            "self": {
+                "href": "https://api.zotero.org/groups/242005/items/MYEPKRBG",
+                "type": "application/json"
+            },
+            "alternate": {
+                "href": "https://www.zotero.org/groups/isaw_papers/items/MYEPKRBG",
+                "type": "text/html"
+            }
+        },
+        "meta": {
+            "createdByUser": {
+                "id": 50458,
+                "username": "sebastianheath",
+                "name": "Sebastian Heath",
+                "links": {
+                    "alternate": {
+                        "href": "https://www.zotero.org/sebastianheath",
+                        "type": "text/html"
+                    }
+                }
+            },
+            "lastModifiedByUser": {
+                "id": 465,
+                "username": "paregorios",
+                "name": "Tom Elliott",
+                "links": {
+                    "alternate": {
+                        "href": "https://www.zotero.org/paregorios",
+                        "type": "text/html"
+                    }
+                }
+            },
+            "creatorSummary": "Voulgaris et al.",
+            "parsedDate": "2019-08-23",
+            "numChildren": 0
+        },
+        "data": {
+            "key": "MYEPKRBG",
+            "version": 531,
+            "itemType": "journalArticle",
+            "title": "Simulation and Analysis of Natural Seawater Chemical Reactions on the Antikythera Mechanism",
+            "creators": [
+                {
+                    "creatorType": "author",
+                    "firstName": "Aristeidis",
+                    "lastName": "Voulgaris"
+                },
+                {
+                    "creatorType": "author",
+                    "firstName": "Christophoros",
+                    "lastName": "Mouratidis"
+                },
+                {
+                    "creatorType": "author",
+                    "firstName": "Andreas",
+                    "lastName": "Vossinakis"
+                }
+            ],
+            "abstractNote": "Voulgaris, A.; Mouratidis, C., and Vossinakis, A., 2019. Simulation and analysis of natural seawater chemical reactions on the Antikythera Mechanism. Journal of Coastal Research, 35(5), 959–972. Coconut Creek (Florida), ISSN 0749-0208.Chemical reactions with seawater changed the bronze material and the color of the Antikythera Mechanism. The deformation and the displacement of the bronze parts are clearly evident on the visual photographs, on Antikythera Mechanism Research Project (AMRP) X-ray radiographs, and computed tomography (CT) scans as a result of the under-seawater material density change and the dehydration of the Mechanism after its removal from the Aegean/Kretan Sea bottom. In present work the first steps of the copper/bronze corrosion under the sea are simulated and presented. The geometric changes and the deformations of the Mechanism parts, which have repercussions on their shape, dimension, and relative position, are analyzed. Studying the visual photographs and the AMRP X-ray CTs of the partially preserved parts, the Functional Reconstruction of Antikythera Mechanism Project team digitally reconstructed and completed some of the lost/destroyed wooden and bronze parts and calculated the dimensions of the plates and the wooden casements of the Antikythera Mechanism ancient prototype.",
+            "publicationTitle": "Journal of Coastal Research",
+            "volume": "35",
+            "issue": "5",
+            "pages": "959-972",
+            "date": "August 23, 2019",
+            "series": "",
+            "seriesTitle": "",
+            "seriesText": "",
+            "journalAbbreviation": "Journal of Coastal Research",
+            "language": "",
+            "DOI": "10/gnrdmq",
+            "ISSN": "0749-0208",
+            "shortTitle": "",
+            "url": "https://doi.org/10.2112/JCOASTRES-D-18-00097.1",
+            "accessDate": "2021-05-06T14:24:35Z",
+            "archive": "",
+            "archiveLocation": "",
+            "libraryCatalog": "Silverchair",
+            "callNumber": "",
+            "rights": "",
+            "extra": "",
+            "deleted": 1,
+            "tags": [],
+            "collections": [
+                "DZDZS5QD"
+            ],
+            "relations": {},
+            "dateAdded": "2021-05-06T14:24:35Z",
+            "dateModified": "2021-12-11T11:50:00Z"
+        }
+    },
+    {
+        "key": "G2WKCDTZ",
+        "version": 528,
+        "library": {
+            "type": "group",
+            "id": 242005,
+            "name": "ISAW Papers",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/groups/isaw_papers",
+                    "type": "text/html"
+                }
+            }
+        },
+        "links": {
+            "self": {
+                "href": "https://api.zotero.org/groups/242005/items/G2WKCDTZ",
+                "type": "application/json"
+            },
+            "alternate": {
+                "href": "https://www.zotero.org/groups/isaw_papers/items/G2WKCDTZ",
+                "type": "text/html"
+            }
+        },
+        "meta": {
+            "createdByUser": {
+                "id": 50458,
+                "username": "sebastianheath",
+                "name": "Sebastian Heath",
+                "links": {
+                    "alternate": {
+                        "href": "https://www.zotero.org/sebastianheath",
+                        "type": "text/html"
+                    }
+                }
+            },
+            "lastModifiedByUser": {
+                "id": 465,
+                "username": "paregorios",
+                "name": "Tom Elliott",
+                "links": {
+                    "alternate": {
+                        "href": "https://www.zotero.org/paregorios",
+                        "type": "text/html"
+                    }
+                }
+            },
+            "creatorSummary": "Izdebski et al.",
+            "parsedDate": "2016-01-01",
+            "numChildren": 0
+        },
+        "data": {
+            "key": "G2WKCDTZ",
+            "version": 528,
+            "itemType": "journalArticle",
+            "title": "On the use of palynological data in economic history: New methods and an application to agricultural output in Central Europe, 0–2000AD",
+            "creators": [
+                {
+                    "creatorType": "author",
+                    "firstName": "Adam",
+                    "lastName": "Izdebski"
+                },
+                {
+                    "creatorType": "author",
+                    "firstName": "Grzegorz",
+                    "lastName": "Koloch"
+                },
+                {
+                    "creatorType": "author",
+                    "firstName": "Tymon",
+                    "lastName": "Słoczyński"
+                },
+                {
+                    "creatorType": "author",
+                    "firstName": "Marta",
+                    "lastName": "Tycner"
+                }
+            ],
+            "abstractNote": "In this paper we introduce a new source of data to economic history: palynological data or, in other words, information about pollen grains which are preserved in the bottom sediments of various water basins. We discuss how this data is collected and how it should be interpreted; develop new methods for aggregating this information into regional trends in agricultural output; construct an extensive dataset with a large number of pollen sites from Central Europe; and use our methods to study the economic history of Greater Poland, Lesser Poland, Bohemia, Brandenburg, and Lower Saxony since the first century AD.",
+            "publicationTitle": "Explorations in Economic History",
+            "volume": "59",
+            "issue": "",
+            "pages": "17-39",
+            "date": "January 1, 2016",
+            "series": "",
+            "seriesTitle": "",
+            "seriesText": "",
+            "journalAbbreviation": "Explorations in Economic History",
+            "language": "en",
+            "DOI": "10/gd6fc7",
+            "ISSN": "0014-4983",
+            "shortTitle": "On the use of palynological data in economic history",
+            "url": "https://www.sciencedirect.com/science/article/pii/S0014498315000443",
+            "accessDate": "2021-04-15T14:21:07Z",
+            "archive": "",
+            "archiveLocation": "",
+            "libraryCatalog": "ScienceDirect",
+            "callNumber": "",
+            "rights": "",
+            "extra": "",
+            "deleted": 1,
+            "tags": [
+                {
+                    "tag": "Agricultural production",
+                    "type": 1
+                },
+                {
+                    "tag": "Biological measures of economic history",
+                    "type": 1
+                },
+                {
+                    "tag": "Central Europe",
+                    "type": 1
+                },
+                {
+                    "tag": "Palynological data",
+                    "type": 1
+                },
+                {
+                    "tag": "Vegetation history",
+                    "type": 1
+                }
+            ],
+            "collections": [],
+            "relations": {},
+            "dateAdded": "2021-04-15T14:21:07Z",
+            "dateModified": "2021-12-11T11:49:41Z"
+        }
+    },
+    {
+        "key": "RE3LWP45",
+        "version": 527,
+        "library": {
+            "type": "group",
+            "id": 242005,
+            "name": "ISAW Papers",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/groups/isaw_papers",
+                    "type": "text/html"
+                }
+            }
+        },
+        "links": {
+            "self": {
+                "href": "https://api.zotero.org/groups/242005/items/RE3LWP45",
+                "type": "application/json"
+            },
+            "alternate": {
+                "href": "https://www.zotero.org/groups/isaw_papers/items/RE3LWP45",
+                "type": "text/html"
+            }
+        },
+        "meta": {
+            "createdByUser": {
+                "id": 50458,
+                "username": "sebastianheath",
+                "name": "Sebastian Heath",
+                "links": {
+                    "alternate": {
+                        "href": "https://www.zotero.org/sebastianheath",
+                        "type": "text/html"
+                    }
+                }
+            },
+            "lastModifiedByUser": {
+                "id": 465,
+                "username": "paregorios",
+                "name": "Tom Elliott",
+                "links": {
+                    "alternate": {
+                        "href": "https://www.zotero.org/paregorios",
+                        "type": "text/html"
+                    }
+                }
+            },
+            "creatorSummary": "Hunnel Chen and Fulsom",
+            "parsedDate": "2021",
+            "numChildren": 0
+        },
+        "data": {
+            "key": "RE3LWP45",
+            "version": 527,
+            "itemType": "journalArticle",
+            "title": "Origins and Antidotes of Omission: Southeastern European Archaeology, Linked Open Data, and the Possibilities for Archaeological Integration",
+            "creators": [
+                {
+                    "creatorType": "author",
+                    "firstName": "Anne",
+                    "lastName": "Hunnel Chen"
+                },
+                {
+                    "creatorType": "author",
+                    "firstName": "Jamie",
+                    "lastName": "Fulsom"
+                },
+                {
+                    "creatorType": "editor",
+                    "firstName": "Bond E.",
+                    "lastName": "Sarah"
+                },
+                {
+                    "creatorType": "editor",
+                    "firstName": "Paul",
+                    "lastName": "Dilley"
+                },
+                {
+                    "creatorType": "editor",
+                    "firstName": "Ryan",
+                    "lastName": "Horne"
+                }
+            ],
+            "abstractNote": "",
+            "publicationTitle": "Linked Open Data for the Ancient Mediterranean: Structures, Practices, Prospects",
+            "volume": "20",
+            "issue": "12",
+            "pages": "",
+            "date": "2021",
+            "series": "ISAW Papers",
+            "seriesTitle": "",
+            "seriesText": "",
+            "journalAbbreviation": "",
+            "language": "",
+            "DOI": "",
+            "ISSN": "",
+            "shortTitle": "",
+            "url": "http://hdl.handle.net/2333.1/xsj3v7j6",
+            "accessDate": "",
+            "archive": "",
+            "archiveLocation": "",
+            "libraryCatalog": "",
+            "callNumber": "",
+            "rights": "",
+            "extra": "",
+            "deleted": 1,
+            "tags": [
+                {
+                    "tag": "⛔ No DOI found",
+                    "type": 1
+                }
+            ],
+            "collections": [
+                "XDRRSGM6"
+            ],
+            "relations": {},
+            "dateAdded": "2021-04-15T15:11:08Z",
+            "dateModified": "2021-12-11T11:49:40Z"
+        }
+    },
+    {
+        "key": "BHWGZERK",
+        "version": 519,
+        "library": {
+            "type": "group",
+            "id": 242005,
+            "name": "ISAW Papers",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/groups/isaw_papers",
+                    "type": "text/html"
+                }
+            }
+        },
+        "links": {
+            "self": {
+                "href": "https://api.zotero.org/groups/242005/items/BHWGZERK",
+                "type": "application/json"
+            },
+            "alternate": {
+                "href": "https://www.zotero.org/groups/isaw_papers/items/BHWGZERK",
+                "type": "text/html"
+            },
+            "up": {
+                "href": "https://api.zotero.org/groups/242005/items/BBLHRWFH",
+                "type": "application/json"
+            }
+        },
+        "meta": {
+            "createdByUser": {
+                "id": 50458,
+                "username": "sebastianheath",
+                "name": "Sebastian Heath",
+                "links": {
+                    "alternate": {
+                        "href": "https://www.zotero.org/sebastianheath",
+                        "type": "text/html"
+                    }
+                }
+            }
+        },
+        "data": {
+            "key": "BHWGZERK",
+            "version": 519,
+            "parentItem": "BBLHRWFH",
+            "itemType": "attachment",
+            "linkMode": "linked_url",
+            "title": "Google Books Link",
+            "accessDate": "2021-12-03T22:50:36Z",
+            "url": "https://www.google.com/books?id=l9gkEAAAQBAJ",
+            "note": "",
+            "contentType": "text/html",
+            "charset": "",
+            "deleted": 1,
+            "tags": [],
+            "relations": {},
+            "dateAdded": "2021-12-03T22:50:36Z",
+            "dateModified": "2021-12-03T22:50:36Z"
+        }
+    },
+    {
+        "key": "7AZP8W6B",
+        "version": 506,
+        "library": {
+            "type": "group",
+            "id": 242005,
+            "name": "ISAW Papers",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/groups/isaw_papers",
+                    "type": "text/html"
+                }
+            }
+        },
+        "links": {
+            "self": {
+                "href": "https://api.zotero.org/groups/242005/items/7AZP8W6B",
+                "type": "application/json"
+            },
+            "alternate": {
+                "href": "https://www.zotero.org/groups/isaw_papers/items/7AZP8W6B",
+                "type": "text/html"
+            }
+        },
+        "meta": {
+            "createdByUser": {
+                "id": 50458,
+                "username": "sebastianheath",
+                "name": "Sebastian Heath",
+                "links": {
+                    "alternate": {
+                        "href": "https://www.zotero.org/sebastianheath",
+                        "type": "text/html"
+                    }
+                }
+            },
+            "numChildren": 0
+        },
+        "data": {
+            "key": "7AZP8W6B",
+            "version": 506,
+            "itemType": "bookSection",
+            "title": "",
+            "creators": [],
+            "abstractNote": "",
+            "bookTitle": "",
+            "series": "",
+            "seriesNumber": "",
+            "volume": "",
+            "numberOfVolumes": "",
+            "edition": "",
+            "place": "",
+            "publisher": "",
+            "date": "",
+            "pages": "",
+            "language": "",
+            "ISBN": "",
+            "shortTitle": "",
+            "url": "",
+            "accessDate": "",
+            "archive": "",
+            "archiveLocation": "",
+            "libraryCatalog": "",
+            "callNumber": "",
+            "rights": "",
+            "extra": "",
+            "deleted": 1,
+            "tags": [],
+            "collections": [
+                "DZDZS5QD"
+            ],
+            "relations": {},
+            "dateAdded": "2021-10-12T18:42:33Z",
+            "dateModified": "2021-10-12T18:42:33Z"
+        }
+    },
+    {
+        "key": "KVJRFXAH",
+        "version": 507,
+        "library": {
+            "type": "group",
+            "id": 242005,
+            "name": "ISAW Papers",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/groups/isaw_papers",
+                    "type": "text/html"
+                }
+            }
+        },
+        "links": {
+            "self": {
+                "href": "https://api.zotero.org/groups/242005/items/KVJRFXAH",
+                "type": "application/json"
+            },
+            "alternate": {
+                "href": "https://www.zotero.org/groups/isaw_papers/items/KVJRFXAH",
+                "type": "text/html"
+            },
+            "up": {
+                "href": "https://api.zotero.org/groups/242005/items/ESSXVZ6U",
+                "type": "application/json"
+            }
+        },
+        "meta": {
+            "createdByUser": {
+                "id": 50458,
+                "username": "sebastianheath",
+                "name": "Sebastian Heath",
+                "links": {
+                    "alternate": {
+                        "href": "https://www.zotero.org/sebastianheath",
+                        "type": "text/html"
+                    }
+                }
+            }
+        },
+        "data": {
+            "key": "KVJRFXAH",
+            "version": 507,
+            "parentItem": "ESSXVZ6U",
+            "itemType": "attachment",
+            "linkMode": "linked_url",
+            "title": "Google Books Link",
+            "accessDate": "2021-10-12T18:42:19Z",
+            "url": "https://books.google.com/books?id=7KtGEAAAQBAJ",
+            "note": "",
+            "contentType": "text/html",
+            "charset": "",
+            "deleted": 1,
+            "tags": [],
+            "relations": {},
+            "dateAdded": "2021-10-12T18:42:19Z",
+            "dateModified": "2021-10-12T18:42:19Z"
+        }
+    },
+    {
+        "key": "5XVXSR3X",
+        "version": 502,
+        "library": {
+            "type": "group",
+            "id": 242005,
+            "name": "ISAW Papers",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/groups/isaw_papers",
+                    "type": "text/html"
+                }
+            }
+        },
+        "links": {
+            "self": {
+                "href": "https://api.zotero.org/groups/242005/items/5XVXSR3X",
+                "type": "application/json"
+            },
+            "alternate": {
+                "href": "https://www.zotero.org/groups/isaw_papers/items/5XVXSR3X",
+                "type": "text/html"
+            },
+            "up": {
+                "href": "https://api.zotero.org/groups/242005/items/6QB9G8H9",
+                "type": "application/json"
+            }
+        },
+        "meta": {
+            "createdByUser": {
+                "id": 50458,
+                "username": "sebastianheath",
+                "name": "Sebastian Heath",
+                "links": {
+                    "alternate": {
+                        "href": "https://www.zotero.org/sebastianheath",
+                        "type": "text/html"
+                    }
+                }
+            }
+        },
+        "data": {
+            "key": "5XVXSR3X",
+            "version": 502,
+            "parentItem": "6QB9G8H9",
+            "itemType": "attachment",
+            "linkMode": "linked_url",
+            "title": "Google Books Link",
+            "accessDate": "2021-09-13T18:22:11Z",
+            "url": "https://www.google.com/books?id=muk9EAAAQBAJ",
+            "note": "",
+            "contentType": "text/html",
+            "charset": "",
+            "deleted": 1,
+            "tags": [],
+            "relations": {},
+            "dateAdded": "2021-09-13T18:22:11Z",
+            "dateModified": "2021-09-13T18:22:11Z"
+        }
+    },
+    {
+        "key": "MW6QNZH2",
+        "version": 487,
+        "library": {
+            "type": "group",
+            "id": 242005,
+            "name": "ISAW Papers",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/groups/isaw_papers",
+                    "type": "text/html"
+                }
+            }
+        },
+        "links": {
+            "self": {
+                "href": "https://api.zotero.org/groups/242005/items/MW6QNZH2",
+                "type": "application/json"
+            },
+            "alternate": {
+                "href": "https://www.zotero.org/groups/isaw_papers/items/MW6QNZH2",
+                "type": "text/html"
+            },
+            "up": {
+                "href": "https://api.zotero.org/groups/242005/items/2BA25TAM",
+                "type": "application/json"
+            }
+        },
+        "meta": {
+            "createdByUser": {
+                "id": 50458,
+                "username": "sebastianheath",
+                "name": "Sebastian Heath",
+                "links": {
+                    "alternate": {
+                        "href": "https://www.zotero.org/sebastianheath",
+                        "type": "text/html"
+                    }
+                }
+            }
+        },
+        "data": {
+            "key": "MW6QNZH2",
+            "version": 487,
+            "parentItem": "2BA25TAM",
+            "itemType": "attachment",
+            "linkMode": "linked_url",
+            "title": "Google Books Link",
+            "accessDate": "2021-08-05T17:50:15Z",
+            "url": "https://books.google.com/books?id=7Dw6EAAAQBAJ",
+            "note": "",
+            "contentType": "text/html",
+            "charset": "",
+            "deleted": 1,
+            "tags": [],
+            "relations": {},
+            "dateAdded": "2021-08-05T17:50:15Z",
+            "dateModified": "2021-08-05T17:50:15Z"
+        }
+    },
+    {
+        "key": "TJ49GWRS",
+        "version": 469,
+        "library": {
+            "type": "group",
+            "id": 242005,
+            "name": "ISAW Papers",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/groups/isaw_papers",
+                    "type": "text/html"
+                }
+            }
+        },
+        "links": {
+            "self": {
+                "href": "https://api.zotero.org/groups/242005/items/TJ49GWRS",
+                "type": "application/json"
+            },
+            "alternate": {
+                "href": "https://www.zotero.org/groups/isaw_papers/items/TJ49GWRS",
+                "type": "text/html"
+            },
+            "up": {
+                "href": "https://api.zotero.org/groups/242005/items/YCVAYAR6",
+                "type": "application/json"
+            }
+        },
+        "meta": {
+            "createdByUser": {
+                "id": 50458,
+                "username": "sebastianheath",
+                "name": "Sebastian Heath",
+                "links": {
+                    "alternate": {
+                        "href": "https://www.zotero.org/sebastianheath",
+                        "type": "text/html"
+                    }
+                }
+            }
+        },
+        "data": {
+            "key": "TJ49GWRS",
+            "version": 469,
+            "parentItem": "YCVAYAR6",
+            "itemType": "attachment",
+            "linkMode": "linked_url",
+            "title": "Google Books Link",
+            "accessDate": "2021-07-09T16:05:54Z",
+            "url": "https://www.google.com/books?id=wtqSDwAAQBAJ",
+            "note": "",
+            "contentType": "text/html",
+            "charset": "",
+            "deleted": 1,
+            "tags": [],
+            "relations": {},
+            "dateAdded": "2021-07-09T16:05:54Z",
+            "dateModified": "2021-07-09T16:05:54Z"
+        }
+    },
+    {
+        "key": "92KGLZZH",
+        "version": 515,
+        "library": {
+            "type": "group",
+            "id": 242005,
+            "name": "ISAW Papers",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/groups/isaw_papers",
+                    "type": "text/html"
+                }
+            }
+        },
+        "links": {
+            "self": {
+                "href": "https://api.zotero.org/groups/242005/items/92KGLZZH",
+                "type": "application/json"
+            },
+            "alternate": {
+                "href": "https://www.zotero.org/groups/isaw_papers/items/92KGLZZH",
+                "type": "text/html"
+            }
+        },
+        "meta": {
+            "createdByUser": {
+                "id": 50458,
+                "username": "sebastianheath",
+                "name": "Sebastian Heath",
+                "links": {
+                    "alternate": {
+                        "href": "https://www.zotero.org/sebastianheath",
+                        "type": "text/html"
+                    }
+                }
+            },
+            "numChildren": 0
+        },
+        "data": {
+            "key": "92KGLZZH",
+            "version": 515,
+            "itemType": "webpage",
+            "title": "Accessory to War: The Unspoken Alliance Between Astrophysics and the Milita... - Google Books",
+            "creators": [],
+            "abstractNote": "",
+            "websiteTitle": "",
+            "websiteType": "",
+            "date": "",
+            "shortTitle": "",
+            "url": "https://www.google.com/books/edition/Accessory_to_War_The_Unspoken_Alliance_B/-WRSDwAAQBAJ?hl=en&gbpv=1&dq=dlib.nyu.edu/awdl/isaw-papers&pg=PT536&printsec=frontcover",
+            "accessDate": "2021-06-19T12:45:13Z",
+            "language": "",
+            "rights": "",
+            "extra": "",
+            "deleted": 1,
+            "tags": [],
+            "collections": [],
+            "relations": {},
+            "dateAdded": "2021-06-19T12:45:13Z",
+            "dateModified": "2021-06-19T12:45:13Z"
+        }
+    },
+    {
+        "key": "AT8N6K9S",
+        "version": 452,
+        "library": {
+            "type": "group",
+            "id": 242005,
+            "name": "ISAW Papers",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/groups/isaw_papers",
+                    "type": "text/html"
+                }
+            }
+        },
+        "links": {
+            "self": {
+                "href": "https://api.zotero.org/groups/242005/items/AT8N6K9S",
+                "type": "application/json"
+            },
+            "alternate": {
+                "href": "https://www.zotero.org/groups/isaw_papers/items/AT8N6K9S",
+                "type": "text/html"
+            }
+        },
+        "meta": {
+            "createdByUser": {
+                "id": 50458,
+                "username": "sebastianheath",
+                "name": "Sebastian Heath",
+                "links": {
+                    "alternate": {
+                        "href": "https://www.zotero.org/sebastianheath",
+                        "type": "text/html"
+                    }
+                }
+            },
+            "numChildren": 0
+        },
+        "data": {
+            "key": "AT8N6K9S",
+            "version": 452,
+            "itemType": "webpage",
+            "title": "Gardens of the Roman Empire",
+            "creators": [],
+            "abstractNote": "",
+            "websiteTitle": "",
+            "websiteType": "",
+            "date": "",
+            "shortTitle": "",
+            "url": "https://roman-gardens.github.io/",
+            "accessDate": "2021-05-06T13:35:32Z",
+            "language": "",
+            "rights": "",
+            "extra": "",
+            "deleted": 1,
+            "tags": [],
+            "collections": [],
+            "relations": {},
+            "dateAdded": "2021-05-06T13:35:32Z",
+            "dateModified": "2021-05-06T13:35:32Z"
+        }
+    },
+    {
+        "key": "9SAV5KC3",
+        "version": 441,
+        "library": {
+            "type": "group",
+            "id": 242005,
+            "name": "ISAW Papers",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/groups/isaw_papers",
+                    "type": "text/html"
+                }
+            }
+        },
+        "links": {
+            "self": {
+                "href": "https://api.zotero.org/groups/242005/items/9SAV5KC3",
+                "type": "application/json"
+            },
+            "alternate": {
+                "href": "https://www.zotero.org/groups/isaw_papers/items/9SAV5KC3",
+                "type": "text/html"
+            }
+        },
+        "meta": {
+            "createdByUser": {
+                "id": 50458,
+                "username": "sebastianheath",
+                "name": "Sebastian Heath",
+                "links": {
+                    "alternate": {
+                        "href": "https://www.zotero.org/sebastianheath",
+                        "type": "text/html"
+                    }
+                }
+            },
+            "parsedDate": "2017-10-17",
+            "numChildren": 0
+        },
+        "data": {
+            "key": "9SAV5KC3",
+            "version": 441,
+            "itemType": "book",
+            "title": "Brill’s Companion to the Classics, Fascist Italy and Nazi Germany",
+            "creators": [],
+            "abstractNote": "\"Brill’s Companion to the Classics, Fascist Italy and Nazi Germany\" published on 17 Oct 2017 by Brill.",
+            "series": "",
+            "seriesNumber": "",
+            "volume": "",
+            "numberOfVolumes": "",
+            "edition": "",
+            "place": "",
+            "publisher": "Brill",
+            "date": "2017/10/17",
+            "numPages": "",
+            "language": "en",
+            "ISBN": "978-90-04-29906-1",
+            "shortTitle": "",
+            "url": "https://brill.com/view/title/23539",
+            "accessDate": "2021-04-19T03:38:35Z",
+            "archive": "",
+            "archiveLocation": "",
+            "libraryCatalog": "brill.com",
+            "callNumber": "",
+            "rights": "",
+            "extra": "Publication Title: Brill’s Companion to the Classics, Fascist Italy and Nazi Germany",
+            "deleted": 1,
+            "tags": [],
+            "collections": [],
+            "relations": {},
+            "dateAdded": "2021-04-19T03:38:35Z",
+            "dateModified": "2021-04-19T03:38:35Z"
+        }
+    },
+    {
+        "key": "V62KHNEJ",
+        "version": 437,
+        "library": {
+            "type": "group",
+            "id": 242005,
+            "name": "ISAW Papers",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/groups/isaw_papers",
+                    "type": "text/html"
+                }
+            }
+        },
+        "links": {
+            "self": {
+                "href": "https://api.zotero.org/groups/242005/items/V62KHNEJ",
+                "type": "application/json"
+            },
+            "alternate": {
+                "href": "https://www.zotero.org/groups/isaw_papers/items/V62KHNEJ",
+                "type": "text/html"
+            },
+            "up": {
+                "href": "https://api.zotero.org/groups/242005/items/464EPI4E",
+                "type": "application/json"
+            }
+        },
+        "meta": {
+            "createdByUser": {
+                "id": 50458,
+                "username": "sebastianheath",
+                "name": "Sebastian Heath",
+                "links": {
+                    "alternate": {
+                        "href": "https://www.zotero.org/sebastianheath",
+                        "type": "text/html"
+                    }
+                }
+            }
+        },
+        "data": {
+            "key": "V62KHNEJ",
+            "version": 437,
+            "parentItem": "464EPI4E",
+            "itemType": "attachment",
+            "linkMode": "linked_url",
+            "title": "Google Books Link",
+            "accessDate": "2021-04-18T22:58:46Z",
+            "url": "https://www.google.com/books?id=YJK5DwAAQBAJ",
+            "note": "",
+            "contentType": "text/html",
+            "charset": "",
+            "deleted": 1,
+            "tags": [],
+            "relations": {},
+            "dateAdded": "2021-04-18T22:58:46Z",
+            "dateModified": "2021-04-18T22:58:46Z"
+        }
+    },
+    {
+        "key": "D57MCZ9B",
+        "version": 434,
+        "library": {
+            "type": "group",
+            "id": 242005,
+            "name": "ISAW Papers",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/groups/isaw_papers",
+                    "type": "text/html"
+                }
+            }
+        },
+        "links": {
+            "self": {
+                "href": "https://api.zotero.org/groups/242005/items/D57MCZ9B",
+                "type": "application/json"
+            },
+            "alternate": {
+                "href": "https://www.zotero.org/groups/isaw_papers/items/D57MCZ9B",
+                "type": "text/html"
+            },
+            "up": {
+                "href": "https://api.zotero.org/groups/242005/items/HWDF8YP5",
+                "type": "application/json"
+            }
+        },
+        "meta": {
+            "createdByUser": {
+                "id": 50458,
+                "username": "sebastianheath",
+                "name": "Sebastian Heath",
+                "links": {
+                    "alternate": {
+                        "href": "https://www.zotero.org/sebastianheath",
+                        "type": "text/html"
+                    }
+                }
+            }
+        },
+        "data": {
+            "key": "D57MCZ9B",
+            "version": 434,
+            "parentItem": "HWDF8YP5",
+            "itemType": "attachment",
+            "linkMode": "linked_url",
+            "title": "Google Books Link",
+            "accessDate": "2021-04-18T22:55:22Z",
+            "url": "https://www.google.com/books?id=jcjXDwAAQBAJ",
+            "note": "",
+            "contentType": "text/html",
+            "charset": "",
+            "deleted": 1,
+            "tags": [],
+            "relations": {},
+            "dateAdded": "2021-04-18T22:55:22Z",
+            "dateModified": "2021-04-18T22:55:22Z"
+        }
+    },
+    {
+        "key": "N5LRIHJ8",
+        "version": 423,
+        "library": {
+            "type": "group",
+            "id": 242005,
+            "name": "ISAW Papers",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/groups/isaw_papers",
+                    "type": "text/html"
+                }
+            }
+        },
+        "links": {
+            "self": {
+                "href": "https://api.zotero.org/groups/242005/items/N5LRIHJ8",
+                "type": "application/json"
+            },
+            "alternate": {
+                "href": "https://www.zotero.org/groups/isaw_papers/items/N5LRIHJ8",
+                "type": "text/html"
+            }
+        },
+        "meta": {
+            "createdByUser": {
+                "id": 50458,
+                "username": "sebastianheath",
+                "name": "Sebastian Heath",
+                "links": {
+                    "alternate": {
+                        "href": "https://www.zotero.org/sebastianheath",
+                        "type": "text/html"
+                    }
+                }
+            },
+            "creatorSummary": "Imhausen and Pommerening",
+            "parsedDate": "2016-11-21",
+            "numChildren": 1
+        },
+        "data": {
+            "key": "N5LRIHJ8",
+            "version": 423,
+            "itemType": "book",
+            "title": "Translating Writings of Early Scholars in the Ancient Near East, Egypt, Greece and Rome: Methodological Aspects with Examples",
+            "creators": [
+                {
+                    "creatorType": "author",
+                    "firstName": "Annette",
+                    "lastName": "Imhausen"
+                },
+                {
+                    "creatorType": "author",
+                    "firstName": "Tanja",
+                    "lastName": "Pommerening"
+                }
+            ],
+            "abstractNote": "Die Übersetzung antiker wissenschaftlicher Texte stellt Studierende wie Forschende immer wieder vor besondere Herausforderungen, auch deshalb, weil eine systematische Referenzgrundlage für den Umgang mit diesen Texten bislang fehlt. Im Rahmen eines von der Fritz Thyssen Stiftung geförderten Projektes haben einschlägige Wissenschaftshistoriker und -historikerinnen der Ägyptologie, Altorientalistik und Altphilologie grundsätzliche Probleme von Übersetzungen und mögliche Lösungen diskutiert. Das Ergebnis ist ein Methodenhandbuch, das Studierenden und Forschenden aus den entsprechenden Philologien, Natur-, Geschichts- und Kulturwissenschaften Grundlagen der Übersetzungspraxis und -methodik vermittelt. Mit ausgewählten Fallbeispielen aus den Bereichen der antiken Heilkunde, Astronomie, Astrologie und Mathematik, mit fachspezifischen Hinweisen auf Übersetzungs- und Kommentierungswege sowie mit fachbezogenen Übersichten über Hilfsmittel wird das Übersetzen und das Verständnis und die Bewertung bereits vorhandener Übersetzungen antiker wissenschaftlicher Texte erleichtert.",
+            "series": "",
+            "seriesNumber": "",
+            "volume": "",
+            "numberOfVolumes": "",
+            "edition": "",
+            "place": "",
+            "publisher": "Walter de Gruyter GmbH & Co KG",
+            "date": "2016-11-21",
+            "numPages": "624",
+            "language": "de",
+            "ISBN": "978-3-11-044881-8",
+            "shortTitle": "Translating Writings of Early Scholars in the Ancient Near East, Egypt, Greece and Rome",
+            "url": "",
+            "accessDate": "",
+            "archive": "",
+            "archiveLocation": "",
+            "libraryCatalog": "Google Books",
+            "callNumber": "",
+            "rights": "",
+            "extra": "Google-Books-ID: ETx7DQAAQBAJ",
+            "deleted": 1,
+            "tags": [
+                {
+                    "tag": "History / Ancient / Egypt",
+                    "type": 1
+                },
+                {
+                    "tag": "History / Ancient / General",
+                    "type": 1
+                },
+                {
+                    "tag": "History / Middle East / General",
+                    "type": 1
+                },
+                {
+                    "tag": "Science / History",
+                    "type": 1
+                },
+                {
+                    "tag": "Social Science / Archaeology",
+                    "type": 1
+                }
+            ],
+            "collections": [
+                "DZDZS5QD"
+            ],
+            "relations": {},
+            "dateAdded": "2021-04-18T22:09:59Z",
+            "dateModified": "2021-04-18T22:09:59Z"
+        }
+    },
+    {
+        "key": "2WEXLMDX",
+        "version": 401,
+        "library": {
+            "type": "group",
+            "id": 242005,
+            "name": "ISAW Papers",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/groups/isaw_papers",
+                    "type": "text/html"
+                }
+            }
+        },
+        "links": {
+            "self": {
+                "href": "https://api.zotero.org/groups/242005/items/2WEXLMDX",
+                "type": "application/json"
+            },
+            "alternate": {
+                "href": "https://www.zotero.org/groups/isaw_papers/items/2WEXLMDX",
+                "type": "text/html"
+            },
+            "up": {
+                "href": "https://api.zotero.org/groups/242005/items/I92UGNRJ",
+                "type": "application/json"
+            }
+        },
+        "meta": {
+            "createdByUser": {
+                "id": 50458,
+                "username": "sebastianheath",
+                "name": "Sebastian Heath",
+                "links": {
+                    "alternate": {
+                        "href": "https://www.zotero.org/sebastianheath",
+                        "type": "text/html"
+                    }
+                }
+            }
+        },
+        "data": {
+            "key": "2WEXLMDX",
+            "version": 401,
+            "parentItem": "I92UGNRJ",
+            "itemType": "attachment",
+            "linkMode": "linked_url",
+            "title": "Google Books Link",
+            "accessDate": "2021-04-17T13:10:54Z",
+            "url": "https://www.google.com/books?id=GG3DDwAAQBAJ",
+            "note": "",
+            "contentType": "text/html",
+            "charset": "",
+            "deleted": 1,
+            "tags": [],
+            "relations": {},
+            "dateAdded": "2021-04-17T13:10:54Z",
+            "dateModified": "2021-04-17T13:10:54Z"
+        }
+    },
+    {
+        "key": "CK79VSFY",
+        "version": 373,
+        "library": {
+            "type": "group",
+            "id": 242005,
+            "name": "ISAW Papers",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/groups/isaw_papers",
+                    "type": "text/html"
+                }
+            }
+        },
+        "links": {
+            "self": {
+                "href": "https://api.zotero.org/groups/242005/items/CK79VSFY",
+                "type": "application/json"
+            },
+            "alternate": {
+                "href": "https://www.zotero.org/groups/isaw_papers/items/CK79VSFY",
+                "type": "text/html"
+            },
+            "up": {
+                "href": "https://api.zotero.org/groups/242005/items/UQDPNH94",
+                "type": "application/json"
+            }
+        },
+        "meta": {
+            "createdByUser": {
+                "id": 50458,
+                "username": "sebastianheath",
+                "name": "Sebastian Heath",
+                "links": {
+                    "alternate": {
+                        "href": "https://www.zotero.org/sebastianheath",
+                        "type": "text/html"
+                    }
+                }
+            }
+        },
+        "data": {
+            "key": "CK79VSFY",
+            "version": 373,
+            "parentItem": "UQDPNH94",
+            "itemType": "attachment",
+            "linkMode": "linked_url",
+            "title": "Google Books Link",
+            "accessDate": "2021-04-16T12:14:59Z",
+            "url": "https://www.google.com/books?id=xLTRDwAAQBAJ",
+            "note": "",
+            "contentType": "text/html",
+            "charset": "",
+            "deleted": 1,
+            "tags": [],
+            "relations": {},
+            "dateAdded": "2021-04-16T12:14:59Z",
+            "dateModified": "2021-04-16T12:14:59Z"
+        }
+    },
+    {
+        "key": "WFMGHRIE",
+        "version": 348,
+        "library": {
+            "type": "group",
+            "id": 242005,
+            "name": "ISAW Papers",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/groups/isaw_papers",
+                    "type": "text/html"
+                }
+            }
+        },
+        "links": {
+            "self": {
+                "href": "https://api.zotero.org/groups/242005/items/WFMGHRIE",
+                "type": "application/json"
+            },
+            "alternate": {
+                "href": "https://www.zotero.org/groups/isaw_papers/items/WFMGHRIE",
+                "type": "text/html"
+            },
+            "up": {
+                "href": "https://api.zotero.org/groups/242005/items/K7ISEYXV",
+                "type": "application/json"
+            }
+        },
+        "meta": {
+            "createdByUser": {
+                "id": 50458,
+                "username": "sebastianheath",
+                "name": "Sebastian Heath",
+                "links": {
+                    "alternate": {
+                        "href": "https://www.zotero.org/sebastianheath",
+                        "type": "text/html"
+                    }
+                }
+            }
+        },
+        "data": {
+            "key": "WFMGHRIE",
+            "version": 348,
+            "parentItem": "K7ISEYXV",
+            "itemType": "attachment",
+            "linkMode": "linked_url",
+            "title": "Google Books Link",
+            "accessDate": "2021-04-15T22:09:48Z",
+            "url": "https://www.google.com/books?id=IxUSEAAAQBAJ",
+            "note": "",
+            "contentType": "text/html",
+            "charset": "",
+            "deleted": 1,
+            "tags": [],
+            "relations": {},
+            "dateAdded": "2021-04-15T22:09:48Z",
+            "dateModified": "2021-04-15T22:09:48Z"
+        }
+    },
+    {
+        "key": "257IDZ3M",
+        "version": 376,
+        "library": {
+            "type": "group",
+            "id": 242005,
+            "name": "ISAW Papers",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/groups/isaw_papers",
+                    "type": "text/html"
+                }
+            }
+        },
+        "links": {
+            "self": {
+                "href": "https://api.zotero.org/groups/242005/items/257IDZ3M",
+                "type": "application/json"
+            },
+            "alternate": {
+                "href": "https://www.zotero.org/groups/isaw_papers/items/257IDZ3M",
+                "type": "text/html"
+            },
+            "up": {
+                "href": "https://api.zotero.org/groups/242005/items/RXYBD7TU",
+                "type": "application/json"
+            }
+        },
+        "meta": {
+            "createdByUser": {
+                "id": 50458,
+                "username": "sebastianheath",
+                "name": "Sebastian Heath",
+                "links": {
+                    "alternate": {
+                        "href": "https://www.zotero.org/sebastianheath",
+                        "type": "text/html"
+                    }
+                }
+            }
+        },
+        "data": {
+            "key": "257IDZ3M",
+            "version": 376,
+            "parentItem": "RXYBD7TU",
+            "itemType": "attachment",
+            "linkMode": "linked_url",
+            "title": "Google Books Link",
+            "accessDate": "2021-04-15T22:09:08Z",
+            "url": "https://www.google.com/books?id=z7JjDwAAQBAJ",
+            "note": "",
+            "contentType": "text/html",
+            "charset": "",
+            "deleted": 1,
+            "tags": [],
+            "relations": {},
+            "dateAdded": "2021-04-15T22:09:08Z",
+            "dateModified": "2021-04-15T22:09:08Z"
+        }
+    },
+    {
+        "key": "VP738HJT",
+        "version": 343,
+        "library": {
+            "type": "group",
+            "id": 242005,
+            "name": "ISAW Papers",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/groups/isaw_papers",
+                    "type": "text/html"
+                }
+            }
+        },
+        "links": {
+            "self": {
+                "href": "https://api.zotero.org/groups/242005/items/VP738HJT",
+                "type": "application/json"
+            },
+            "alternate": {
+                "href": "https://www.zotero.org/groups/isaw_papers/items/VP738HJT",
+                "type": "text/html"
+            },
+            "up": {
+                "href": "https://api.zotero.org/groups/242005/items/B76RR9QN",
+                "type": "application/json"
+            }
+        },
+        "meta": {
+            "createdByUser": {
+                "id": 50458,
+                "username": "sebastianheath",
+                "name": "Sebastian Heath",
+                "links": {
+                    "alternate": {
+                        "href": "https://www.zotero.org/sebastianheath",
+                        "type": "text/html"
+                    }
+                }
+            }
+        },
+        "data": {
+            "key": "VP738HJT",
+            "version": 343,
+            "parentItem": "B76RR9QN",
+            "itemType": "attachment",
+            "linkMode": "linked_url",
+            "title": "Google Books Link",
+            "accessDate": "2021-04-15T21:40:26Z",
+            "url": "https://www.google.com/books?id=6LD-DAAAQBAJ",
+            "note": "",
+            "contentType": "text/html",
+            "charset": "",
+            "deleted": 1,
+            "tags": [],
+            "relations": {},
+            "dateAdded": "2021-04-15T21:40:26Z",
+            "dateModified": "2021-04-15T21:40:26Z"
+        }
+    },
+    {
+        "key": "CBEX34AD",
+        "version": 343,
+        "library": {
+            "type": "group",
+            "id": 242005,
+            "name": "ISAW Papers",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/groups/isaw_papers",
+                    "type": "text/html"
+                }
+            }
+        },
+        "links": {
+            "self": {
+                "href": "https://api.zotero.org/groups/242005/items/CBEX34AD",
+                "type": "application/json"
+            },
+            "alternate": {
+                "href": "https://www.zotero.org/groups/isaw_papers/items/CBEX34AD",
+                "type": "text/html"
+            },
+            "up": {
+                "href": "https://api.zotero.org/groups/242005/items/7QG65U96",
+                "type": "application/json"
+            }
+        },
+        "meta": {
+            "createdByUser": {
+                "id": 50458,
+                "username": "sebastianheath",
+                "name": "Sebastian Heath",
+                "links": {
+                    "alternate": {
+                        "href": "https://www.zotero.org/sebastianheath",
+                        "type": "text/html"
+                    }
+                }
+            }
+        },
+        "data": {
+            "key": "CBEX34AD",
+            "version": 343,
+            "parentItem": "7QG65U96",
+            "itemType": "attachment",
+            "linkMode": "linked_url",
+            "title": "Google Books Link",
+            "accessDate": "2021-04-15T21:39:25Z",
+            "url": "https://www.google.com/books?id=rVtwDwAAQBAJ",
+            "note": "",
+            "contentType": "text/html",
+            "charset": "",
+            "deleted": 1,
+            "tags": [],
+            "relations": {},
+            "dateAdded": "2021-04-15T21:39:25Z",
+            "dateModified": "2021-04-15T21:39:25Z"
+        }
+    },
+    {
+        "key": "DY8FYZQD",
+        "version": 343,
+        "library": {
+            "type": "group",
+            "id": 242005,
+            "name": "ISAW Papers",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/groups/isaw_papers",
+                    "type": "text/html"
+                }
+            }
+        },
+        "links": {
+            "self": {
+                "href": "https://api.zotero.org/groups/242005/items/DY8FYZQD",
+                "type": "application/json"
+            },
+            "alternate": {
+                "href": "https://www.zotero.org/groups/isaw_papers/items/DY8FYZQD",
+                "type": "text/html"
+            },
+            "up": {
+                "href": "https://api.zotero.org/groups/242005/items/GXU3S2HU",
+                "type": "application/json"
+            }
+        },
+        "meta": {
+            "createdByUser": {
+                "id": 50458,
+                "username": "sebastianheath",
+                "name": "Sebastian Heath",
+                "links": {
+                    "alternate": {
+                        "href": "https://www.zotero.org/sebastianheath",
+                        "type": "text/html"
+                    }
+                }
+            }
+        },
+        "data": {
+            "key": "DY8FYZQD",
+            "version": 343,
+            "parentItem": "GXU3S2HU",
+            "itemType": "attachment",
+            "linkMode": "linked_url",
+            "title": "Google Books Link",
+            "accessDate": "2021-04-15T21:38:01Z",
+            "url": "https://www.google.com/books?id=lz33DwAAQBAJ",
+            "note": "",
+            "contentType": "text/html",
+            "charset": "",
+            "deleted": 1,
+            "tags": [],
+            "relations": {},
+            "dateAdded": "2021-04-15T21:38:01Z",
+            "dateModified": "2021-04-15T21:38:01Z"
+        }
+    },
+    {
+        "key": "AGT9XQZI",
+        "version": 335,
+        "library": {
+            "type": "group",
+            "id": 242005,
+            "name": "ISAW Papers",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/groups/isaw_papers",
+                    "type": "text/html"
+                }
+            }
+        },
+        "links": {
+            "self": {
+                "href": "https://api.zotero.org/groups/242005/items/AGT9XQZI",
+                "type": "application/json"
+            },
+            "alternate": {
+                "href": "https://www.zotero.org/groups/isaw_papers/items/AGT9XQZI",
+                "type": "text/html"
+            },
+            "up": {
+                "href": "https://api.zotero.org/groups/242005/items/73WBPEYJ",
+                "type": "application/json"
+            }
+        },
+        "meta": {
+            "createdByUser": {
+                "id": 50458,
+                "username": "sebastianheath",
+                "name": "Sebastian Heath",
+                "links": {
+                    "alternate": {
+                        "href": "https://www.zotero.org/sebastianheath",
+                        "type": "text/html"
+                    }
+                }
+            }
+        },
+        "data": {
+            "key": "AGT9XQZI",
+            "version": 335,
+            "parentItem": "73WBPEYJ",
+            "itemType": "attachment",
+            "linkMode": "linked_url",
+            "title": "Google Books Link",
+            "accessDate": "2021-04-15T21:31:10Z",
+            "url": "https://www.google.com/books?id=SF3ODQAAQBAJ",
+            "note": "",
+            "contentType": "text/html",
+            "charset": "",
+            "deleted": 1,
+            "tags": [],
+            "relations": {},
+            "dateAdded": "2021-04-15T21:31:10Z",
+            "dateModified": "2021-04-15T21:31:10Z"
+        }
+    },
+    {
+        "key": "W5NZKPAP",
+        "version": 333,
+        "library": {
+            "type": "group",
+            "id": 242005,
+            "name": "ISAW Papers",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/groups/isaw_papers",
+                    "type": "text/html"
+                }
+            }
+        },
+        "links": {
+            "self": {
+                "href": "https://api.zotero.org/groups/242005/items/W5NZKPAP",
+                "type": "application/json"
+            },
+            "alternate": {
+                "href": "https://www.zotero.org/groups/isaw_papers/items/W5NZKPAP",
+                "type": "text/html"
+            },
+            "up": {
+                "href": "https://api.zotero.org/groups/242005/items/5PKSQNFT",
+                "type": "application/json"
+            }
+        },
+        "meta": {
+            "createdByUser": {
+                "id": 50458,
+                "username": "sebastianheath",
+                "name": "Sebastian Heath",
+                "links": {
+                    "alternate": {
+                        "href": "https://www.zotero.org/sebastianheath",
+                        "type": "text/html"
+                    }
+                }
+            }
+        },
+        "data": {
+            "key": "W5NZKPAP",
+            "version": 333,
+            "parentItem": "5PKSQNFT",
+            "itemType": "attachment",
+            "linkMode": "linked_url",
+            "title": "Google Books Link",
+            "accessDate": "2021-04-15T21:27:13Z",
+            "url": "https://www.google.com/books?id=Z3zKDwAAQBAJ",
+            "note": "",
+            "contentType": "text/html",
+            "charset": "",
+            "deleted": 1,
+            "tags": [],
+            "relations": {},
+            "dateAdded": "2021-04-15T21:27:13Z",
+            "dateModified": "2021-04-15T21:27:13Z"
+        }
+    },
+    {
+        "key": "TKFPZRX5",
+        "version": 169,
+        "library": {
+            "type": "group",
+            "id": 242005,
+            "name": "ISAW Papers",
+            "links": {
+                "alternate": {
+                    "href": "https://www.zotero.org/groups/isaw_papers",
+                    "type": "text/html"
+                }
+            }
+        },
+        "links": {
+            "self": {
+                "href": "https://api.zotero.org/groups/242005/items/TKFPZRX5",
+                "type": "application/json"
+            },
+            "alternate": {
+                "href": "https://www.zotero.org/groups/isaw_papers/items/TKFPZRX5",
+                "type": "text/html"
+            }
+        },
+        "meta": {
+            "createdByUser": {
+                "id": 50458,
+                "username": "sebastianheath",
+                "name": "Sebastian Heath",
+                "links": {
+                    "alternate": {
+                        "href": "https://www.zotero.org/sebastianheath",
+                        "type": "text/html"
+                    }
+                }
+            },
+            "numChildren": 0
+        },
+        "data": {
+            "key": "TKFPZRX5",
+            "version": 169,
+            "itemType": "journalArticle",
+            "title": "",
+            "creators": [],
+            "abstractNote": "",
+            "publicationTitle": "",
+            "volume": "",
+            "issue": "",
+            "pages": "",
+            "date": "",
+            "series": "",
+            "seriesTitle": "",
+            "seriesText": "",
+            "journalAbbreviation": "",
+            "language": "",
+            "DOI": "",
+            "ISSN": "",
+            "shortTitle": "",
+            "url": "https://hess.copernicus.org/articles/18/5025/2014/hess-18-5025-2014.pdf",
+            "accessDate": "2021-04-13T02:41:12Z",
+            "archive": "",
+            "archiveLocation": "",
+            "libraryCatalog": "",
+            "callNumber": "",
+            "rights": "",
+            "extra": "",
+            "deleted": 1,
+            "tags": [],
+            "collections": [
+                "DZDZS5QD"
+            ],
+            "relations": {},
+            "dateAdded": "2021-04-13T02:41:12Z",
+            "dateModified": "2021-04-13T02:41:33Z"
+        }
+    }
+]

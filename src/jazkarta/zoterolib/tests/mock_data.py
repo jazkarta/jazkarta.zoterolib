@@ -24,7 +24,7 @@ def alternative_get(url, params=None, **kwargs):
     return result
 
 
-if REAL_HTTP:
+if not REAL_HTTP:
     requests.api.get = requests.get = alternative_get
 RESPONSES_MAP = {}
 
@@ -72,7 +72,12 @@ def save_data(result, url):
     headers = dict(result.headers)
     if "Content-Encoding" in headers:
         del headers["Content-Encoding"]
-    open(os.path.join(DATA_DIR, hash + '.headers.json'), 'w').write(json.dumps(headers))
+    json.dump(
+        os.path.join(DATA_DIR, hash + '.headers.json'),
+        headers,
+        sort_keys=True,
+        indent=2,
+    )
     open(os.path.join(DATA_DIR, hash + '.url'), 'w').write(url)
 
 
