@@ -10,15 +10,16 @@ except ImportError:
     unescape = HTMLParser().unescape
 from plone import api
 from Products.CMFPlone.log import log_exc
-from Products.CMFPlone.utils import safe_encode, safe_unicode
+from Products.CMFPlone.utils import safe_unicode
 
 TAG_RE = re.compile('</?.+?/?>')
 
 
-def plone_encode(val):
+def plone_encode(val, encoding='utf-8'):
     """In Plone on Python 2, some catalog indexes expect encoded values"""
     if not six.PY3:
-        return safe_encode(val)
+        if isinstance(val, six.text_type):
+            val = val.encode(encoding)
     return val
 
 
@@ -27,7 +28,7 @@ def html_to_plain_text(text):
         return ''
     text = unescape(safe_unicode(text))
     transformer = api.portal.get_tool('portal_transforms')
-    encoded = safe_encode(text)
+    encoded = plone_encode(text)
     try:
         stream = transformer.convertTo('text/plain', encoded, mimetype='text/html')
         text = stream.getData().strip()

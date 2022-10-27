@@ -20,7 +20,7 @@ from plone.uuid.interfaces import IUUID, IAttributeUUID, IMutableUUID
 from plone.app.z3cform.widget import AjaxSelectWidget
 from Products.CMFCore import permissions
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.utils import safe_encode, safe_unicode
+from Products.CMFPlone.utils import safe_unicode
 from pyzotero import zotero
 from zExceptions import NotFound
 from zope import schema
@@ -297,8 +297,7 @@ class ExternalZoteroItem(Acquisition.Implicit):
         self.parent = parent
         self.zotero_item = zotero_item
         item_href = zotero_item["links"]["self"]["href"]
-        if not six.PY3:
-            item_href = safe_encode(item_href)
+        item_href = plone_encode(item_href)
         uid = str(uuid.uuid5(uuid.NAMESPACE_URL, item_href))
         IMutableUUID(self).set(uid)
 
@@ -464,8 +463,7 @@ class BrainProxy(Traversable, Acquisition.Implicit):
 
     def Description(self):
         value = html_to_plain_text(self.text)
-        if not six.PY3:
-            value = safe_encode(value)
+        plone_encode(value)
         return value.strip()
 
     def __getattr__(self, name):
