@@ -25,7 +25,7 @@ def plone_encode(val):
 def html_to_plain_text(text):
     if not text:
         return ''
-    text = unescape(text)
+    text = unescape(safe_unicode(text))
     transformer = api.portal.get_tool('portal_transforms')
     encoded = safe_encode(text)
     try:
