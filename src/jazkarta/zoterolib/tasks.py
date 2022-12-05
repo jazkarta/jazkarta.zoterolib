@@ -10,7 +10,7 @@ from collective.celery import utils
 from plone import api
 from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.interfaces.controlpanel import IMailSchema
-from Products.CMFPlone.utils import safe_encode
+from Products.CMFPlone.utils import safe_nativestring
 from pyzotero import zotero
 from pyzotero.zotero_errors import HTTPError
 from requests.exceptions import RequestException
@@ -164,18 +164,18 @@ def remove_recently_deleted(self, library_obj, since=None):
 @task.as_admin()
 def send_mail(subject, message, mfrom=None, mto=None):
     portal = api.portal.get()
-    message = safe_encode(message)
+    message = safe_nativestring(message)
     msg = email.message_from_string(message)
     msg.set_charset('utf-8')
 
     registry = getUtility(IRegistry)
     settings = registry.forInterface(IMailSchema, False, prefix='plone')
-    site_name = safe_encode(getattr(settings, 'email_from_name'))
-    site_from = safe_encode(getattr(settings, 'email_from_address'))
+    site_name = safe_nativestring(getattr(settings, 'email_from_name'))
+    site_from = safe_nativestring(getattr(settings, 'email_from_address'))
     site_mfrom = email.utils.formataddr((site_name, site_from))
 
     if mfrom is not None:
-        mfrom = safe_encode(mfrom)
+        mfrom = safe_nativestring(mfrom)
         msg['Reply-To'] = Header(quopri.encodestring(mfrom, True))
     else:
         mfrom = site_mfrom
