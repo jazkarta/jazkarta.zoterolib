@@ -187,7 +187,7 @@ The project is licensed under the GPLv2.
 Credits
 -------
 
-Built by `Jazkarta <https://jazkarta.com>`_. Principal authors:
+Funded by the `University of Minnesota Press <https://www.upress.umn.edu>`_. Built by `Jazkarta <https://jazkarta.com>`_. Principal authors:
 
 - Alec Mitchell
 - Silvio Tomatis
