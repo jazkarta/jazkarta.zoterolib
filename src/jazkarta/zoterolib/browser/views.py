@@ -88,16 +88,6 @@ class ZoteroItemView(BrowserView):
         return self.index(*args, **kw)
 
 
-class ZoteroItemViewTraverser(ViewTraverser):
-    def traverse(self, name, ignored):
-        context = self.context.context.aq_parent.fetch_item_for_path()
-        view = queryMultiAdapter((context, self.request), name=name)
-        if view is None:
-            raise LocationError(context, name)
-
-        return view.__of__(context)
-
-
 class UpdateLibraryForm(z3c.form.form.Form):
     """Simple form to update the zotero library"""
 
