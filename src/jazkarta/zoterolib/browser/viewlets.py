@@ -7,7 +7,7 @@ from ..utils import html_to_plain_text
 class ZoteroItemTitleViewlet(TitleViewlet):
     @property
     def page_title(self):
-        item = self.view.item
+        item = self.context
         title = item.citationLabel
         if title:
             title = html_to_plain_text(title)
@@ -19,5 +19,5 @@ class ZoteroItemTitleViewlet(TitleViewlet):
 class ZoteroItemDublinCoreViewlet(DublinCoreViewlet):
     def update(self):
         plone_utils = getToolByName(self.context, 'plone_utils')
-        context = self.view.item
+        context = self.context
         self.metatags = plone_utils.listMetaTags(context).items()

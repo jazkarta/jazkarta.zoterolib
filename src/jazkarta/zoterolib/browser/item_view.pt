@@ -19,7 +19,7 @@
   </head>
   <body>
     <metal:main fill-slot="main"
-                tal:define="item view/item;
+                tal:define="item context;
                             dummy python:request.set('disable_border', 1)">
         <div class="item-reference" tal:content="structure item/text">Formatted Citation Style</div>
 

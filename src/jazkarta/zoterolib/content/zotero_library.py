@@ -10,6 +10,7 @@ import uuid
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from collections import namedtuple
 from DateTime import DateTime
+from OFS.SimpleItem import SimpleItem
 from OFS.Traversable import Traversable
 from plone.dexterity.content import Item
 from plone.supermodel import model
@@ -282,7 +283,7 @@ class IExternalZoteroItem(Interface):
 
 
 @implementer(IExternalZoteroItem, IAttributeUUID)
-class ExternalZoteroItem(Acquisition.Implicit):
+class ExternalZoteroItem(SimpleItem):
     portal_type = meta_type = "ExternalZoteroItem"
     contentType = "Zotero Reference"
     review_state = "published"
