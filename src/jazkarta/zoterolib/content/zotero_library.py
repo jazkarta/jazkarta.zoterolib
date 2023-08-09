@@ -282,7 +282,7 @@ class IExternalZoteroItem(Interface):
 
 
 @implementer(IExternalZoteroItem, IAttributeUUID)
-class ExternalZoteroItem(Acquisition.Implicit):
+class ExternalZoteroItem(Acquisition.Implicit, Traversable):
     portal_type = meta_type = "ExternalZoteroItem"
     contentType = "Zotero Reference"
     review_state = "published"

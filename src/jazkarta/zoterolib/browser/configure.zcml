@@ -28,13 +28,6 @@
       template="item_view.pt"
       />
 
-  <adapter
-      name="view"
-      for=".views.ZoteroItemView zope.publisher.interfaces.IRequest"
-      provides="zope.traversing.interfaces.ITraversable"
-      factory=".views.ZoteroItemViewTraverser"
-      />
-
   <browser:page
       for="..content.zotero_library.IZoteroLibrary"
       name="update-items"

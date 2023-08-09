@@ -80,21 +80,12 @@ class ZoteroItemView(BrowserView):
         return _checkPermission(ModifyAliases, self.context)
 
     def __call__(self, *args, **kw):
-        self.item = self.fetch_item_for_path()
+        item = self.fetch_item_for_path()
         # Raise a 404 when the object doesn't exist
         if self.item is None:
             raise NotFound
+        self.context = item
         return self.index(*args, **kw)
-
-
-class ZoteroItemViewTraverser(ViewTraverser):
-    def traverse(self, name, ignored):
-        context = self.context.fetch_item_for_path()
-        view = queryMultiAdapter((context, self.request), name=name)
-        if view is None:
-            raise LocationError(context, name)
-
-        return view.__of__(context)
 
 
 class UpdateLibraryForm(z3c.form.form.Form):
